@@ -4,6 +4,7 @@
 server/dist
 server/node_modules
 server/build
+server/generated
 
 # dotenv environment variable files
 server/.env
