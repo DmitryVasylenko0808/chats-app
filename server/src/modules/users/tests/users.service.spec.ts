@@ -94,17 +94,9 @@ describe('UsersService', () => {
       const id = 99999;
       prismaService.user.findUnique.mockResolvedValueOnce(null);
 
-      let hasThrown = false;
-      let errorResult;
-      try {
-        await usersService.findUserOrThrow(id);
-      } catch (error) {
-        hasThrown = true;
-        errorResult = error;
-      }
+      const findUserOrThrow = usersService.findUserOrThrow(id);
 
-      expect(errorResult).toBeInstanceOf(NotFoundException);
-      expect(hasThrown).toBe(true);
+      await expect(findUserOrThrow).rejects.toThrow(NotFoundException);
     });
   });
 

@@ -96,17 +96,9 @@ describe('UsersController', () => {
         throw new NotFoundException();
       });
 
-      let hasThrown = false;
-      let errorResult;
-      try {
-        await usersController.findUser(id);
-      } catch (error) {
-        hasThrown = true;
-        errorResult = error;
-      }
+      const findUser = usersController.findUser(id);
 
-      expect(errorResult).toBeInstanceOf(NotFoundException);
-      expect(hasThrown).toBe(true);
+      await expect(findUser).rejects.toThrow(NotFoundException);
     });
   });
 
