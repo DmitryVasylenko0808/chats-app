@@ -1,9 +1,10 @@
 import { User } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { UpdateUserDto } from '../dto/update.user.dto';
 import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
 
@@ -106,6 +107,70 @@ describe('UsersController', () => {
 
       expect(errorResult).toBeInstanceOf(NotFoundException);
       expect(hasThrown).toBe(true);
+    });
+  });
+
+  describe('updateUser', () => {
+    const id = 1;
+    const dto: UpdateUserDto = {
+      name: 'test-name',
+      username: 'test-username',
+      description: 'test-description',
+      email: 'test-email@mail.com',
+    };
+
+    it('should update user', async () => {
+      const expectedResult = {
+        data: {
+          id,
+          ...dto,
+          avatar: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as User,
+        messsage: 'User is successfully updated',
+      };
+      usersService.updateUser.mockResolvedValueOnce({
+        data: expectedResult.data,
+        message: expectedResult.messsage,
+      });
+
+      const result = await usersController.updateUser(id, dto);
+
+      expect(result).toBeTruthy();
+      expect(result.data).toEqual(expectedResult.data);
+      expect(result.message).toBe(expectedResult.messsage);
+    });
+
+    it('should throw error update user (not found)', async () => {
+      const id = 9999;
+      usersService.updateUser.mockImplementationOnce(() => {
+        throw new NotFoundException();
+      });
+
+      const updateUser = usersController.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error update user (username is already exists)', async () => {
+      usersService.updateUser.mockImplementationOnce(() => {
+        throw new BadRequestException();
+      });
+
+      const updateUser = usersController.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(BadRequestException);
+    });
+
+    it('should throw error update user (email is already exists)', async () => {
+      usersService.updateUser.mockImplementationOnce(() => {
+        throw new BadRequestException();
+      });
+
+      const updateUser = usersController.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(BadRequestException);
     });
   });
 });

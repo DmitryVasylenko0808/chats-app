@@ -1,11 +1,12 @@
 import { User } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../dto/create.user.dto';
+import { UpdateUserDto } from '../dto/update.user.dto';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {
@@ -135,6 +136,66 @@ describe('UsersService', () => {
       expect(result).toBeTruthy();
       expect(result.data).toEqual(expectedResult.data);
       expect(result.message).toBe(expectedResult.message);
+    });
+  });
+
+  describe('updateUser', () => {
+    const id = 1;
+    const dto: UpdateUserDto = {
+      name: 'test-name',
+      username: 'test-username',
+      description: 'test-description',
+      email: 'test-email@mail.com',
+    };
+
+    it('should update user', async () => {
+      const expectedResult = {
+        data: {
+          id,
+          ...dto,
+          avatar: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as User,
+        messsage: 'User is successfully updated',
+      };
+      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
+      prismaService.user.findFirst.mockResolvedValue(null);
+      prismaService.user.update.mockResolvedValueOnce(expectedResult.data);
+
+      const result = await usersService.updateUser(id, dto);
+
+      expect(result).toBeTruthy();
+      expect(result.data).toEqual(expectedResult.data);
+      expect(result.message).toBe(expectedResult.messsage);
+    });
+
+    it('should throw error update user (not found)', async () => {
+      const id = 9999;
+      prismaService.user.findUnique.mockResolvedValueOnce(null);
+
+      const updateUser = usersService.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw error update user (username is already exists)', async () => {
+      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
+      prismaService.user.findFirst.mockResolvedValueOnce({ id: 10 } as User);
+
+      const updateUser = usersService.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(BadRequestException);
+    });
+
+    it('should throw error update user (email is already exists)', async () => {
+      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
+      prismaService.user.findFirst.mockResolvedValueOnce(null);
+      prismaService.user.findFirst.mockResolvedValueOnce({ id: 10 } as User);
+
+      const updateUser = usersService.updateUser(id, dto);
+
+      await expect(updateUser).rejects.toThrow(BadRequestException);
     });
   });
 });
