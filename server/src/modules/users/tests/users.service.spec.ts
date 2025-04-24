@@ -5,6 +5,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { CreateUserDto } from '../dto/create.user.dto';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {
@@ -103,6 +104,37 @@ describe('UsersService', () => {
 
       expect(errorResult).toBeInstanceOf(NotFoundException);
       expect(hasThrown).toBe(true);
+    });
+  });
+
+  describe('createUser', () => {
+    it('should create user', async () => {
+      const dto: CreateUserDto = {
+        username: 'test-username',
+        name: 'test-name',
+        email: 'test-email@mail.com',
+        password: 'test-password',
+      };
+      const expectedResult = {
+        data: {
+          id: 4,
+          username: dto.username,
+          name: dto.name,
+          email: dto.email,
+          avatar: null,
+          description: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as User,
+        message: 'User is successfully created',
+      };
+      prismaService.user.create.mockResolvedValueOnce(expectedResult.data);
+
+      const result = await usersService.createUser(dto);
+
+      expect(result).toBeTruthy();
+      expect(result.data).toEqual(expectedResult.data);
+      expect(result.message).toBe(expectedResult.message);
     });
   });
 });
