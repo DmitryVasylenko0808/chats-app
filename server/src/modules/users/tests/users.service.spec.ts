@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
@@ -63,6 +64,45 @@ describe('UsersService', () => {
 
       expect(result).toEqual(expectedResult);
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('findUserOrThrow', () => {
+    it('should find user by id', async () => {
+      const id = 1;
+      const expectedResult = {
+        id: 1,
+        username: 'pmuckloe0',
+        email: 'pmuckloe0@hibu.com',
+        name: 'Philippine Muckloe',
+        description: null,
+        avatar: null,
+        createdAt: new Date('2025-04-24T06:06:20.172Z'),
+        updatedAt: new Date('2025-04-24T06:06:20.172Z'),
+      } as User;
+      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+
+      const result = await usersService.findUserOrThrow(id);
+
+      expect(result).toEqual(expectedResult);
+      expect(result.id).toBe(id);
+    });
+
+    it('should throw error find user by id', async () => {
+      const id = 99999;
+      prismaService.user.findUnique.mockResolvedValueOnce(null);
+
+      let hasThrown = false;
+      let errorResult;
+      try {
+        await usersService.findUserOrThrow(id);
+      } catch (error) {
+        hasThrown = true;
+        errorResult = error;
+      }
+
+      expect(errorResult).toBeInstanceOf(NotFoundException);
+      expect(hasThrown).toBe(true);
     });
   });
 });
