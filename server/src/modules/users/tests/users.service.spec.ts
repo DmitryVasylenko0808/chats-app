@@ -198,4 +198,27 @@ describe('UsersService', () => {
       await expect(updateUser).rejects.toThrow(BadRequestException);
     });
   });
+
+  describe('deleteUser', () => {
+    it('should delete user by id', async () => {
+      const id = 1;
+      const expectedResult = { message: 'User is successfully deleted' };
+      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
+      prismaService.user.delete.mockResolvedValue({ id: 1 } as User);
+
+      const result = await usersService.deleteUser(id);
+
+      expect(result).toBeTruthy();
+      expect(result.message).toBe(expectedResult.message);
+    });
+
+    it('should throw error delete user by id (user not found)', async () => {
+      const id = 9999;
+      prismaService.user.findUnique.mockResolvedValueOnce(null);
+
+      const deleteUser = usersService.deleteUser(id);
+
+      await expect(deleteUser).rejects.toThrow(NotFoundException);
+    });
+  });
 });

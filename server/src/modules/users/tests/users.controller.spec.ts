@@ -173,4 +173,28 @@ describe('UsersController', () => {
       await expect(updateUser).rejects.toThrow(BadRequestException);
     });
   });
+
+  describe('deleteUser', () => {
+    it('should delete user by id', async () => {
+      const id = 1;
+      const expectedResult = { message: 'User is successfully deleted' };
+      usersService.deleteUser.mockResolvedValue(expectedResult);
+
+      const result = await usersController.deleteUser(id);
+
+      expect(result).toBeTruthy();
+      expect(result.message).toBe(expectedResult.message);
+    });
+
+    it('should throw error delete user by id (user not found)', async () => {
+      const id = 9999;
+      usersService.deleteUser.mockImplementationOnce(() => {
+        throw new NotFoundException();
+      });
+
+      const deleteUser = usersController.deleteUser(id);
+
+      await expect(deleteUser).rejects.toThrow(NotFoundException);
+    });
+  });
 });

@@ -69,6 +69,16 @@ export class UsersService {
     return { data: updatedUser, message: 'User is successfully updated' };
   }
 
+  async deleteUser(id: number) {
+    await this.findUserOrThrow(id);
+
+    await this.prismaService.user.delete({
+      where: { id },
+    });
+
+    return { message: 'User is successfully deleted' };
+  }
+
   private async checkOtherUsersWithUsername(id: number, username: string) {
     const userWithUsername = await this.prismaService.user.findFirst({
       where: {
