@@ -55,8 +55,8 @@ export class UsersService {
 
   async updateUser(id: number, dto: UpdateUserDto) {
     await this.findUserOrThrow(id);
-    await this.checkOtherUsersWithUsername(id, dto.username);
-    await this.checkOtherUsersWithEmail(id, dto.email);
+    await this.checkOtherUsersWithUsername(dto.username, id);
+    await this.checkOtherUsersWithEmail(dto.email, id);
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
@@ -77,10 +77,10 @@ export class UsersService {
     return { message: 'User is successfully deleted' };
   }
 
-  private async checkOtherUsersWithUsername(id: number, username: string) {
+  async checkOtherUsersWithUsername(username: string, exceptUserId?: number) {
     const userWithUsername = await this.prismaService.user.findFirst({
       where: {
-        id: { not: id },
+        id: { not: exceptUserId },
         username,
       },
     });
@@ -90,10 +90,10 @@ export class UsersService {
     }
   }
 
-  private async checkOtherUsersWithEmail(id: number, email: string) {
+  async checkOtherUsersWithEmail(email: string, exceptUserId?: number) {
     const userWithEmail = await this.prismaService.user.findFirst({
       where: {
-        id: { not: id },
+        id: { not: exceptUserId },
         email,
       },
     });
