@@ -6,6 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { RegisterUserDto } from '../dto/register-user.dto';
+import { SignInUserDto } from '../dto/sing-in.user.dto';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -74,6 +75,34 @@ describe('AuthController', () => {
       expect(authService.registerUser).toHaveBeenCalled();
       expect(authService.registerUser).toHaveBeenCalledWith(dto);
       expect(registerUser).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  describe('signInUser', () => {
+    const dto: SignInUserDto = {
+      username: 'test-username',
+      password: 'test-password',
+    };
+
+    it('should sign in user', async () => {
+      const expectedResult = { accessToken: 'access-token' };
+      authService.signInUser.mockResolvedValueOnce(expectedResult);
+
+      const result = await authController.signInUser(dto);
+
+      expect(authService.signInUser).toHaveBeenCalled();
+      expect(authService.signInUser).toHaveBeenCalledWith(dto);
+      expect(result).toBe(expectedResult);
+    });
+
+    it('should not sign in user', async () => {
+      authService.signInUser.mockRejectedValueOnce(new BadRequestException());
+
+      const signInUser = authController.signInUser(dto);
+
+      expect(authService.signInUser).toHaveBeenCalled();
+      expect(authService.signInUser).toHaveBeenCalledWith(dto);
+      expect(signInUser).rejects.toThrow(BadRequestException);
     });
   });
 });
