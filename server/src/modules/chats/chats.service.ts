@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateChatDto } from './dto/create-chat.dto';
 
 @Injectable()
 export class ChatsService {
@@ -55,5 +56,66 @@ export class ChatsService {
     const data = { ...chat, membersCount: chat.members.length };
 
     return data;
+  }
+
+  async createChat(dto: CreateChatDto) {
+    if (dto.membersIds.length !== 2) {
+      throw new BadRequestException('Chat must contain only 2 members');
+    }
+
+    const chat = await this.checkChatExists(dto.membersIds);
+
+    if (chat) {
+      return chat;
+    }
+
+    const createdChat = await this.prismaService.chat.create({
+      data: {
+        members: {
+          connect: dto.membersIds.map((m) => ({ id: m })),
+        },
+      },
+      include: {
+        members: {
+          omit: {
+            password: true,
+            description: true,
+          },
+        },
+      },
+    });
+
+    return createdChat;
+  }
+
+  private async checkChatExists(membersIds: number[]) {
+    const [firstUserId, secondUserId] = membersIds;
+
+    const chat = await this.prismaService.chat.findFirst({
+      where: {
+        AND: [
+          {
+            members: {
+              some: { id: firstUserId },
+            },
+          },
+          {
+            members: {
+              some: { id: secondUserId },
+            },
+          },
+        ],
+      },
+      include: {
+        members: {
+          omit: {
+            password: true,
+            description: true,
+          },
+        },
+      },
+    });
+
+    return chat;
   }
 }

@@ -1,10 +1,11 @@
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../../modules/prisma/prisma.service';
 import { ChatsService } from '../chats.service';
+import { CreateChatDto } from '../dto/create-chat.dto';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;
@@ -149,6 +150,49 @@ describe('ChatsService', () => {
 
       expect(prismaService.chat.findUnique).toHaveBeenCalled();
       expect(findOneChat).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('createChat', () => {
+    it('should create chat', async () => {
+      const dto: CreateChatDto = { membersIds: [1, 2] };
+      const mockCreatedChat = {
+        id: 1,
+        members: [{ id: 1 }, { id: 2 }],
+      };
+      prismaService.chat.findFirst.mockResolvedValueOnce(null);
+      prismaService.chat.create.mockResolvedValueOnce(mockCreatedChat);
+      const expectedResult = mockCreatedChat;
+
+      const result = await chatsService.createChat(dto);
+
+      expect(prismaService.chat.findFirst).toHaveBeenCalled();
+      expect(prismaService.chat.create).toHaveBeenCalled();
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should return existed chat', async () => {
+      const dto: CreateChatDto = { membersIds: [1, 2] };
+      const mockExistedChat = {
+        id: 1,
+        members: [{ id: 1 }, { id: 2 }],
+      };
+      prismaService.chat.findFirst.mockResolvedValueOnce(mockExistedChat);
+      const expectedResult = mockExistedChat;
+
+      const result = await chatsService.createChat(dto);
+
+      expect(prismaService.chat.findFirst).toHaveBeenCalled();
+      expect(prismaService.chat.create).not.toHaveBeenCalled();
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should throw error create chat (members length !== 2)', async () => {
+      const dto: CreateChatDto = { membersIds: [1] };
+
+      const createChat = chatsService.createChat(dto);
+
+      expect(createChat).rejects.toThrow(BadRequestException);
     });
   });
 });
