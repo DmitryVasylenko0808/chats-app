@@ -100,6 +100,32 @@ describe('UsersService', () => {
     });
   });
 
+  describe('findUserByUsername', () => {
+    const mockUsername = 'test-username';
+
+    it('should find user by usernmae', async () => {
+      const expectedResult = { id: 1 } as User;
+      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+
+      const result = await usersService.findUserByUsername(mockUsername);
+
+      expect(prismaService.user.findUnique).toHaveBeenCalled();
+      expect(result).toBeTruthy();
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should not find user by username', async () => {
+      const expectedResult = null;
+      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+
+      const result = await usersService.findUserByUsername(mockUsername);
+
+      expect(prismaService.user.findUnique).toHaveBeenCalled();
+      expect(result).toBeFalsy();
+      expect(result).toBe(expectedResult);
+    });
+  });
+
   describe('createUser', () => {
     it('should create user', async () => {
       const dto: CreateUserDto = {
