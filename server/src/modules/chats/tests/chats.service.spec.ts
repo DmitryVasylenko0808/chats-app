@@ -1,5 +1,6 @@
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../../modules/prisma/prisma.service';
@@ -121,6 +122,33 @@ describe('ChatsService', () => {
 
       expect(prismaService.chat.findMany).toHaveBeenCalled();
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('findChatById', () => {
+    const chatId = 1;
+
+    it('should find chat by id', async () => {
+      const mockFoundedChat = {
+        id: 1,
+        members: [{ id: 1 }, { id: 2 }],
+      };
+      const expectedResult = { id: 1, members: [{ id: 1 }, { id: 2 }], membersCount: 2 };
+      prismaService.chat.findUnique.mockResolvedValueOnce(mockFoundedChat);
+
+      const result = await chatsService.findOneChat(chatId);
+
+      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should throw error find chat by id (chat is not found)', async () => {
+      prismaService.chat.findUnique.mockResolvedValueOnce(null);
+
+      const findOneChat = chatsService.findOneChat(chatId);
+
+      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(findOneChat).rejects.toThrow(NotFoundException);
     });
   });
 });
