@@ -195,4 +195,28 @@ describe('ChatsService', () => {
       expect(createChat).rejects.toThrow(BadRequestException);
     });
   });
+
+  describe('deleteChat', () => {
+    it('should delete chat by id', async () => {
+      const id = 1;
+      prismaService.chat.findUnique.mockResolvedValueOnce({ id });
+      prismaService.chat.delete.mockResolvedValueOnce({ id });
+      const expectMessage = { message: 'Chat is deleted' };
+
+      const result = await chatsService.deleteChat(id);
+
+      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(prismaService.chat.delete).toHaveBeenCalled();
+      expect(result).toEqual(expectMessage);
+    });
+
+    it('should throw error delete chat by id (chat is not found)', async () => {
+      const id = 1;
+      prismaService.chat.findUnique.mockResolvedValueOnce(null);
+
+      await expect(chatsService.deleteChat(id)).rejects.toThrow(NotFoundException);
+      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(prismaService.chat.delete).not.toHaveBeenCalled();
+    });
+  });
 });

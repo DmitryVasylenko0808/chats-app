@@ -88,6 +88,22 @@ export class ChatsService {
     return createdChat;
   }
 
+  async deleteChat(id: number) {
+    const chat = await this.prismaService.chat.findUnique({
+      where: { id },
+    });
+
+    if (!chat) {
+      throw new NotFoundException('Chat is not found');
+    }
+
+    await this.prismaService.chat.delete({
+      where: { id },
+    });
+
+    return { message: 'Chat is deleted' };
+  }
+
   private async checkChatExists(membersIds: number[]) {
     const [firstUserId, secondUserId] = membersIds;
 
