@@ -14,6 +14,7 @@ export class AuthController {
   }
 
   @Post('sign-in')
+  @HttpCode(HttpStatus.OK)
   async signInUser(@Body() dto: SignInUserDto) {
     return await this.authService.signInUser(dto);
   }

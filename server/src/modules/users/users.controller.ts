@@ -1,14 +1,30 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 
+import { CurrentUser } from 'src/common/decorators/current-user.descorator';
+
+import { PrivateAuthGuard } from '../../common/guards/private-auth.guard';
+import { AccessTokenPayload } from '../auth/types/access-token-payload';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
+@UseGuards(PrivateAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async findUsers(@Query('search') search: string) {
+  async findUsers(@Query('search') search: string, @CurrentUser() user: AccessTokenPayload) {
+    console.log(user);
     return await this.usersService.findUsers(search);
   }
 
