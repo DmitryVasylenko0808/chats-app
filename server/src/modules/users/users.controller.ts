@@ -10,10 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CurrentUser } from 'src/common/decorators/current-user.descorator';
-
 import { PrivateAuthGuard } from '../../common/guards/private-auth.guard';
-import { AccessTokenPayload } from '../auth/types/access-token-payload';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './users.service';
 
@@ -23,8 +20,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async findUsers(@Query('search') search: string, @CurrentUser() user: AccessTokenPayload) {
-    console.log(user);
+  async findUsers(@Query('search') search: string) {
     return await this.usersService.findUsers(search);
   }
 
