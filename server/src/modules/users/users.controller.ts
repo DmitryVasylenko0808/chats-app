@@ -11,13 +11,17 @@ import {
 } from '@nestjs/common';
 
 import { PrivateAuthGuard } from '../../common/guards/private-auth.guard';
+import { ChatsService } from '../chats/chats.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
 @UseGuards(PrivateAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly chatsService: ChatsService
+  ) {}
 
   @Get()
   async findUsers(@Query('search') search: string) {
@@ -37,5 +41,10 @@ export class UsersController {
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     return await this.usersService.deleteUser(id);
+  }
+
+  @Get(':id/chats')
+  async findUserChats(@Param('id', ParseIntPipe) id: number) {
+    return await this.chatsService.findChats(id);
   }
 }

@@ -4,6 +4,7 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { ChatsService } from '../../chats/chats.service';
 import { UpdateUserDto } from '../dto/update.user.dto';
 import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
@@ -11,15 +12,20 @@ import { UsersService } from '../users.service';
 describe('UsersController', () => {
   let usersController: UsersController;
   let usersService: DeepMockProxy<UsersService>;
+  let chatsService: DeepMockProxy<ChatsService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [{ provide: UsersService, useValue: mockDeep<UsersService>() }],
+      providers: [
+        { provide: UsersService, useValue: mockDeep<UsersService>() },
+        { provide: ChatsService, useValue: mockDeep<ChatsService>() },
+      ],
     }).compile();
 
     usersController = module.get<UsersController>(UsersController);
     usersService = module.get(UsersService);
+    chatsService = module.get(ChatsService);
   });
 
   it('should be defined', () => {
@@ -187,6 +193,38 @@ describe('UsersController', () => {
       const deleteUser = usersController.deleteUser(id);
 
       await expect(deleteUser).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('findUserChats', () => {
+    const userId = 1;
+
+    it('should find chats by user id', async () => {
+      const expectedResult = [
+        {
+          id: 1,
+        },
+        {
+          id: 2,
+        },
+      ];
+      chatsService.findChats.mockResolvedValueOnce(expectedResult as any);
+
+      const result = await chatsService.findChats(userId);
+
+      expect(chatsService.findChats).toHaveBeenCalled();
+      expect(chatsService.findChats).toHaveBeenCalledWith(userId);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should not find chats by user id', async () => {
+      chatsService.findChats.mockResolvedValueOnce([]);
+
+      const result = await chatsService.findChats(userId);
+
+      expect(chatsService.findChats).toHaveBeenCalled();
+      expect(chatsService.findChats).toHaveBeenCalledWith(userId);
+      expect(result).toEqual([]);
     });
   });
 });
