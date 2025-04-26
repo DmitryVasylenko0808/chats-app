@@ -3,6 +3,7 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { SendMessageDto } from '../dto/send-message.dto';
 import { MessagesService } from '../messages.service';
 
 describe('MessagesService', () => {
@@ -115,6 +116,31 @@ describe('MessagesService', () => {
         },
       });
       expect(result).toStrictEqual(messages);
+    });
+  });
+
+  describe('sendMessage', () => {
+    it('should send message', async () => {
+      const dto: SendMessageDto = {
+        chatId: 1,
+        senderId: 1,
+        text: 'text-message',
+      };
+      const message = {
+        ...dto,
+        id: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      prismaService.message.create.mockResolvedValueOnce(message);
+
+      const result = await messagesService.sendMessage(dto);
+
+      expect(prismaService.message.create).toHaveBeenCalled();
+      expect(prismaService.message.create).toHaveBeenCalledWith({
+        data: dto,
+      });
+      expect(result).toEqual(message);
     });
   });
 });
