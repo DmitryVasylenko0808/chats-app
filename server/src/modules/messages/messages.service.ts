@@ -48,6 +48,16 @@ export class MessagesService {
     return message;
   }
 
+  async deleteMessage(id: number) {
+    await this.findMessageByIdOrThrow(id);
+
+    await this.prismaService.message.delete({
+      where: { id },
+    });
+
+    return { message: 'Message is deleted' };
+  }
+
   private async findMessageByIdOrThrow(id: number) {
     const existedMessage = await this.prismaService.message.findUnique({
       where: { id },

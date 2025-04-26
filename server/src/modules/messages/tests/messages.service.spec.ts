@@ -1,3 +1,4 @@
+import { Message } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
 import { NotFoundException } from '@nestjs/common';
@@ -11,15 +12,10 @@ import { MessagesService } from '../messages.service';
 describe('MessagesService', () => {
   let messagesService: MessagesService;
   let prismaService: DeepMockProxy<PrismaService>;
-  // let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        MessagesService,
-        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
-        // PrismaService,
-      ],
+      providers: [MessagesService, { provide: PrismaService, useValue: mockDeep<PrismaService>() }],
     }).compile();
 
     messagesService = module.get<MessagesService>(MessagesService);
@@ -160,7 +156,7 @@ describe('MessagesService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      prismaService.message.findUnique.mockResolvedValue(message);
+      prismaService.message.findUnique.mockResolvedValueOnce(message);
       prismaService.message.update.mockResolvedValueOnce(message);
 
       const result = await messagesService.editMessage(messageId, dto);
@@ -183,7 +179,7 @@ describe('MessagesService', () => {
         chatId: 1,
         text: 'text-message',
       };
-      prismaService.message.findUnique.mockResolvedValue(null);
+      prismaService.message.findUnique.mockResolvedValueOnce(null);
 
       const editMessage = messagesService.editMessage(messageId, dto);
 
@@ -192,6 +188,41 @@ describe('MessagesService', () => {
         where: { id: messageId },
       });
       expect(editMessage).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('deleteMessage', () => {
+    it('should delete message', async () => {
+      const messageId = 1;
+      const data = { message: 'Message is deleted' };
+      prismaService.message.findUnique.mockResolvedValueOnce({ id: messageId } as Message);
+      prismaService.message.delete.mockResolvedValueOnce({ id: messageId } as Message);
+
+      const result = await messagesService.deleteMessage(messageId);
+
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
+        where: { id: messageId },
+      });
+      expect(prismaService.message.delete).toHaveBeenCalled();
+      expect(prismaService.message.delete).toHaveBeenCalledWith({
+        where: { id: messageId },
+      });
+      expect(result).toEqual(data);
+    });
+
+    it('should throw error delete message (message not found)', async () => {
+      const messageId = 9999;
+      prismaService.message.findUnique.mockResolvedValueOnce(null);
+
+      const deleteMessage = messagesService.deleteMessage(messageId);
+
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
+        where: { id: messageId },
+      });
+      expect(prismaService.message.update).not.toHaveBeenCalled();
+      expect(deleteMessage).rejects.toThrow(NotFoundException);
     });
   });
 });

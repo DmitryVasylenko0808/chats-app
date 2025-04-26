@@ -1,4 +1,13 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import { PrivateAuthGuard } from 'src/common/guards/private-auth.guard';
 
@@ -19,5 +28,10 @@ export class MessagesController {
   @Patch(':id')
   async editMessage(@Param('id', ParseIntPipe) id: number, @Body() dto: EditMessageDto) {
     return await this.messagesService.editMessage(id, dto);
+  }
+
+  @Delete(':id')
+  async deleteMessage(@Param('id', ParseIntPipe) id: number) {
+    return await this.messagesService.deleteMessage(id);
   }
 }
