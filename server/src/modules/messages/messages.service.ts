@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { EditMessageDto } from './dto/edit-message.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 
 @Injectable()
@@ -34,5 +35,28 @@ export class MessagesService {
     });
 
     return message;
+  }
+
+  async editMessage(id: number, dto: EditMessageDto) {
+    await this.findMessageByIdOrThrow(id);
+
+    const message = await this.prismaService.message.update({
+      where: { id },
+      data: dto,
+    });
+
+    return message;
+  }
+
+  private async findMessageByIdOrThrow(id: number) {
+    const existedMessage = await this.prismaService.message.findUnique({
+      where: { id },
+    });
+
+    if (!existedMessage) {
+      throw new NotFoundException('Message is not found');
+    }
+
+    return existedMessage;
   }
 }

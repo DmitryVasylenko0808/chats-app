@@ -1,8 +1,10 @@
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
 import { MessagesService } from '../messages.service';
 
@@ -141,6 +143,55 @@ describe('MessagesService', () => {
         data: dto,
       });
       expect(result).toEqual(message);
+    });
+  });
+
+  describe('editMessage', () => {
+    it('should edit message', async () => {
+      const messageId = 1;
+      const dto: EditMessageDto = {
+        chatId: 1,
+        text: 'text-message',
+      };
+      const message = {
+        ...dto,
+        id: 1,
+        senderId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      prismaService.message.findUnique.mockResolvedValue(message);
+      prismaService.message.update.mockResolvedValueOnce(message);
+
+      const result = await messagesService.editMessage(messageId, dto);
+
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
+        where: { id: messageId },
+      });
+      expect(prismaService.message.update).toHaveBeenCalled();
+      expect(prismaService.message.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: dto,
+      });
+      expect(result).toEqual(message);
+    });
+
+    it('should throw error edit message (message is not found)', async () => {
+      const messageId = 9999;
+      const dto: EditMessageDto = {
+        chatId: 1,
+        text: 'text-message',
+      };
+      prismaService.message.findUnique.mockResolvedValue(null);
+
+      const editMessage = messagesService.editMessage(messageId, dto);
+
+      expect(prismaService.message.update).not.toHaveBeenCalled();
+      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
+        where: { id: messageId },
+      });
+      expect(editMessage).rejects.toThrow(NotFoundException);
     });
   });
 });
