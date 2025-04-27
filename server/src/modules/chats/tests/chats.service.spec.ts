@@ -4,8 +4,8 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../../modules/prisma/prisma.service';
-import { ChatsService } from '../chats.service';
 import { CreateChatDto } from '../dto/create-chat.dto';
+import { ChatsService } from '../services/chats.service';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;

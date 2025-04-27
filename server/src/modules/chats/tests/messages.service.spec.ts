@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
-import { MessagesService } from '../messages.service';
+import { MessagesService } from '../services/messages.service';
 
 describe('MessagesService', () => {
   let messagesService: MessagesService;

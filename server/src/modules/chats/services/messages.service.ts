@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { EditMessageDto } from './dto/edit-message.dto';
-import { SendMessageDto } from './dto/send-message.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { EditMessageDto } from '../dto/edit-message.dto';
+import { SendMessageDto } from '../dto/send-message.dto';
 
 @Injectable()
 export class MessagesService {

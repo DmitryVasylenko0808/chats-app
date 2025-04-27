@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
+import { ChatsService } from './modules/chats/services/chats.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,9 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
+
+  const cs = app.get(ChatsService);
+  await cs.refreshMembersChats([1, 2]);
 
   await app.listen(configService.get('PORT') || 4444);
 }

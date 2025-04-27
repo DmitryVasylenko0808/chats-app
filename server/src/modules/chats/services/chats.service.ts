@@ -1,7 +1,9 @@
+import { User } from '@prisma/client';
+
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateChatDto } from './dto/create-chat.dto';
+import { PrismaService } from '../../prisma/prisma.service';
+import { CreateChatDto } from '../dto/create-chat.dto';
 
 @Injectable()
 export class ChatsService {
@@ -32,7 +34,7 @@ export class ChatsService {
 
     const data = chats
       .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
-      .sort((a, b) => (a.lastMessage.createdAt < b.lastMessage.createdAt ? 1 : -1));
+      .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
 
     return data;
   }
@@ -76,14 +78,11 @@ export class ChatsService {
         },
       },
       include: {
-        members: {
-          omit: {
-            password: true,
-            description: true,
-          },
-        },
+        members: true,
       },
     });
+
+    // refresh members chats
 
     return createdChat;
   }
@@ -97,9 +96,11 @@ export class ChatsService {
       throw new NotFoundException('Chat is not found');
     }
 
-    await this.prismaService.chat.delete({
+    const deletedChat = await this.prismaService.chat.delete({
       where: { id },
     });
+
+    // refresh members chats
 
     return { message: 'Chat is deleted' };
   }
@@ -133,5 +134,49 @@ export class ChatsService {
     });
 
     return chat;
+  }
+
+  async refreshMembersChats(membersIds: number[]) {
+    // const membersIds = members.map((m) => m.id);
+
+    const chats = await this.prismaService.chat.findMany({
+      where: {
+        members: {
+          some: {
+            id: {
+              in: membersIds,
+            },
+          },
+        },
+      },
+      include: {
+        members: {
+          omit: {
+            password: true,
+            description: true,
+          },
+        },
+        messages: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 1,
+        },
+      },
+    });
+
+    const formattedChats = chats
+      .map((c) => ({ id: c.id, members: c.members.map((m) => m.id), lastMessage: c.messages[0] }))
+      .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
+
+    const chatsByMemberId = membersIds.reduce((acc, currId) => {
+      const memberChats = formattedChats.filter((item) => item.members.includes(currId));
+
+      return { ...acc, [currId]: memberChats };
+    }, {});
+
+    console.log(chatsByMemberId);
+
+    return chatsByMemberId;
   }
 }

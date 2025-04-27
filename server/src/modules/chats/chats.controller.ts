@@ -5,15 +5,18 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 
 import { PrivateAuthGuard } from 'src/common/guards/private-auth.guard';
 
-import { MessagesService } from '../messages/messages.service';
-import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { EditMessageDto } from './dto/edit-message.dto';
+import { SendMessageDto } from './dto/send-message.dto';
+import { ChatsService } from './services/chats.service';
+import { MessagesService } from './services/messages.service';
 
 @Controller('chats')
 @UseGuards(PrivateAuthGuard)
@@ -39,7 +42,25 @@ export class ChatsController {
   }
 
   @Get(':id/messages')
-  async findChats(@Param('id', ParseIntPipe) id: number) {
+  async findChatMessages(@Param('id', ParseIntPipe) id: number) {
     return await this.messagesService.findMessagesByChatId(id);
+  }
+
+  @Post(':id/messages')
+  async sendMessage(@Body() dto: SendMessageDto) {
+    return await this.messagesService.sendMessage(dto);
+  }
+
+  @Patch(':id/messages/:messageId')
+  async editMessage(
+    @Param('messageId', ParseIntPipe) messageId: number,
+    @Body() dto: EditMessageDto
+  ) {
+    return await this.messagesService.editMessage(messageId, dto);
+  }
+
+  @Delete(':id/messages/:messageId')
+  async deleteMessage(@Param('messageId', ParseIntPipe) messageId: number) {
+    return await this.messagesService.deleteMessage(messageId);
   }
 }
