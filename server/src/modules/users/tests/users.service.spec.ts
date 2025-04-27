@@ -4,6 +4,7 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { createMockUser } from '../../../../test/factories/user.factory';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UpdateUserDto } from '../dto/update.user.dto';
@@ -28,17 +29,7 @@ describe('UsersService', () => {
 
   describe('findUsers', () => {
     it('should find users by search value', async () => {
-      const expectedResult = [
-        {
-          id: 3,
-          username: 'lbroek2',
-          email: 'lbroek2@hibu.com',
-          name: 'Lilli Broek',
-          avatar: null,
-          createdAt: new Date('2025-04-24T06:06:20.172Z'),
-          updatedAt: new Date('2025-04-24T06:06:20.172Z'),
-        } as User,
-      ];
+      const expectedResult = [createMockUser(1), createMockUser(2)];
       const search = 'lbroe';
       prismaService.user.findMany.mockResolvedValueOnce(expectedResult);
 
@@ -72,16 +63,7 @@ describe('UsersService', () => {
   describe('findUserOrThrow', () => {
     it('should find user by id', async () => {
       const id = 1;
-      const expectedResult = {
-        id: 1,
-        username: 'pmuckloe0',
-        email: 'pmuckloe0@hibu.com',
-        name: 'Philippine Muckloe',
-        description: null,
-        avatar: null,
-        createdAt: new Date('2025-04-24T06:06:20.172Z'),
-        updatedAt: new Date('2025-04-24T06:06:20.172Z'),
-      } as User;
+      const expectedResult = createMockUser(1);
       prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUserOrThrow(id);
@@ -103,8 +85,8 @@ describe('UsersService', () => {
   describe('findUserByUsername', () => {
     const mockUsername = 'test-username';
 
-    it('should find user by usernmae', async () => {
-      const expectedResult = { id: 1 } as User;
+    it('should find user by username', async () => {
+      const expectedResult = createMockUser(1);
       prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUserByUsername(mockUsername);
@@ -135,16 +117,7 @@ describe('UsersService', () => {
         password: 'test-password',
       };
       const expectedResult = {
-        data: {
-          id: 4,
-          username: dto.username,
-          name: dto.name,
-          email: dto.email,
-          avatar: null,
-          description: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as User,
+        data: createMockUser(4),
         message: 'User is successfully created',
       };
       prismaService.user.create.mockResolvedValueOnce(expectedResult.data);
@@ -168,13 +141,7 @@ describe('UsersService', () => {
 
     it('should update user', async () => {
       const expectedResult = {
-        data: {
-          id,
-          ...dto,
-          avatar: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as User,
+        data: createMockUser(1, dto),
         messsage: 'User is successfully updated',
       };
       prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);

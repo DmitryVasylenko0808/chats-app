@@ -6,6 +6,7 @@ import { BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { createMockUser } from '../../../../test/factories/user.factory';
 import { UsersService } from '../../users/users.service';
 import { AuthService } from '../auth.service';
 import { RegisterUserDto } from '../dto/register-user.dto';
@@ -46,16 +47,7 @@ describe('AuthService', () => {
     it('should register user', async () => {
       const hashedPassword = 'password-hashed';
       const mockCreateUserResult = {
-        data: {
-          id: 4,
-          username: dto.username,
-          name: dto.name,
-          email: dto.email,
-          avatar: null,
-          description: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        } as User,
+        data: createMockUser(4, dto),
         message: 'User is successfully created',
       };
       const expectedResult = {
@@ -69,9 +61,7 @@ describe('AuthService', () => {
 
       const result = await authService.registerUser(dto);
 
-      expect(bcryptSpy).toHaveBeenCalled();
       expect(bcryptSpy).toHaveBeenCalledWith(dto.password, 10);
-      expect(usersService.createUser).toHaveBeenCalled();
       expect(usersService.createUser).toHaveBeenCalledWith({ ...dto, password: hashedPassword });
       expect(result).toEqual(expectedResult);
     });
@@ -101,7 +91,7 @@ describe('AuthService', () => {
     };
 
     it('should sign in user', async () => {
-      const mockFoundedUser = { id: 1, password: 'user-password' } as User;
+      const mockFoundedUser = createMockUser(1, { password: 'user-password' });
       const mockAccessTokenPayload: AccessTokenPayload = { id: mockFoundedUser.id };
       const expectedResult = { accessToken: 'access-token' };
       usersService.findUserByUsername.mockResolvedValueOnce(mockFoundedUser);
@@ -112,11 +102,8 @@ describe('AuthService', () => {
 
       const result = await authService.signInUser(dto);
 
-      expect(usersService.findUserByUsername).toHaveBeenCalled();
       expect(usersService.findUserByUsername).toHaveBeenCalledWith(dto.username);
-      expect(bcryptSpy).toHaveBeenCalled();
       expect(bcryptSpy).toHaveBeenCalledWith(dto.password, mockFoundedUser.password);
-      expect(jwtServiceSpy).toHaveBeenCalled();
       expect(jwtServiceSpy).toHaveBeenCalledWith(mockAccessTokenPayload);
       expect(result).toEqual(expectedResult);
     });
@@ -126,21 +113,18 @@ describe('AuthService', () => {
 
       const signInUser = authService.signInUser(dto);
 
-      expect(usersService.findUserByUsername).toHaveBeenCalled();
       expect(usersService.findUserByUsername).toHaveBeenCalledWith(dto.username);
       expect(signInUser).rejects.toThrow(BadRequestException);
     });
 
     it('should throw error sign in user (invalid password)', async () => {
-      const mockFoundedUser = { id: 1, password: 'user-password' } as User;
+      const mockFoundedUser = createMockUser(1, { password: 'user-password' });
       usersService.findUserByUsername.mockResolvedValueOnce(mockFoundedUser);
       const bcryptSpy = jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(false as never);
 
       const signInUser = authService.signInUser(dto);
 
-      expect(usersService.findUserByUsername).toHaveBeenCalled();
       expect(usersService.findUserByUsername).toHaveBeenCalledWith(dto.username);
-      expect(bcryptSpy).toHaveBeenCalled();
       expect(bcryptSpy).toHaveBeenCalledWith(dto.password, mockFoundedUser.password);
       expect(signInUser).rejects.toThrow(BadRequestException);
     });

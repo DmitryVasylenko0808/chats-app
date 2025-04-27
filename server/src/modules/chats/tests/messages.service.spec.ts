@@ -1,9 +1,11 @@
-import { Message } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { createMockChat } from '../../../../test/factories/chat.factory';
+import { createMockMessage } from '../../../../test/factories/message.factory';
+import { createMockUser } from '../../../../test/factories/user.factory';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ChatsGateway } from '../chats.gateway';
 import { EditMessageDto } from '../dto/edit-message.dto';
@@ -41,40 +43,8 @@ describe('MessagesService', () => {
     it('should find messages by chat id', async () => {
       const chatId = 1;
       const messages = [
-        {
-          id: 19,
-          senderId: 1,
-          chatId,
-          text: 'text-message-1',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          sender: {
-            id: 1,
-            username: 'test-username1',
-            email: 'test-email1@mail.com',
-            name: 'test-name1',
-            avatar: null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        },
-        {
-          id: 20,
-          senderId: 2,
-          chatId,
-          text: 'text-message-2',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          sender: {
-            id: 2,
-            username: 'test-username2',
-            email: 'test-email2@mail.com',
-            name: 'test-name2',
-            avatar: null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        },
+        createMockMessage(19, chatId, 1, createMockUser(1)),
+        createMockMessage(20, chatId, 2, createMockUser(2)),
       ];
       prismaService.message.findMany.mockResolvedValueOnce(messages);
 
@@ -134,14 +104,8 @@ describe('MessagesService', () => {
         text: 'text-message',
       };
       const mockCreatedMessage = {
-        ...dto,
-        id: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        chat: {
-          id: 1,
-          members: [{ id: 1 }, { id: 2 }],
-        },
+        ...createMockMessage(1, dto.chatId, dto.senderId),
+        chat: createMockChat(dto.chatId, [1, 2], [11, 12]),
       };
       const { chat, ...expectedMessage } = mockCreatedMessage;
       const refreshChatMessagesSpy = jest
@@ -176,28 +140,17 @@ describe('MessagesService', () => {
         chatId: 1,
         text: 'text-message',
       };
-      const mockFoundedMessage = {
-        ...dto,
-        id: 1,
-        senderId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      const mockFoundedMessage = createMockMessage(1, dto.chatId, 1);
       const mockEditedMessage = {
+        ...mockFoundedMessage,
         ...dto,
-        id: 1,
-        senderId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        chat: {
-          id: 1,
-          members: [{ id: 1 }, { id: 2 }],
-        },
+        chat: createMockChat(dto.chatId, [1, 2]),
       };
       const { chat, ...expectedMessage } = mockEditedMessage;
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
+
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.update.mockResolvedValueOnce(mockEditedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
@@ -246,25 +199,16 @@ describe('MessagesService', () => {
   describe('deleteMessage', () => {
     it('should delete message', async () => {
       const messageId = 1;
-      const mockFoundedMessage = {
-        id: 1,
-        chatId: 1,
-        senderId: 1,
-        text: 'text-message',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      const mockFoundedMessage = createMockMessage(messageId, 1, 1);
       const mockEditedMessage = {
         ...mockFoundedMessage,
-        chat: {
-          id: 1,
-          members: [{ id: 1 }, { id: 2 }],
-        },
+        chat: createMockChat(1, [1, 2]),
       };
       const data = { message: 'Message is deleted' };
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
+
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.delete.mockResolvedValueOnce(mockEditedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);

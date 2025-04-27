@@ -22,15 +22,12 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const userId = client.handshake.query.userId as string;
 
     this.userSocketsMap.set(userId, client);
-    console.log(`User ${userId} connected!`);
   }
 
   handleDisconnect(client: Socket) {
     for (const [userId, userSocket] of this.userSocketsMap.entries()) {
       if (client.id === userSocket.id) {
         this.userSocketsMap.delete(userId);
-
-        console.log(`User ${userId} disconnected!`);
 
         break;
       }
