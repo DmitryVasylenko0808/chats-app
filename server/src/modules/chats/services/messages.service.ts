@@ -3,10 +3,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
+import { ChatsService } from './chats.service';
 
 @Injectable()
 export class MessagesService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly chatsService: ChatsService
+  ) {}
 
   async findMessagesByChatId(chatId: number) {
     const messages = await this.prismaService.message.findMany({
@@ -32,9 +36,19 @@ export class MessagesService {
   async sendMessage(dto: SendMessageDto) {
     const message = await this.prismaService.message.create({
       data: dto,
+      include: {
+        chat: {
+          select: {
+            members: true,
+          },
+        },
+      },
     });
+    const { chat, ...messageData } = message;
 
-    return message;
+    await this.chatsService.refreshMembersChats(chat.members);
+
+    return messageData;
   }
 
   async editMessage(id: number, dto: EditMessageDto) {
@@ -43,17 +57,37 @@ export class MessagesService {
     const message = await this.prismaService.message.update({
       where: { id },
       data: dto,
+      include: {
+        chat: {
+          select: {
+            members: true,
+          },
+        },
+      },
     });
+    const { chat, ...messageData } = message;
 
-    return message;
+    await this.chatsService.refreshMembersChats(chat.members);
+
+    return messageData;
   }
 
   async deleteMessage(id: number) {
     await this.findMessageByIdOrThrow(id);
 
-    await this.prismaService.message.delete({
+    const deletedMessage = await this.prismaService.message.delete({
       where: { id },
+      include: {
+        chat: {
+          select: {
+            members: true,
+          },
+        },
+      },
     });
+    const { chat, ...messageData } = deletedMessage;
+
+    await this.chatsService.refreshMembersChats(chat.members);
 
     return { message: 'Message is deleted' };
   }

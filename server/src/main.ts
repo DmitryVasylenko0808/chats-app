@@ -13,8 +13,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  const cs = app.get(ChatsService);
-  await cs.refreshMembersChats([1, 2]);
+  // const cs = app.get(ChatsService);
+  // await cs.refreshMembersChats([1, 2]);
 
   await app.listen(configService.get('PORT') || 4444);
 }

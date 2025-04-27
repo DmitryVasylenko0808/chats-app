@@ -4,20 +4,27 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../../modules/prisma/prisma.service';
+import { ChatsGateway } from '../chats.gateway';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatsService } from '../services/chats.service';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;
   let prismaService: DeepMockProxy<PrismaService>;
+  let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ChatsService, { provide: PrismaService, useValue: mockDeep<PrismaService>() }],
+      providers: [
+        ChatsService,
+        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
+      ],
     }).compile();
 
     chatsService = module.get<ChatsService>(ChatsService);
     prismaService = module.get(PrismaService);
+    chatsGateway = module.get(ChatsGateway);
   });
 
   it('should be defined', () => {
@@ -162,12 +169,17 @@ describe('ChatsService', () => {
       };
       prismaService.chat.findFirst.mockResolvedValueOnce(null);
       prismaService.chat.create.mockResolvedValueOnce(mockCreatedChat);
+      const refreshMembersChatsSpy = jest
+        .spyOn(chatsService, 'refreshMembersChats')
+        .mockResolvedValueOnce(null);
       const expectedResult = mockCreatedChat;
 
       const result = await chatsService.createChat(dto);
 
       expect(prismaService.chat.findFirst).toHaveBeenCalled();
       expect(prismaService.chat.create).toHaveBeenCalled();
+      expect(refreshMembersChatsSpy).toHaveBeenCalled();
+      expect(refreshMembersChatsSpy).toHaveBeenCalledWith(mockCreatedChat.members);
       expect(result).toEqual(expectedResult);
     });
 
@@ -199,14 +211,23 @@ describe('ChatsService', () => {
   describe('deleteChat', () => {
     it('should delete chat by id', async () => {
       const id = 1;
-      prismaService.chat.findUnique.mockResolvedValueOnce({ id });
-      prismaService.chat.delete.mockResolvedValueOnce({ id });
+      const mockDeletedChat = {
+        id: 1,
+        members: [{ id: 1 }, { id: 2 }],
+      };
       const expectMessage = { message: 'Chat is deleted' };
+      prismaService.chat.findUnique.mockResolvedValueOnce({ id });
+      prismaService.chat.delete.mockResolvedValueOnce(mockDeletedChat);
+      const refreshMembersChatsSpy = jest
+        .spyOn(chatsService, 'refreshMembersChats')
+        .mockResolvedValueOnce(null);
 
       const result = await chatsService.deleteChat(id);
 
       expect(prismaService.chat.findUnique).toHaveBeenCalled();
       expect(prismaService.chat.delete).toHaveBeenCalled();
+      expect(refreshMembersChatsSpy).toHaveBeenCalled();
+      expect(refreshMembersChatsSpy).toHaveBeenCalledWith(mockDeletedChat.members);
       expect(result).toEqual(expectMessage);
     });
 

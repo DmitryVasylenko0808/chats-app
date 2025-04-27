@@ -5,21 +5,32 @@ import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { ChatsGateway } from '../chats.gateway';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
+import { ChatsService } from '../services/chats.service';
 import { MessagesService } from '../services/messages.service';
 
 describe('MessagesService', () => {
   let messagesService: MessagesService;
   let prismaService: DeepMockProxy<PrismaService>;
+  let chatsService: DeepMockProxy<ChatsService>;
+  // let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MessagesService, { provide: PrismaService, useValue: mockDeep<PrismaService>() }],
+      providers: [
+        MessagesService,
+        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: ChatsService, useValue: mockDeep<ChatsService>() },
+        // { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
+      ],
     }).compile();
 
     messagesService = module.get<MessagesService>(MessagesService);
     prismaService = module.get(PrismaService);
+    chatsService = module.get(ChatsService);
+    // chatsGateway = module.get(ChatsGateway);
   });
 
   it('should be defined', () => {
@@ -124,21 +135,33 @@ describe('MessagesService', () => {
         senderId: 1,
         text: 'text-message',
       };
-      const message = {
+      const mockCreatedMessage = {
         ...dto,
         id: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
+        chat: {
+          members: [{ id: 1 }, { id: 2 }],
+        },
       };
-      prismaService.message.create.mockResolvedValueOnce(message);
+      const { chat, ...expectedMessage } = mockCreatedMessage;
+      prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
+      chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
       const result = await messagesService.sendMessage(dto);
 
-      expect(prismaService.message.create).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalledWith({
         data: dto,
+        include: {
+          chat: {
+            select: {
+              members: true,
+            },
+          },
+        },
       });
-      expect(result).toEqual(message);
+      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
+      expect(result).toEqual(expectedMessage);
     });
   });
 
@@ -149,28 +172,46 @@ describe('MessagesService', () => {
         chatId: 1,
         text: 'text-message',
       };
-      const message = {
+      const mockFoundedMessage = {
         ...dto,
         id: 1,
         senderId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-      prismaService.message.findUnique.mockResolvedValueOnce(message);
-      prismaService.message.update.mockResolvedValueOnce(message);
+      const mockEditedMessage = {
+        ...dto,
+        id: 1,
+        senderId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        chat: {
+          members: [{ id: 1 }, { id: 2 }],
+        },
+      };
+      const { chat, ...expectedMessage } = mockEditedMessage;
+      prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
+      prismaService.message.update.mockResolvedValueOnce(mockEditedMessage);
+      chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
       const result = await messagesService.editMessage(messageId, dto);
 
-      expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });
-      expect(prismaService.message.update).toHaveBeenCalled();
       expect(prismaService.message.update).toHaveBeenCalledWith({
         where: { id: 1 },
         data: dto,
+        include: {
+          chat: {
+            select: {
+              members: true,
+            },
+          },
+        },
       });
-      expect(result).toEqual(message);
+      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
+      expect(result).toEqual(expectedMessage);
     });
 
     it('should throw error edit message (message is not found)', async () => {
@@ -184,6 +225,7 @@ describe('MessagesService', () => {
       const editMessage = messagesService.editMessage(messageId, dto);
 
       expect(prismaService.message.update).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });
@@ -194,20 +236,41 @@ describe('MessagesService', () => {
   describe('deleteMessage', () => {
     it('should delete message', async () => {
       const messageId = 1;
+      const mockFoundedMessage = {
+        id: 1,
+        chatId: 1,
+        senderId: 1,
+        text: 'text-message',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const mockEditedMessage = {
+        ...mockFoundedMessage,
+        chat: {
+          members: [{ id: 1 }, { id: 2 }],
+        },
+      };
       const data = { message: 'Message is deleted' };
-      prismaService.message.findUnique.mockResolvedValueOnce({ id: messageId } as Message);
-      prismaService.message.delete.mockResolvedValueOnce({ id: messageId } as Message);
+      prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
+      prismaService.message.delete.mockResolvedValueOnce(mockEditedMessage);
+      chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
       const result = await messagesService.deleteMessage(messageId);
 
-      expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });
-      expect(prismaService.message.delete).toHaveBeenCalled();
       expect(prismaService.message.delete).toHaveBeenCalledWith({
         where: { id: messageId },
+        include: {
+          chat: {
+            select: {
+              members: true,
+            },
+          },
+        },
       });
+      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(mockEditedMessage.chat.members);
       expect(result).toEqual(data);
     });
 
@@ -221,7 +284,8 @@ describe('MessagesService', () => {
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });
-      expect(prismaService.message.update).not.toHaveBeenCalled();
+      expect(prismaService.message.delete).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
       expect(deleteMessage).rejects.toThrow(NotFoundException);
     });
   });

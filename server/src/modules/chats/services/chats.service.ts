@@ -3,11 +3,16 @@ import { User } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { ChatsGateway } from '../chats.gateway';
 import { CreateChatDto } from '../dto/create-chat.dto';
+import { UserChatRooms } from '../types/chat-room';
 
 @Injectable()
 export class ChatsService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly chatsGateway: ChatsGateway
+  ) {}
 
   async findChats(userId: number) {
     const chats = await this.prismaService.chat.findMany({
@@ -82,7 +87,7 @@ export class ChatsService {
       },
     });
 
-    // refresh members chats
+    await this.refreshMembersChats(createdChat.members);
 
     return createdChat;
   }
@@ -98,9 +103,12 @@ export class ChatsService {
 
     const deletedChat = await this.prismaService.chat.delete({
       where: { id },
+      include: {
+        members: true,
+      },
     });
 
-    // refresh members chats
+    await this.refreshMembersChats(deletedChat.members);
 
     return { message: 'Chat is deleted' };
   }
@@ -136,8 +144,8 @@ export class ChatsService {
     return chat;
   }
 
-  async refreshMembersChats(membersIds: number[]) {
-    // const membersIds = members.map((m) => m.id);
+  async refreshMembersChats(members: User[]) {
+    const membersIds = members.map((m) => m.id);
 
     const chats = await this.prismaService.chat.findMany({
       where: {
@@ -169,11 +177,13 @@ export class ChatsService {
       .map((c) => ({ id: c.id, members: c.members.map((m) => m.id), lastMessage: c.messages[0] }))
       .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
 
-    const chatsByMemberId = membersIds.reduce((acc, currId) => {
+    const chatsByMemberId: UserChatRooms = membersIds.reduce((acc, currId) => {
       const memberChats = formattedChats.filter((item) => item.members.includes(currId));
 
       return { ...acc, [currId]: memberChats };
     }, {});
+
+    this.chatsGateway.emitUpdateChats(chatsByMemberId);
 
     console.log(chatsByMemberId);
 
