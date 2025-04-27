@@ -185,8 +185,6 @@ export class ChatsService {
 
     this.chatsGateway.emitUpdateChats(chatsByMemberId);
 
-    console.log(chatsByMemberId);
-
     return chatsByMemberId;
   }
 }

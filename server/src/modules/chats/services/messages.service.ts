@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { ChatsGateway } from '../chats.gateway';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
 import { ChatsService } from './chats.service';
@@ -9,7 +10,8 @@ import { ChatsService } from './chats.service';
 export class MessagesService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly chatsService: ChatsService
+    private readonly chatsService: ChatsService,
+    private readonly chatsGateway: ChatsGateway
   ) {}
 
   async findMessagesByChatId(chatId: number) {
@@ -39,6 +41,7 @@ export class MessagesService {
       include: {
         chat: {
           select: {
+            id: true,
             members: true,
           },
         },
@@ -46,6 +49,7 @@ export class MessagesService {
     });
     const { chat, ...messageData } = message;
 
+    await this.refreshChatMessages(chat.id);
     await this.chatsService.refreshMembersChats(chat.members);
 
     return messageData;
@@ -60,6 +64,7 @@ export class MessagesService {
       include: {
         chat: {
           select: {
+            id: true,
             members: true,
           },
         },
@@ -67,6 +72,7 @@ export class MessagesService {
     });
     const { chat, ...messageData } = message;
 
+    await this.refreshChatMessages(chat.id);
     await this.chatsService.refreshMembersChats(chat.members);
 
     return messageData;
@@ -80,16 +86,24 @@ export class MessagesService {
       include: {
         chat: {
           select: {
+            id: true,
             members: true,
           },
         },
       },
     });
-    const { chat, ...messageData } = deletedMessage;
+    const { chat } = deletedMessage;
 
+    await this.refreshChatMessages(chat.id);
     await this.chatsService.refreshMembersChats(chat.members);
 
     return { message: 'Message is deleted' };
+  }
+
+  async refreshChatMessages(chatId: number) {
+    const messages = await this.findMessagesByChatId(chatId);
+
+    this.chatsGateway.emitUpdateMessages(chatId, messages);
   }
 
   private async findMessageByIdOrThrow(id: number) {

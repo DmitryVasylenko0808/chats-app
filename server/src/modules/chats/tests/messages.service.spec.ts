@@ -15,7 +15,7 @@ describe('MessagesService', () => {
   let messagesService: MessagesService;
   let prismaService: DeepMockProxy<PrismaService>;
   let chatsService: DeepMockProxy<ChatsService>;
-  // let chatsGateway: DeepMockProxy<ChatsGateway>;
+  let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,14 +23,14 @@ describe('MessagesService', () => {
         MessagesService,
         { provide: PrismaService, useValue: mockDeep<PrismaService>() },
         { provide: ChatsService, useValue: mockDeep<ChatsService>() },
-        // { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
+        { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
       ],
     }).compile();
 
     messagesService = module.get<MessagesService>(MessagesService);
     prismaService = module.get(PrismaService);
     chatsService = module.get(ChatsService);
-    // chatsGateway = module.get(ChatsGateway);
+    chatsGateway = module.get(ChatsGateway);
   });
 
   it('should be defined', () => {
@@ -80,7 +80,6 @@ describe('MessagesService', () => {
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
-      expect(prismaService.message.findMany).toHaveBeenCalled();
       expect(prismaService.message.findMany).toHaveBeenCalledWith({
         where: {
           chatId,
@@ -107,7 +106,6 @@ describe('MessagesService', () => {
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
-      expect(prismaService.message.findMany).toHaveBeenCalled();
       expect(prismaService.message.findMany).toHaveBeenCalledWith({
         where: {
           chatId,
@@ -141,10 +139,14 @@ describe('MessagesService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         chat: {
+          id: 1,
           members: [{ id: 1 }, { id: 2 }],
         },
       };
       const { chat, ...expectedMessage } = mockCreatedMessage;
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
@@ -155,11 +157,13 @@ describe('MessagesService', () => {
         include: {
           chat: {
             select: {
+              id: true,
               members: true,
             },
           },
         },
       });
+      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
       expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
       expect(result).toEqual(expectedMessage);
     });
@@ -186,10 +190,14 @@ describe('MessagesService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         chat: {
+          id: 1,
           members: [{ id: 1 }, { id: 2 }],
         },
       };
       const { chat, ...expectedMessage } = mockEditedMessage;
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.update.mockResolvedValueOnce(mockEditedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
@@ -205,11 +213,13 @@ describe('MessagesService', () => {
         include: {
           chat: {
             select: {
+              id: true,
               members: true,
             },
           },
         },
       });
+      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
       expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
       expect(result).toEqual(expectedMessage);
     });
@@ -247,10 +257,14 @@ describe('MessagesService', () => {
       const mockEditedMessage = {
         ...mockFoundedMessage,
         chat: {
+          id: 1,
           members: [{ id: 1 }, { id: 2 }],
         },
       };
       const data = { message: 'Message is deleted' };
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.delete.mockResolvedValueOnce(mockEditedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
@@ -265,11 +279,13 @@ describe('MessagesService', () => {
         include: {
           chat: {
             select: {
+              id: true,
               members: true,
             },
           },
         },
       });
+      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(mockEditedMessage.chat.id);
       expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(mockEditedMessage.chat.members);
       expect(result).toEqual(data);
     });
@@ -280,7 +296,6 @@ describe('MessagesService', () => {
 
       const deleteMessage = messagesService.deleteMessage(messageId);
 
-      expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });

@@ -1,5 +1,5 @@
+import { Message } from '@prisma/client';
 import { Server, Socket } from 'socket.io';
-import { Client } from 'socket.io/dist/client';
 
 import {
   OnGatewayConnection,
@@ -37,11 +37,25 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('chats:join')
+  handleJoinChat(client: Socket, chatId: number) {
+    client.join(chatId.toString());
+  }
+
+  @SubscribeMessage('chats:leave')
+  handleLeaveChat(client: Socket, chatId: number) {
+    client.leave(chatId.toString());
+  }
+
   emitUpdateChats(chatsByMemberId: UserChatRooms) {
     Object.entries(chatsByMemberId).forEach(([userId, chats]) => {
       const client = this.userSocketsMap.get(userId);
 
       client?.emit('chats:update', chats);
     });
+  }
+
+  emitUpdateMessages(chatId: number, messages: Message[]) {
+    this.socket.to(chatId.toString()).emit('messages:update', messages);
   }
 }
