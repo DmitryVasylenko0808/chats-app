@@ -7,10 +7,14 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
+import { multerOptions } from '@/common/storage/multer.config';
 
 import { ChatsService } from '../chats/services/chats.service';
 import { UpdateUserDto } from './dto/update.user.dto';
@@ -35,8 +39,13 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto) {
-    return await this.usersService.updateUser(id, dto);
+  @UseInterceptors(FileInterceptor('avatar', multerOptions))
+  async updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateUserDto,
+    @UploadedFile() avatarFile?: Express.Multer.File
+  ) {
+    return await this.usersService.updateUser(id, dto, avatarFile?.filename);
   }
 
   @Delete(':id')

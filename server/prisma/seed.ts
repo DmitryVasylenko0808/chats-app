@@ -10,12 +10,14 @@ const generateUsers = async () => {
       password: '11111111',
       email: 'pmuckloe0@adobe.com',
       name: 'Philippine Muckloe',
+      avatar: '4.jpg',
     },
     {
       username: 'shighway1',
       password: '22222222',
       email: 'shighway1@people.com.cn',
       name: 'Suzette Highway',
+      avatar: '5.jpg',
     },
     {
       username: 'lbroek2',

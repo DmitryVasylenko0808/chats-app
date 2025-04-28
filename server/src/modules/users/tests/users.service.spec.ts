@@ -2,6 +2,7 @@ import { User } from '@prisma/client';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { createMockUser } from '@/common/test-utils/factories/user.factory';
@@ -15,14 +16,20 @@ import { UsersService } from '../users.service';
 describe('UsersService', () => {
   let usersService: UsersService;
   let prismaService: DeepMockProxy<PrismaService>;
+  let configService: DeepMockProxy<ConfigService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService, { provide: PrismaService, useValue: mockDeep<PrismaService>() }],
+      providers: [
+        UsersService,
+        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: ConfigService, useValue: mockDeep<ConfigService>() },
+      ],
     }).compile();
 
     usersService = module.get<UsersService>(UsersService);
     prismaService = module.get(PrismaService);
+    configService = module.get(ConfigService);
   });
 
   it('should be defined', () => {
@@ -31,9 +38,10 @@ describe('UsersService', () => {
 
   describe('findUsers', () => {
     it('should find users by search value', async () => {
-      const expectedResult = [createMockUser(1), createMockUser(2)];
+      const mockUsers = [createMockUser(1), createMockUser(2)];
       const search = 'lbroe';
-      prismaService.user.findMany.mockResolvedValueOnce(expectedResult);
+      const expectedResult = mockUsers.map((u) => ({ ...u, avatar: `undefined/null` }));
+      prismaService.user.findMany.mockResolvedValueOnce(mockUsers);
 
       const result = await usersService.findUsers(search);
 

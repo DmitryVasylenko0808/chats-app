@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create.user.dto';
@@ -6,7 +7,10 @@ import { UpdateUserDto } from './dto/update.user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService
+  ) {}
 
   async findUsers(search?: string) {
     if (!search) {
@@ -26,7 +30,12 @@ export class UsersService {
       },
     });
 
-    return users;
+    const mappedUsers = users.map((u) => ({
+      ...u,
+      avatar: `${this.configService.get('SERVER_AVATARS_URL')}/${u.avatar}`,
+    }));
+
+    return mappedUsers;
   }
 
   async findUserOrThrow(id: number) {
@@ -38,6 +47,8 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User is not found');
     }
+
+    user.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${user.avatar}`;
 
     return user;
   }
@@ -58,19 +69,26 @@ export class UsersService {
       },
     });
 
+    user.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${user.avatar}`;
+
     return { data: user, message: 'User is successfully created' };
   }
 
-  async updateUser(id: number, dto: UpdateUserDto) {
+  async updateUser(id: number, dto: UpdateUserDto, avatar?: string) {
     await this.findUserOrThrow(id);
     await this.checkOtherUsersWithUsername(dto.username, id);
     await this.checkOtherUsersWithEmail(dto.email, id);
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+        avatar,
+      },
       omit: { password: true },
     });
+
+    updatedUser.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${updatedUser.avatar}`;
 
     return { data: updatedUser, message: 'User is successfully updated' };
   }
