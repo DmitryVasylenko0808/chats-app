@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create.user.dto';
@@ -7,10 +6,7 @@ import { UpdateUserDto } from './dto/update.user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly configService: ConfigService
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async findUsers(search?: string) {
     if (!search) {
@@ -30,12 +26,7 @@ export class UsersService {
       },
     });
 
-    const mappedUsers = users.map((u) => ({
-      ...u,
-      avatar: `${this.configService.get('SERVER_AVATARS_URL')}/${u.avatar}`,
-    }));
-
-    return mappedUsers;
+    return users;
   }
 
   async findUserOrThrow(id: number) {
@@ -47,8 +38,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User is not found');
     }
-
-    user.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${user.avatar}`;
 
     return user;
   }
@@ -69,8 +58,6 @@ export class UsersService {
       },
     });
 
-    user.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${user.avatar}`;
-
     return { data: user, message: 'User is successfully created' };
   }
 
@@ -87,8 +74,6 @@ export class UsersService {
       },
       omit: { password: true },
     });
-
-    updatedUser.avatar = `${this.configService.get('SERVER_AVATARS_URL')}/${updatedUser.avatar}`;
 
     return { data: updatedUser, message: 'User is successfully updated' };
   }
