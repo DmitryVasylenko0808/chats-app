@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '@/modules/prisma/prisma.service';
+
 import { ChatsGateway } from '../chats.gateway';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';

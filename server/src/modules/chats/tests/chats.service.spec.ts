@@ -3,8 +3,10 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { createMockChat } from '../../../../test/factories/chat.factory';
-import { PrismaService } from '../../../modules/prisma/prisma.service';
+import { createMockChat } from '@/common/test-utils/factories/chat.factory';
+
+import { PrismaService } from '@/modules/prisma/prisma.service';
+
 import { ChatsGateway } from '../chats.gateway';
 import { CreateChatDto } from '../dto/create-chat.dto';
 import { ChatsService } from '../services/chats.service';

@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { PrivateAuthGuard } from 'src/common/guards/private-auth.guard';
+import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { CreateChatDto } from './dto/create-chat.dto';
 import { EditMessageDto } from './dto/edit-message.dto';

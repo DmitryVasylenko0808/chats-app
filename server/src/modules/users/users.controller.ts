@@ -10,7 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { PrivateAuthGuard } from '../../common/guards/private-auth.guard';
+import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
+
 import { ChatsService } from '../chats/services/chats.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './users.service';

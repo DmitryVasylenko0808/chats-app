@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 
@@ -6,7 +5,8 @@ import { BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { createMockUser } from '../../../../test/factories/user.factory';
+import { createMockUser } from '@/common/test-utils/factories/user.factory';
+
 import { UsersService } from '../../users/users.service';
 import { AuthService } from '../auth.service';
 import { RegisterUserDto } from '../dto/register-user.dto';

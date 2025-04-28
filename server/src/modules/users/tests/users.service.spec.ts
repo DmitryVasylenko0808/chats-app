@@ -4,8 +4,10 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { createMockUser } from '../../../../test/factories/user.factory';
-import { PrismaService } from '../../prisma/prisma.service';
+import { createMockUser } from '@/common/test-utils/factories/user.factory';
+
+import { PrismaService } from '@/modules/prisma/prisma.service';
+
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UpdateUserDto } from '../dto/update.user.dto';
 import { UsersService } from '../users.service';
