@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+@theme {
+    --color-primary: #7269ef;
+    --color-secondary: #f5f7fb;
+    --color-sidebar: #ffffff;
+    --color-sidebar-sub: #f5f7fb;
+    --color-sidebar-menu-item-active: #f7f7ff;
+    --color-active-chat: #e6ebf5;
+    --color-input: #e6ebf5;
+    --color-item-menu-hover: #f8f9fa;
+    --color-heading: #343a40;
+    --color-body: #7a7f9a;
+    --color-message-dark: #343a40;
+    --color-message-white: #ffffff;
+    --color-message-time: #ffffff80;
+
+    --default-font-family: "Public Sans", sans-serif;
+}
