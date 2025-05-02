@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router';
 
 import RequieAuth from './features/auth/components/require-auth';
 import AuthLayout from './layouts/auth-layout';
-import RegisterPage from './pages/register';
+import RegisterPage from './pages/register-page';
 import SignInPage from './pages/sign-in-page';
 
 const queryClient = new QueryClient({

@@ -1,7 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { registerUser } from '../api';
+import { registerUser, RegisterUserParams } from '../api';
 
 export const useRegisterUser = () => {
-  return useMutation({ mutationFn: registerUser });
+  const { mutateAsync, mutate, ...registerUserResult } = useMutation({ mutationFn: registerUser });
+
+  const registerUserAccount = (data: RegisterUserParams) => {
+    return mutateAsync(data);
+  };
+
+  return { registerUserAccount, ...registerUserResult };
 };

@@ -2,6 +2,14 @@ import axios from 'axios';
 
 const axiosInstance = axios.create();
 
+axiosInstance.interceptors.request.use((cfg) => {
+  const accessToken = localStorage.getItem('access_token');
+
+  cfg.headers.Authorization = `Bearer ${accessToken}`;
+
+  return cfg;
+});
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

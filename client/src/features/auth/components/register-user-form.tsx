@@ -16,17 +16,20 @@ export const RegisterUserForm = () => {
   } = useForm<RegisterFormFields>({
     resolver: zodResolver(registerSchema),
   });
-  const { mutate, isPending } = useRegisterUser();
+  const { registerUserAccount, isPending } = useRegisterUser();
   const navigate = useNavigate();
 
   const submitHandler = (fields: RegisterFormFields) => {
     const { passwordConfirmation, ...data } = fields;
 
-    mutate(data, {
-      onSuccess: () => navigate('/auth/sign-in'),
-      onError: (error) => alert(error.message),
-    });
+    registerUserAccount(data)
+      .then(() => {
+        navigate('/auth/sign-in');
+        alert('Success');
+      })
+      .catch((error) => alert(error.message));
   };
+
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <div className="mb-12">

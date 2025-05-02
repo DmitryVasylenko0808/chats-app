@@ -1,4 +1,7 @@
 import { axiosInstance } from '@/config/axios.config';
+import { apiUrl } from '@/config/contants';
+
+import { SignInUserDto } from './dto/sign-in-user.dto';
 
 export type RegisterUserParams = {
   username: string;
@@ -8,7 +11,7 @@ export type RegisterUserParams = {
 };
 
 export const registerUser = async (data: RegisterUserParams) => {
-  const response = await axiosInstance.post('http://localhost:4444/api/auth/register', data);
+  const response = await axiosInstance.post(`${apiUrl}/auth/register`, data);
 
   return response.data;
 };
@@ -19,7 +22,7 @@ export type SignInUserParams = {
 };
 
 export const signInUser = async (data: SignInUserParams) => {
-  const response = await axiosInstance.post('http://localhost:4444/api/auth/sign-in', data);
+  const response = await axiosInstance.post<SignInUserDto>(`${apiUrl}/auth/sign-in`, data);
 
   return response.data;
 };
