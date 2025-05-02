@@ -1,10 +1,15 @@
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 
 const AuthLayout = () => {
   return (
-    <>
-      <Outlet />
-    </>
+    <main className="bg-secondary flex min-h-screen flex-col items-center justify-center">
+      <div className="w-sm p-4">
+        <h1 className="mb-12 text-center text-2xl font-semibold">
+          <Link to="/">Chats App</Link>
+        </h1>
+        <Outlet />
+      </div>
+    </main>
   );
 };
 

@@ -2,8 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Route, Routes } from 'react-router';
 
+import RequieAuth from './features/auth/components/require-auth';
 import AuthLayout from './layouts/auth-layout';
 import RegisterPage from './pages/register';
+import SignInPage from './pages/sign-in-page';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,11 +19,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
-        <Route path="/" element={<></>}>
-          <Route index element={<>HomePage</>} />
+        <Route element={<RequieAuth />}>
+          <Route path="/" element={<>App</>}>
+            <Route index element={<>HomePage</>} />
+          </Route>
         </Route>
         <Route path="auth" element={<AuthLayout />}>
           <Route path="register" element={<RegisterPage />} />
+          <Route path="sign-in" element={<SignInPage />} />
         </Route>
       </Routes>
     </QueryClientProvider>
