@@ -1,5 +1,7 @@
+import { EditingUserProfile } from '@/features/users/components';
+
 const EditingProfilePage = () => {
-  return <div>EditingProfilePage</div>;
+  return <EditingUserProfile />;
 };
 
 export default EditingProfilePage;

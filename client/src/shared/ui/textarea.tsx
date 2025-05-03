@@ -2,22 +2,22 @@ import { cn } from '@/utils/cn';
 
 import { ComponentProps } from 'react';
 
-type TextFieldProps = ComponentProps<'input'> & {
+type TextAreaProps = ComponentProps<'textarea'> & {
   label?: string;
   error?: string;
 };
 
-export const TextField = ({
+export const TextArea = ({
   label,
   error,
   className,
   ref,
   ...textFieldProps
-}: Readonly<TextFieldProps>) => {
+}: Readonly<TextAreaProps>) => {
   return (
     <div className={cn('relative w-full', className)}>
       {label && <label className="mb-2 block text-[15px] font-medium">{label}</label>}
-      <input
+      <textarea
         className={cn(
           'border-input focus:border-primary hover:border-primary block w-full rounded-2xl border-2 bg-white px-4 py-2 text-sm outline-0 duration-100 focus:ring-0',
           {
