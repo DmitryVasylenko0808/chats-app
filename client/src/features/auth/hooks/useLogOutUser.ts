@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router';
+import { useAuthStore } from '../store';
 
 export const useLogOutUser = () => {
-  const navigate = useNavigate();
+  const { reset } = useAuthStore();
 
   const logOut = () => {
     localStorage.removeItem('access_token');
-    navigate('/auth/sign-in');
+    reset();
   };
 
   return logOut;

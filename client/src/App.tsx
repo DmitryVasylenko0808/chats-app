@@ -2,7 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Route, Routes } from 'react-router';
 
-import RequieAuth from './features/auth/components/require-auth';
+import { RequieAuth } from './features/auth/components';
+import { useAuth } from './features/auth/hooks';
 import AuthLayout from './layouts/auth-layout';
 import RegisterPage from './pages/register-page';
 import SignInPage from './pages/sign-in-page';
@@ -16,6 +17,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { isAuthenticated, isAccessTokenStored, accessToken, authenticate } = useAuth();
+
+  if (isAuthenticated && !isAccessTokenStored) {
+    authenticate(accessToken!);
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
