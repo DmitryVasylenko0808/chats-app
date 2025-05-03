@@ -1,0 +1,33 @@
+import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
+
+import { useDeleteUser } from '../hooks';
+import { User } from '../types';
+
+type DeleteUserModalProps = ModalProps & {
+  user: User;
+};
+
+export const DeleteAccountModal = ({ user, ...modalProps }: DeleteUserModalProps) => {
+  const { deleteUserAccount, isPending } = useDeleteUser();
+
+  const handleClickDelete = () => {
+    deleteUserAccount(user.id)
+      .then(() => alert('Account is successfully deleted'))
+      .catch((error) => alert(error.message));
+  };
+
+  return (
+    <Modal {...modalProps}>
+      <h2 className="mb-6 text-xl font-semibold">Deleting Account</h2>
+      <p className="text-body mb-10 text-[15px]">
+        Are you sure you want to delete your account? This action cannot be undone. All your data,
+        including posts and settings, will be permanently deleted.
+      </p>
+      <div className="flex justify-end">
+        <Button variant="primary" onClick={handleClickDelete}>
+          {isPending ? <Loader variant="secondary" size="sm" /> : 'Delete'}
+        </Button>
+      </div>
+    </Modal>
+  );
+};

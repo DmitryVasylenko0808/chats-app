@@ -26,7 +26,7 @@ export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) =>
         {editable && (
           <div className="flex items-center justify-between px-6 pt-6">
             <h3 className="text-xl font-semibold">My Profile</h3>
-            <UserProfileMenu />
+            <UserProfileMenu user={data} />
           </div>
         )}
         <div className="p-6">

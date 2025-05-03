@@ -8,9 +8,9 @@ import { useEditProfile } from '../hooks';
 import { User } from '../types';
 import { EditingProfileFormFields, editingProfileSchema } from '../validations';
 
-type EditingProfileFormProps = { user: User };
+type EditingUserProfileFormProps = { user: User };
 
-export const EditingUserProfileForm = ({ user }: Readonly<EditingProfileFormProps>) => {
+export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileFormProps>) => {
   const {
     register,
     handleSubmit,
