@@ -1,0 +1,38 @@
+import { cn } from '@/utils/cn';
+
+import { RefObject } from 'react';
+
+type MenuProps = {
+  trigger: React.ReactNode;
+  content: React.ReactNode;
+  open: boolean;
+  ref: RefObject<HTMLDivElement | null>;
+  contentContainerPosition?: 'bottom' | 'top';
+};
+
+export const Menu = ({
+  trigger,
+  content,
+  open,
+  ref,
+  contentContainerPosition = 'bottom',
+}: Readonly<MenuProps>) => {
+  return (
+    <div className="relative">
+      {trigger}
+      {open && (
+        <div
+          className={cn('w-max', {
+            'border-body/30 absolute top-full left-0 z-10 m-1 rounded-xl border bg-white p-2 shadow-xl':
+              contentContainerPosition === 'bottom',
+            'border-body/30 absolute bottom-full left-0 z-10 m-1 rounded-xl border bg-white py-2 shadow-xl':
+              contentContainerPosition === 'top',
+          })}
+          ref={ref}
+        >
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};

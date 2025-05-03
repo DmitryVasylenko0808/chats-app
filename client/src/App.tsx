@@ -5,6 +5,9 @@ import { Route, Routes } from 'react-router';
 import { RequieAuth } from './features/auth/components';
 import { useAuth } from './features/auth/hooks';
 import AuthLayout from './layouts/auth-layout';
+import BaseLayout from './layouts/base-layout';
+import ChatsPage from './pages/chats-page';
+import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
 import SignInPage from './pages/sign-in-page';
 
@@ -27,8 +30,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route element={<RequieAuth />}>
-          <Route path="/" element={<>App</>}>
-            <Route index element={<>HomePage</>} />
+          <Route path="/" element={<BaseLayout />}>
+            <Route index element={<ChatsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
         <Route path="auth" element={<AuthLayout />}>
