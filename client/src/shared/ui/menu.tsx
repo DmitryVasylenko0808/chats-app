@@ -22,8 +22,8 @@ export const Menu = ({
       {trigger}
       {open && (
         <div
-          className={cn('w-max', {
-            'border-body/30 absolute top-full left-0 z-10 m-1 rounded-xl border bg-white p-2 shadow-xl':
+          className={cn('w-max min-w-32', {
+            'border-body/30 absolute top-full left-0 z-10 m-1 rounded-xl border bg-white py-2 shadow-xl':
               contentContainerPosition === 'bottom',
             'border-body/30 absolute bottom-full left-0 z-10 m-1 rounded-xl border bg-white py-2 shadow-xl':
               contentContainerPosition === 'top',

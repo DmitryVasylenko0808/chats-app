@@ -3,7 +3,7 @@ import { cn } from '@/utils/cn';
 import { ComponentProps } from 'react';
 
 type ButtonProps = ComponentProps<'button'> & {
-  variant: 'primary' | 'menu';
+  variant: 'primary' | 'menu' | 'text';
   fullWidth?: true;
 };
 
@@ -23,6 +23,7 @@ export const Button = ({
             variant === 'primary',
           'text-body hover:bg-item-menu-hover w-full justify-start gap-2.5 px-3 py-1.5 text-[15px]':
             variant === 'menu',
+          'text-body': variant === 'text',
           'w-full': fullWidth === true,
         },
         className

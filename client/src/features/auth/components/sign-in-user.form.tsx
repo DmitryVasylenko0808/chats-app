@@ -46,8 +46,8 @@ export const SignInUserForm = () => {
           error={errors.password?.message}
           {...register('password')}
         />
-        <Button type="submit" fullWidth>
-          {isPending ? <Loader /> : 'Sign In'}
+        <Button variant="primary" type="submit" fullWidth>
+          {isPending ? <Loader variant="secondary" size="sm" /> : 'Sign In'}
         </Button>
       </div>
       <WithoutAccount />

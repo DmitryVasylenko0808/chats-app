@@ -70,8 +70,8 @@ export const RegisterUserForm = () => {
           type="password"
           {...register('passwordConfirmation')}
         />
-        <Button type="submit" fullWidth>
-          {isPending ? <Loader /> : 'Register'}
+        <Button variant="primary" type="submit" fullWidth>
+          {isPending ? <Loader variant="secondary" size="sm" /> : 'Register'}
         </Button>
       </div>
       <WithAccount />
