@@ -5,7 +5,7 @@ import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16
 import { useNavigate } from 'react-router';
 
 import { User } from '../types';
-import { DeleteAccountModal } from './delete-account-modal';
+import { DeletingAccountModal } from './deleting-account-modal';
 
 type UserProfileMenuProps = { user: User };
 
@@ -44,7 +44,7 @@ export const UserProfileMenu = ({ user }: Readonly<UserProfileMenuProps>) => {
         open={open}
         ref={ref}
       />
-      <DeleteAccountModal
+      <DeletingAccountModal
         user={user}
         open={deleteUserModal.open}
         onClose={deleteUserModal.handleClickClose}

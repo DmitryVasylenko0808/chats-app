@@ -3,11 +3,11 @@ import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
 import { useDeleteUser } from '../hooks';
 import { User } from '../types';
 
-type DeleteUserModalProps = ModalProps & {
+type DeletingUserModalProps = ModalProps & {
   user: User;
 };
 
-export const DeleteAccountModal = ({ user, ...modalProps }: DeleteUserModalProps) => {
+export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalProps) => {
   const { deleteUserAccount, isPending } = useDeleteUser();
 
   const handleClickDelete = () => {

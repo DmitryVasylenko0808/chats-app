@@ -2,6 +2,7 @@ import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
 import { GetUserDto } from './dto/get-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export const getUser = async (id?: number | null) => {
   const response = await axiosInstance.get<GetUserDto>(`${apiUrl}/users/${id}`);
@@ -24,7 +25,7 @@ export const updateUser = async (data: UpdateUserParams) => {
 
   Object.entries(updateData).forEach(([k, v]) => formData.append(k, v));
 
-  const response = await axiosInstance.patch(`${apiUrl}/users/${id}`, formData, {
+  const response = await axiosInstance.patch<UpdateUserDto>(`${apiUrl}/users/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

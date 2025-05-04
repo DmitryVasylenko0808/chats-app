@@ -52,7 +52,10 @@ export class UsersService {
 
   async createUser(dto: CreateUserDto) {
     const user = await this.prismaService.user.create({
-      data: dto,
+      data: {
+        avatar: 'placeholder.jpg',
+        ...dto,
+      },
       omit: {
         password: true,
       },

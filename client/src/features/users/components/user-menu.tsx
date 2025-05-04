@@ -18,7 +18,11 @@ export const UserMenu = () => {
     <Menu
       trigger={
         <div className="cursor-pointer" onClick={handleToggle}>
-          <img src={currentUser?.avatar || ''} className="h-9 w-9 rounded-full" alt="user-avatar" />
+          <img
+            src={currentUser?.avatar || undefined}
+            className="h-9 w-9 rounded-full"
+            alt="user-avatar"
+          />
         </div>
       }
       content={

@@ -24,6 +24,7 @@ const generateUsers = async () => {
       email: 'lbroek2@hibu.com',
       password: '33333333',
       name: 'Lilli Broek',
+      avatar: 'placeholder.jpg',
     },
   ];
   const data = users.map((u) => ({ ...u, password: bcrypt.hashSync(u.password, 10) }));

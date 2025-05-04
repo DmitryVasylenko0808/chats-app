@@ -21,7 +21,7 @@ export const SideBarMenu = () => {
       <div className="flex flex-1 items-center justify-center py-3">
         <ul className="flex flex-col space-y-2.5">
           {navItems.map((item) => (
-            <li>
+            <li key={item.href}>
               <NavLink
                 to={item.href}
                 className={({ isActive }) =>
