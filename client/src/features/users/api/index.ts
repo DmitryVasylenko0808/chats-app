@@ -16,6 +16,7 @@ export type UpdateUserParams = {
   name: string;
   email: string;
   description?: string;
+  avatar?: File;
 };
 
 export const updateUser = async (data: UpdateUserParams) => {

@@ -30,6 +30,8 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
   const submitHandler = (fields: EditingProfileFormFields) => {
     const editProfileData = { id: user.id, ...fields };
 
+    editProfileData.avatar = fields.avatar?.[0];
+
     editProfile(editProfileData)
       .then(() => {
         alert('Profile is successfully edited');
@@ -59,6 +61,12 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
         className="mb-6"
         error={errors.description?.message}
         {...register('description')}
+      />
+      <TextField
+        label="Avatar"
+        className="mb-6 cursor-pointer"
+        type="file"
+        {...register('avatar')}
       />
       <Button type="submit" variant="primary" fullWidth>
         {isPending ? <Loader variant="secondary" size="sm" /> : 'Edit Profile'}

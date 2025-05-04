@@ -5,6 +5,7 @@ export const editingProfileSchema = z.object({
   name: z.string().min(1, 'Name is required').trim(),
   email: z.string().min(1, 'Email is required').email('Invalid email').trim(),
   description: z.string().trim().optional(),
+  avatar: z.any().optional(),
 });
 
 export type EditingProfileFormFields = z.infer<typeof editingProfileSchema>;
