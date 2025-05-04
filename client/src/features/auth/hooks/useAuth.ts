@@ -1,23 +1,39 @@
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { serverAvatarsUrl } from '@/config/contants';
+import { useQuery } from '@tanstack/react-query';
 
+import { getMe } from '../api';
 import { useAuthStore } from '../store';
 
-type JwtTokenPayload = JwtPayload & { id: number };
-
 export const useAuth = () => {
-  const { currentUserId, accessToken: storedAccessToken, setAuthCredentials } = useAuthStore();
+  const { currentUser, accessToken: storedAccessToken, setAuthCredentials, reset } = useAuthStore();
+  const { refetch } = useQuery({
+    queryKey: ['curr'],
+    queryFn: getMe,
+    enabled: false,
+    retry: false,
+    select: (data) => ({ ...data, avatar: `${serverAvatarsUrl}/${data.avatar}` }),
+  });
 
   const accessToken = localStorage.getItem('access_token');
   const isAuthenticated = !!accessToken;
   const isAccessTokenStored = !!storedAccessToken;
 
-  const authenticate = (accessToken: string) => {
-    const decoded = jwtDecode(accessToken) as JwtTokenPayload;
+  const authenticate = async (accessToken: string) => {
+    try {
+      localStorage.setItem('access_token', accessToken);
 
-    setAuthCredentials(decoded.id, accessToken);
+      const { data } = await refetch();
 
-    localStorage.setItem('access_token', accessToken);
+      if (!data) {
+        throw new Error('Cannot set auth credentials');
+      }
+
+      setAuthCredentials(accessToken, data);
+    } catch {
+      reset();
+      localStorage.removeItem('access_token');
+    }
   };
 
-  return { accessToken, currentUserId, isAuthenticated, isAccessTokenStored, authenticate };
+  return { accessToken, currentUser, isAuthenticated, isAccessTokenStored, authenticate };
 };

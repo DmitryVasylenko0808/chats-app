@@ -2,9 +2,9 @@ import { useAuth } from '@/features/auth/hooks';
 import { UserProfile } from '@/features/users/components';
 
 const ProfilePage = () => {
-  const { currentUserId } = useAuth();
+  const { currentUser } = useAuth();
 
-  return <UserProfile userId={currentUserId} editable />;
+  return <UserProfile userId={currentUser?.id} editable />;
 };
 
 export default ProfilePage;

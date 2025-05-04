@@ -1,24 +1,38 @@
 import { create } from 'zustand';
 
+import { User } from '../users/types';
+
 type AuthState = {
-  currentUserId: number | null;
   accessToken: string | null;
+  currentUser: User | null;
 };
 
+type UpdateUserData = Partial<Omit<User, 'id'>>;
+
 type AuthActions = {
-  setAuthCredentials: (currentUserId: number, token: string) => void;
+  setAuthCredentials: (accessToken: string, user: User) => void;
+  updateCurrentUserData: (updatedUserData: UpdateUserData) => void;
   reset: () => void;
 };
 
 const initialState: AuthState = {
-  currentUserId: null,
   accessToken: null,
+  currentUser: null,
 };
 
-export const useAuthStore = create<AuthState & AuthActions>()((set, get) => ({
+type AuthStore = AuthState & AuthActions;
+
+export const useAuthStore = create<AuthStore>()((set, get) => ({
   ...initialState,
-  setAuthCredentials: (currentUserId: number, accessToken: string) => {
-    set({ currentUserId, accessToken });
+  setAuthCredentials: (accessToken: string, user: User) => {
+    set({ accessToken, currentUser: user });
+  },
+  updateCurrentUserData: (updatedUserData: UpdateUserData) => {
+    const currentUser = get().currentUser;
+
+    if (!currentUser) return;
+
+    set({ accessToken: get().accessToken, currentUser: { ...currentUser, ...updatedUserData } });
   },
   reset: () => {
     set(initialState);

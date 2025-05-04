@@ -8,8 +8,8 @@ import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';
 
 export const EditingUserProfile = () => {
-  const { currentUserId } = useAuth();
-  const { data, isLoading, isError } = useGetUser(currentUserId);
+  const { currentUser } = useAuth();
+  const { data, isLoading, isError } = useGetUser(currentUser?.id);
   const navigate = useNavigate();
 
   const handleClickBack = () => navigate(-1);

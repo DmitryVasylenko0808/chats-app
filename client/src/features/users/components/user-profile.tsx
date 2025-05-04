@@ -3,7 +3,7 @@ import { Loader } from '@/shared/ui';
 import { useGetUser } from '../hooks';
 import { UserProfileMenu } from './user-profile-menu';
 
-type UserProfileProps = { userId: number | null; editable?: boolean };
+type UserProfileProps = { userId?: number | null; editable?: boolean };
 
 export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) => {
   const { data, isLoading, isError } = useGetUser(userId);
@@ -31,11 +31,7 @@ export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) =>
         )}
         <div className="p-6">
           <div className="mb-6 flex justify-center">
-            <img
-              src="https://avatar.iran.liara.run/public/12"
-              className="h-24 w-24 rounded-full"
-              alt="user-avatar"
-            />
+            <img src={data.avatar} className="h-24 w-24 rounded-full" alt="user-avatar" />
           </div>
           <h4 className="mb-7 text-center text-base font-semibold">{data.name}</h4>
           <p className="text-body mb-6 text-[15px]">{data.description}</p>

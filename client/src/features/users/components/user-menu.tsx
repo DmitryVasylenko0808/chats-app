@@ -6,7 +6,7 @@ import { ArrowLeftStartOnRectangleIcon, UserIcon } from '@heroicons/react/16/sol
 import { useNavigate } from 'react-router';
 
 export const UserMenu = () => {
-  const { currentUserId } = useAuth();
+  const { currentUser } = useAuth();
   const { open, ref, handleToggle } = useToogleMenu();
   const navigate = useNavigate();
   const logOut = useLogOutUser();
@@ -18,11 +18,7 @@ export const UserMenu = () => {
     <Menu
       trigger={
         <div className="cursor-pointer" onClick={handleToggle}>
-          <img
-            src="https://avatar.iran.liara.run/public/12"
-            className="h-9 w-9 rounded-full"
-            alt="user-avatar"
-          />
+          <img src={currentUser?.avatar || ''} className="h-9 w-9 rounded-full" alt="user-avatar" />
         </div>
       }
       content={

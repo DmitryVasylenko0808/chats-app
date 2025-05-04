@@ -4,7 +4,10 @@ import { useMutation } from '@tanstack/react-query';
 import { deleteUser } from '../api';
 
 export const useDeleteUser = () => {
-  const { mutate, mutateAsync, ...mutationResult } = useMutation({ mutationFn: deleteUser });
+  const { mutate, mutateAsync, ...mutationResult } = useMutation({
+    mutationKey: ['users'],
+    mutationFn: deleteUser,
+  });
   const { reset } = useAuthStore();
 
   const deleteUserAccount = (id: number | null) => {
