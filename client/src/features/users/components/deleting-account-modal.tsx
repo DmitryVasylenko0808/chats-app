@@ -19,7 +19,7 @@ export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalP
   return (
     <Modal {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Deleting Account</h2>
-      <p className="text-body mb-10 text-[15px]">
+      <p className="text-body mb-10">
         Are you sure you want to delete your account? This action cannot be undone. All your data,
         including chats, messages and settings, will be permanently deleted.
       </p>

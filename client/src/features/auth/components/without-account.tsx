@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 export const WithoutAccount = () => {
   return (
-    <p className="text-body text-center text-[15px] font-normal">
+    <p className="text-body text-center font-normal">
       Don't have an account?{' '}
       <Link
         to="/auth/register"

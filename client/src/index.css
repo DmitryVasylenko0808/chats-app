@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+    font-size: 15px;
+}
+
 @theme {
     --color-primary: #7269ef;
     --color-primary-hovered: #5d52f0;

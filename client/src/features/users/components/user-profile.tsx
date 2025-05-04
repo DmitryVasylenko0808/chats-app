@@ -34,25 +34,23 @@ export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) =>
             <img src={data.avatar} className="h-24 w-24 rounded-full" alt="user-avatar" />
           </div>
           <h4 className="mb-7 text-center text-base font-semibold">{data.name}</h4>
-          <p className="text-body mb-6 text-[15px]">{data.description}</p>
+          <p className="text-body mb-6">{data.description}</p>
           <div className="flex flex-col space-y-6">
             <div>
-              <label className="block text-[15px] font-semibold">Username</label>
-              <p className="text-body text-[15px]">{data.username}</p>
+              <label className="block font-semibold">Username</label>
+              <p className="text-body">{data.username}</p>
             </div>
             <div>
-              <label className="block text-[15px] font-semibold">Name</label>
-              <p className="text-body text-[15px]">{data.name}</p>
+              <label className="block font-semibold">Name</label>
+              <p className="text-body">{data.name}</p>
             </div>
             <div>
-              <label className="block text-[15px] font-semibold">Email</label>
-              <p className="text-body text-[15px]">{data.email}</p>
+              <label className="block font-semibold">Email</label>
+              <p className="text-body">{data.email}</p>
             </div>
             <div>
-              <label className="block text-[15px] font-semibold">Joined At</label>
-              <p className="text-body text-[15px]">
-                {new Date(data.createdAt).toLocaleDateString()}
-              </p>
+              <label className="block font-semibold">Joined At</label>
+              <p className="text-body">{new Date(data.createdAt).toLocaleDateString()}</p>
             </div>
           </div>
         </div>
