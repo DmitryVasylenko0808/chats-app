@@ -54,7 +54,9 @@ export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) =>
             </div>
             <div>
               <label className="block text-[15px] font-semibold">Joined At</label>
-              <p className="text-body text-[15px]">{new Date(data.createdAt).toLocaleString()}</p>
+              <p className="text-body text-[15px]">
+                {new Date(data.createdAt).toLocaleDateString()}
+              </p>
             </div>
           </div>
         </div>

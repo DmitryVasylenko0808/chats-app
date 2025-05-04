@@ -21,7 +21,7 @@ export const DeleteAccountModal = ({ user, ...modalProps }: DeleteUserModalProps
       <h2 className="mb-6 text-xl font-semibold">Deleting Account</h2>
       <p className="text-body mb-10 text-[15px]">
         Are you sure you want to delete your account? This action cannot be undone. All your data,
-        including posts and settings, will be permanently deleted.
+        including chats, messages and settings, will be permanently deleted.
       </p>
       <div className="flex justify-end">
         <Button variant="primary" onClick={handleClickDelete}>
