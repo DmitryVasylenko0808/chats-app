@@ -1,3 +1,4 @@
+import { RecentChats } from '@/features/chats/components';
 import { SearchUsers } from '@/features/users/components';
 
 const ChatsPage = () => {
@@ -7,6 +8,7 @@ const ChatsPage = () => {
         <h3 className="text-xl font-semibold">Chats</h3>
       </div>
       <SearchUsers />
+      <RecentChats />
     </div>
   );
 };
