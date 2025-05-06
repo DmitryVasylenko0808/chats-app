@@ -1,0 +1,48 @@
+import { useDebounce } from '@/shared/hooks';
+import { Loader, TextField } from '@/shared/ui';
+
+import { useState } from 'react';
+
+import { useGetUsers } from '../hooks';
+
+export const SearchUsers = () => {
+  const [search, setSearch] = useState('');
+  const debounced = useDebounce(search, 500);
+  const { data, isFetching } = useGetUsers(debounced);
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
+
+  return (
+    <div className="px-6 py-3">
+      <div className="relative">
+        <TextField placeholder="Search users by name..." onChange={handleChangeSearch} />
+        {data?.length !== 0 && (
+          <div className="border-body/10 absolute top-full left-0 z-10 my-1 max-h-[420px] min-w-full overflow-auto rounded-2xl border bg-white py-3 shadow-xl">
+            {isFetching ? (
+              <div className="flex w-full justify-center px-3 py-1.5">
+                <Loader variant="primary" size="sm" />
+              </div>
+            ) : (
+              <ul className="flex flex-col">
+                {data?.map((user) => (
+                  <li
+                    className="hover:bg-secondary flex cursor-pointer px-3 py-1.5 duration-100"
+                    key={user.id}
+                  >
+                    <div className="flex items-center gap-3">
+                      <img src={user.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
+                      <div className="justify-center-center flex flex-col">
+                        <p className="font-medium">{user.name}</p>
+                        <span className="text-body text-sm font-normal">{user.username}</span>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

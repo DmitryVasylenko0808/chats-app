@@ -2,7 +2,16 @@ import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
 import { GetUserDto } from './dto/get-user.dto';
+import { GetUsersDto } from './dto/get-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+
+export const getUsers = async (search?: string) => {
+  const response = await axiosInstance.get<GetUsersDto>(`${apiUrl}/users`, {
+    params: { search },
+  });
+
+  return response.data;
+};
 
 export const getUser = async (id?: number | null) => {
   const response = await axiosInstance.get<GetUserDto>(`${apiUrl}/users/${id}`);
