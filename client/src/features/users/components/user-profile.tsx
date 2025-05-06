@@ -1,4 +1,4 @@
-import { Loader } from '@/shared/ui';
+import { Button, Loader } from '@/shared/ui';
 
 import { useGetUser } from '../hooks';
 import { UserProfileMenu } from './user-profile-menu';
@@ -52,6 +52,11 @@ export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfile
               <label className="block font-semibold">Joined At</label>
               <p className="text-body">{new Date(data.createdAt).toLocaleDateString()}</p>
             </div>
+            {!currentUserProfile && (
+              <Button variant="primary" fullWidth>
+                Send Message
+              </Button>
+            )}
           </div>
         </div>
       </div>

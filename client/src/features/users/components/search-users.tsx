@@ -2,6 +2,7 @@ import { useDebounce } from '@/shared/hooks';
 import { Loader, TextField } from '@/shared/ui';
 
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 import { useGetUsers } from '../hooks';
 
@@ -29,13 +30,13 @@ export const SearchUsers = () => {
                     className="hover:bg-secondary flex cursor-pointer px-3 py-1.5 duration-100"
                     key={user.id}
                   >
-                    <div className="flex items-center gap-3">
+                    <Link to={`/profile/${user.id}`} className="flex items-center gap-3">
                       <img src={user.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
                       <div className="justify-center-center flex flex-col">
                         <p className="font-medium">{user.name}</p>
                         <span className="text-body text-sm font-normal">{user.username}</span>
                       </div>
-                    </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
