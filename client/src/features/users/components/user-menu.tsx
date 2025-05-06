@@ -11,7 +11,7 @@ export const UserMenu = () => {
   const navigate = useNavigate();
   const logOut = useLogOutUser();
 
-  const handleClickProfile = () => navigate(`/profile`);
+  const handleClickProfile = () => navigate(`/profile/${currentUser?.id}`);
   const handleClickLogOut = () => logOut();
 
   return (

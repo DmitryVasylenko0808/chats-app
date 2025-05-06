@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth/hooks';
 import { UserMenu } from '@/features/users/components';
 import { ChatBubbleOvalLeftIcon, UserIcon } from '@heroicons/react/16/solid';
 
@@ -7,12 +8,14 @@ import { Logo } from './logo';
 
 type NavItem = { href: string; icon: React.ReactNode };
 
-const navItems: NavItem[] = [
-  { href: '/profile', icon: <UserIcon width={24} height={24} /> },
-  { href: '/', icon: <ChatBubbleOvalLeftIcon width={24} height={24} /> },
-];
-
 export const SideBarMenu = () => {
+  const { currentUser } = useAuth();
+
+  const navItems: NavItem[] = [
+    { href: `/profile/${currentUser?.id}`, icon: <UserIcon width={24} height={24} /> },
+    { href: '/', icon: <ChatBubbleOvalLeftIcon width={24} height={24} /> },
+  ];
+
   return (
     <div className="border-r-body/15 flex h-full w-[75px] flex-col border-r shadow-lg">
       <div className="flex justify-center py-3">

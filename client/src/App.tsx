@@ -27,7 +27,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="/" element={<BaseLayout />}>
               <Route index element={<ChatsPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="/profile/edit" element={<EditingProfilePage />} />
             </Route>
           </Route>

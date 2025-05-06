@@ -3,9 +3,9 @@ import { Loader } from '@/shared/ui';
 import { useGetUser } from '../hooks';
 import { UserProfileMenu } from './user-profile-menu';
 
-type UserProfileProps = { userId?: number | null; editable?: boolean };
+type UserProfileProps = { userId?: number | null; currentUserProfile?: boolean };
 
-export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) => {
+export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfileProps>) => {
   const { data, isLoading, isError } = useGetUser(userId);
 
   if (isLoading) {
@@ -23,7 +23,7 @@ export const UserProfile = ({ userId, editable }: Readonly<UserProfileProps>) =>
   return (
     data && (
       <div>
-        {editable && (
+        {currentUserProfile && (
           <div className="flex items-center justify-between px-6 pt-6">
             <h3 className="text-xl font-semibold">My Profile</h3>
             <UserProfileMenu user={data} />

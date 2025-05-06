@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth/hooks';
 import { Button, Loader, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -11,6 +12,7 @@ import { EditingProfileFormFields, editingProfileSchema } from '../validations';
 type EditingUserProfileFormProps = { user: User };
 
 export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileFormProps>) => {
+  const { currentUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
     editProfile(editProfileData)
       .then(() => {
         alert('Profile is successfully edited');
-        navigate('/profile');
+        navigate(`/profile/${currentUser?.id}`);
       })
       .catch((error) => alert(error.message));
   };
