@@ -22,3 +22,9 @@ export const createChat = async (membersIds: number[]) => {
 
   return response.data;
 };
+
+export const deleteChatById = async (id: number) => {
+  const response = await axiosInstance.delete(`${apiUrl}/chats/${id}`);
+
+  return response.data;
+};
