@@ -8,19 +8,9 @@ type User = {
   avatar: string | null;
 };
 
-type Message = {
-  id: number;
-  chatId: number;
-  senderId: number;
-  text: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 type Chat = {
   id: number;
   members: User[];
-  lastMessage?: Message;
 };
 
-export type GetChatsDto = Chat[];
+export type CreateChatDto = Chat;

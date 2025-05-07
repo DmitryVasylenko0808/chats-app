@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
+import { CreateChatDto } from './dto/create-chat.dto';
 import { GetChatDto } from './dto/get-chat.dto';
 import { GetChatsDto } from './dto/get-chats.dto';
 
@@ -12,6 +13,12 @@ export const getChats = async (userId?: number) => {
 
 export const getChatById = async (id?: number) => {
   const response = await axiosInstance.get<GetChatDto>(`${apiUrl}/chats/${id}`);
+
+  return response.data;
+};
+
+export const createChat = async (membersIds: number[]) => {
+  const response = await axiosInstance.post<CreateChatDto>(`${apiUrl}/chats`, { membersIds });
 
   return response.data;
 };

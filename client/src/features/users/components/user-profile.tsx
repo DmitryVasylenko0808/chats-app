@@ -1,3 +1,4 @@
+import { useCreateChat } from '@/features/chats/hooks';
 import { Button, Loader } from '@/shared/ui';
 
 import { useGetUser } from '../hooks';
@@ -7,6 +8,9 @@ type UserProfileProps = { userId?: number | null; currentUserProfile?: boolean }
 
 export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfileProps>) => {
   const { data, isLoading, isError } = useGetUser(userId);
+  const { createNewChat, isPending } = useCreateChat();
+
+  const handleClick = () => createNewChat(userId).catch((err) => alert(err.message));
 
   if (isLoading) {
     return (
@@ -53,8 +57,8 @@ export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfile
               <p className="text-body">{new Date(data.createdAt).toLocaleDateString()}</p>
             </div>
             {!currentUserProfile && (
-              <Button variant="primary" fullWidth>
-                Send Message
+              <Button variant="primary" onClick={handleClick} fullWidth>
+                {isPending ? <Loader variant="secondary" size="sm" /> : 'Send Message'}
               </Button>
             )}
           </div>

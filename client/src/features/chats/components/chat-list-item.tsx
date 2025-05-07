@@ -20,12 +20,14 @@ export const ChatListItem = ({ chat, onClick }: Readonly<ChatListItemProps>) => 
         <div className="flex w-full min-w-0 flex-col">
           <div className="flex items-center justify-between">
             <p className="truncate font-medium">{participant?.name}</p>
-            <span className="text-body text-xs font-normal">
-              {new Date(chat.lastMessage.createdAt).toLocaleDateString()}
-            </span>
+            {chat.lastMessage && (
+              <span className="text-body text-xs font-normal">
+                {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
+              </span>
+            )}
           </div>
           <span className="text-body white truncate text-sm font-normal">
-            {chat.lastMessage.text}
+            {chat.lastMessage?.text}
           </span>
         </div>
       </div>
