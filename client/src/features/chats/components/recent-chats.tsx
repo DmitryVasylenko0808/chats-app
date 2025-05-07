@@ -2,11 +2,15 @@ import { useAuth } from '@/features/auth/hooks';
 import { Loader } from '@/shared/ui';
 
 import { useGetChats } from '../hooks';
+import { useCurrentChatStore } from '../store';
 import { ChatListItem } from './chat-list-item';
 
 export const RecentChats = () => {
   const { currentUser } = useAuth();
   const { data, isLoading } = useGetChats(currentUser?.id);
+  const { setCurrentChat } = useCurrentChatStore();
+
+  const handleClickChat = (id: number) => setCurrentChat(id);
 
   if (isLoading) {
     return (
@@ -21,7 +25,9 @@ export const RecentChats = () => {
       <h4 className="mb-4 px-6 text-base font-semibold">Recent</h4>
       <div className="h-[calc(100vh-60px-64px-64px)] overflow-y-auto">
         <ul className="flex flex-col">
-          {data?.map((item) => <ChatListItem chat={item} key={item.id} />)}
+          {data?.map((item) => (
+            <ChatListItem chat={item} key={item.id} onClick={() => handleClickChat(item.id)} />
+          ))}
         </ul>
       </div>
     </div>

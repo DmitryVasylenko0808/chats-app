@@ -1,19 +1,17 @@
 import { useAuth } from '@/features/auth/hooks';
 
-import { Link } from 'react-router';
-
 import { Chat } from '../types';
 
-type ChatListItemProps = { chat: Chat };
+type ChatListItemProps = { chat: Chat; onClick: () => void };
 
-export const ChatListItem = ({ chat }: Readonly<ChatListItemProps>) => {
+export const ChatListItem = ({ chat, onClick }: Readonly<ChatListItemProps>) => {
   const { currentUser } = useAuth();
 
   const participant = chat.members.find((m) => m.id !== currentUser?.id);
 
   return (
-    <li className="hover:bg-active-chat flex px-5 py-4 duration-100">
-      <Link to="/" className="flex w-full items-center gap-3">
+    <li className="hover:bg-active-chat flex cursor-pointer px-5 py-4 duration-100">
+      <div onClick={onClick} className="flex w-full items-center gap-3">
         <img
           src={participant?.avatar || undefined}
           className="h-10 w-10 rounded-full"
@@ -30,7 +28,7 @@ export const ChatListItem = ({ chat }: Readonly<ChatListItemProps>) => {
             {chat.lastMessage.text}
           </span>
         </div>
-      </Link>
+      </div>
     </li>
   );
 };
