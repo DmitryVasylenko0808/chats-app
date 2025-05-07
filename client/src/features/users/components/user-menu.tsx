@@ -42,6 +42,7 @@ export const UserMenu = () => {
       open={open}
       ref={ref}
       contentContainerPosition="top"
+      className="left-0"
     />
   );
 };
