@@ -4,9 +4,17 @@ import { Button, Loader } from '@/shared/ui';
 import { useGetUser } from '../hooks';
 import { UserProfileMenu } from './user-profile-menu';
 
-type UserProfileProps = { userId?: number | null; currentUserProfile?: boolean };
+type UserProfileProps = {
+  userId?: number | null;
+  currentUserProfile?: boolean;
+  sendMessageBtn?: boolean;
+};
 
-export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfileProps>) => {
+export const UserProfile = ({
+  userId,
+  currentUserProfile,
+  sendMessageBtn = true,
+}: Readonly<UserProfileProps>) => {
   const { data, isLoading, isError } = useGetUser(userId);
   const { createNewChat, isPending } = useCreateChat();
 
@@ -56,7 +64,7 @@ export const UserProfile = ({ userId, currentUserProfile }: Readonly<UserProfile
               <label className="block font-semibold">Joined At</label>
               <p className="text-body">{new Date(data.createdAt).toLocaleDateString()}</p>
             </div>
-            {!currentUserProfile && (
+            {!currentUserProfile && sendMessageBtn && (
               <Button variant="primary" onClick={handleClick} fullWidth>
                 {isPending ? <Loader variant="secondary" size="sm" /> : 'Send Message'}
               </Button>
