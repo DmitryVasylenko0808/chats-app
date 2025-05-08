@@ -8,7 +8,6 @@ export const useCreateChat = () => {
   const { currentUser } = useAuth();
   const { setCurrentChat } = useCurrentChatStore();
   const { mutateAsync, mutate, ...mutationResult } = useMutation({
-    mutationKey: ['chats'],
     mutationFn: createChat,
     onSuccess: (data) => {
       setCurrentChat(data.id);

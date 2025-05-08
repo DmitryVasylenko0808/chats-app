@@ -5,7 +5,6 @@ import { deleteUser } from '../api';
 
 export const useDeleteUser = () => {
   const { mutate, mutateAsync, ...mutationResult } = useMutation({
-    mutationKey: ['users'],
     mutationFn: deleteUser,
   });
   const { reset } = useAuthStore();

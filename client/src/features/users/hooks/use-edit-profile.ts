@@ -6,7 +6,6 @@ import { updateUser, UpdateUserParams } from '../api';
 
 export const useEditProfile = () => {
   const { mutateAsync, mutate, ...mutationResult } = useMutation({
-    mutationKey: ['users'],
     mutationFn: updateUser,
   });
   const { updateCurrentUserData } = useAuthStore();
