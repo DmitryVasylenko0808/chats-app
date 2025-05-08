@@ -1,5 +1,4 @@
-import { Button, Loader, TextField } from '@/shared/ui';
-import { PaperAirplaneIcon } from '@heroicons/react/16/solid';
+import { Loader } from '@/shared/ui';
 
 import { useState } from 'react';
 
@@ -9,6 +8,7 @@ import { ChatDetails } from './chat-details';
 import { ChatInfo } from './chat-info';
 import { ChatMenu } from './chat-menu';
 import { Messages } from './messages';
+import { SendMessageForm } from './send-message-form';
 
 type ChatProps = { chatId: number };
 
@@ -44,14 +44,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
             </div>
           </div>
           <Messages chatId={chatId} />
-          <div className="border-t-body/10 flex h-24 items-center border-t-2 px-6">
-            <div className="flex w-full gap-4">
-              <TextField placeholder="Enter message..." />
-              <Button variant="primary" className="min-w-max px-4">
-                <PaperAirplaneIcon width={24} height={24} />
-              </Button>
-            </div>
-          </div>
+          <SendMessageForm chat={data} />
         </div>
         {showDetails && <ChatDetails chat={data} onHideDetails={handleClickHideDetails} />}
       </div>

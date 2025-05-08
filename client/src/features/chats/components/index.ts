@@ -7,3 +7,4 @@ export * from './chat-details';
 export * from './deleting-chat-modal';
 export * from './messages';
 export * from './message';
+export * from './send-message-form';
