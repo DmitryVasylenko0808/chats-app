@@ -8,6 +8,7 @@ import { useCurrentChatStore } from '../store';
 import { ChatDetails } from './chat-details';
 import { ChatInfo } from './chat-info';
 import { ChatMenu } from './chat-menu';
+import { Messages } from './messages';
 
 type ChatProps = { chatId: number };
 
@@ -42,36 +43,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
               <ChatMenu chatId={chatId} />
             </div>
           </div>
-          <div className="h-[calc(100vh-88px-96px)] overflow-y-auto p-6">
-            <ul className="flex flex-col space-y-4">
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-              <li>Message</li>
-            </ul>
-          </div>
+          <Messages chatId={chatId} />
           <div className="border-t-body/10 flex h-24 items-center border-t-2 px-6">
             <div className="flex w-full gap-4">
               <TextField placeholder="Enter message..." />

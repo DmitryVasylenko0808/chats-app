@@ -9,6 +9,8 @@ export type Message = {
   updatedAt: Date;
 };
 
+export type MessageWithSender = Message & { sender: User };
+
 export type Chat = {
   id: number;
   members: User[];

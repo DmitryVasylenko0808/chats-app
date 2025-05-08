@@ -4,6 +4,7 @@ import { apiUrl } from '@/config/contants';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { GetChatDto } from './dto/get-chat.dto';
 import { GetChatsDto } from './dto/get-chats.dto';
+import { GetMessagesDto } from './dto/get-messages.dto';
 
 export const getChats = async (userId?: number) => {
   const response = await axiosInstance.get<GetChatsDto>(`${apiUrl}/users/${userId}/chats`);
@@ -25,6 +26,12 @@ export const createChat = async (membersIds: number[]) => {
 
 export const deleteChatById = async (id: number) => {
   const response = await axiosInstance.delete(`${apiUrl}/chats/${id}`);
+
+  return response.data;
+};
+
+export const getMessages = async (chatid: number) => {
+  const response = await axiosInstance.get<GetMessagesDto>(`${apiUrl}/chats/${chatid}/messages`);
 
   return response.data;
 };

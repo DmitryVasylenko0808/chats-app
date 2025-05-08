@@ -19,6 +19,7 @@ body {
     --color-message-dark: #343a40;
     --color-message-white: #ffffff;
     --color-message-time: #ffffff80;
+    --color-current-user-message: #f5f7fb;
 
     --default-font-family: "Public Sans", sans-serif;
 }
