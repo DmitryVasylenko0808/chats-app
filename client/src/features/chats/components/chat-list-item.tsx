@@ -1,16 +1,21 @@
 import { useAuth } from '@/features/auth/hooks';
+import { cn } from '@/utils/cn';
 
 import { Chat } from '../types';
 
-type ChatListItemProps = { chat: Chat; onClick: () => void };
+type ChatListItemProps = { chat: Chat; active: boolean; onClick: () => void };
 
-export const ChatListItem = ({ chat, onClick }: Readonly<ChatListItemProps>) => {
+export const ChatListItem = ({ chat, active, onClick }: Readonly<ChatListItemProps>) => {
   const { currentUser } = useAuth();
 
   const participant = chat.members.find((m) => m.id !== currentUser?.id);
 
   return (
-    <li className="hover:bg-active-chat flex cursor-pointer px-5 py-4 duration-100">
+    <li
+      className={cn('hover:bg-active-chat flex cursor-pointer px-5 py-4 duration-100', {
+        'bg-active-chat': active,
+      })}
+    >
       <div onClick={onClick} className="flex w-full items-center gap-3">
         <img
           src={participant?.avatar || undefined}

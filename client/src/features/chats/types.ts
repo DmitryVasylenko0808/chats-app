@@ -12,5 +12,5 @@ export type Message = {
 export type Chat = {
   id: number;
   members: User[];
-  lastMessage: Message;
+  lastMessage?: Message;
 };

@@ -28,11 +28,9 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
     reset();
   }
 
-  console.log(data);
-
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="border-b-body/5 flex h-22 items-center px-6">
+      <div className="border-b-body/10 flex h-22 items-center border-b-2 px-6">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-4">
             <img
@@ -75,7 +73,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
           <li>Message</li>
         </ul>
       </div>
-      <div className="border-t-body/5 flex h-24 items-center border-t-2 px-6">
+      <div className="border-t-body/10 flex h-24 items-center border-t-2 px-6">
         <div className="flex w-full gap-4">
           <TextField placeholder="Enter message..." />
           <Button variant="primary" className="min-w-max px-4">
