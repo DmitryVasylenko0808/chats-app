@@ -53,3 +53,31 @@ export const sendMessage = async (data: SendMessageParams) => {
 
   return response.data;
 };
+
+type EditMessageParams = {
+  chatId: number;
+  messageId: number;
+  text: string;
+};
+
+export const editMessage = async (params: EditMessageParams) => {
+  const { chatId, messageId, ...data } = params;
+
+  const response = await axiosInstance.patch(`${apiUrl}/chats/${chatId}/messages/${messageId}`, {
+    chatId,
+    ...data,
+  });
+
+  return response.data;
+};
+
+type DeleteMessageParams = {
+  chatId: number;
+  messageId: number;
+};
+
+export const deleteMessage = async ({ chatId, messageId }: DeleteMessageParams) => {
+  const response = await axiosInstance.delete(`${apiUrl}/chats/${chatId}/messages/${messageId}`);
+
+  return response.data;
+};

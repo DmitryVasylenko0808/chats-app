@@ -1,15 +1,15 @@
-import { useToogleMenu } from '@/shared/hooks';
-import { Button, Menu } from '@/shared/ui';
 import { cn } from '@/utils/cn';
-import { ClockIcon, EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
+import { ClockIcon } from '@heroicons/react/16/solid';
 
 import { MessageWithSender } from '../types';
+import { MessageMenu } from './message-menu';
 
-type MessageProps = { message: MessageWithSender; participantMessage: boolean };
+type MessageProps = {
+  message: MessageWithSender;
+  participantMessage: boolean;
+};
 
 export const Message = ({ message, participantMessage }: Readonly<MessageProps>) => {
-  const { open, ref, handleToggle } = useToogleMenu();
-
   return (
     <li
       className={cn('flex', {
@@ -70,33 +70,14 @@ export const Message = ({ message, participantMessage }: Readonly<MessageProps>)
             </div>
           </div>
           <div className="">
-            <Menu
-              trigger={
-                <Button variant="text" onClick={handleToggle}>
-                  <EllipsisVerticalIcon width={18} height={18} />
-                </Button>
-              }
-              content={
-                <ul>
-                  <li>
-                    <Button variant="menu">
-                      <PencilIcon width={20} height={20} /> Edit
-                    </Button>
-                  </li>
-                  <li>
-                    <Button variant="menu">
-                      <TrashIcon width={20} height={20} /> Delete
-                    </Button>
-                  </li>
-                </ul>
-              }
-              open={open}
-              ref={ref}
-              className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
-            />
+            {!participantMessage && (
+              <MessageMenu message={message} participantMessage={participantMessage} />
+            )}
           </div>
         </div>
       </div>
     </li>
   );
 };
+
+//
