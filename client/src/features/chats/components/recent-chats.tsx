@@ -23,7 +23,7 @@ export const RecentChats = () => {
   return (
     <div className="pt-1.5 pb-3">
       <h4 className="mb-4 px-6 text-base font-semibold">Recent</h4>
-      <div className="h-[calc(100vh-60px-64px-64px)] overflow-y-auto">
+      <div className="scrollbar-custom h-[calc(100vh-60px-64px-64px)] overflow-y-auto">
         <ul className="flex flex-col">
           {data?.map((item) => (
             <ChatListItem

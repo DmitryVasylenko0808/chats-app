@@ -21,7 +21,7 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
         className="mb-6"
         onChange={handleChangeSearch}
       />
-      <div className="h-[240px] overflow-auto">
+      <div className="scrollbar-custom h-[240px] overflow-auto">
         {isFetching ? (
           <div className="flex h-full w-full items-center justify-center px-3 py-1.5">
             <Loader variant="primary" size="lg" />

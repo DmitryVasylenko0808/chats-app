@@ -20,6 +20,29 @@ body {
     --color-message-white: #ffffff;
     --color-message-time: #ffffff80;
     --color-current-user-message: #f5f7fb;
+    --color-scroll: #d1d5db;
+
 
     --default-font-family: "Public Sans", sans-serif;
+}
+
+@layer utilities {
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    @apply bg-scroll rounded-full;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    @apply bg-scroll;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+  }
 }

@@ -32,7 +32,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   }
 
   return (
-    <div className="h-[calc(100vh-88px-96px)] overflow-y-auto p-6">
+    <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto p-6">
       <ul className="flex flex-col space-y-4">
         {data?.map((m) => (
           <Message message={m} participantMessage={m.senderId !== currentUser?.id} key={m.id} />
