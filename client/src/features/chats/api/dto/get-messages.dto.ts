@@ -11,11 +11,11 @@ type Sender = {
 type Message = {
   id: number;
   chatId: number;
-  senderId: number;
+  senderId: number | null;
+  sender: Sender | null;
   text: string;
   createdAt: Date;
   updatedAt: Date;
-  sender: Sender;
 };
 
 export type GetMessagesDto = Message[];

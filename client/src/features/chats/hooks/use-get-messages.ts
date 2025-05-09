@@ -1,4 +1,4 @@
-import { serverAvatarsUrl } from '@/config/contants';
+import { placeholderAvatarUrl, serverAvatarsUrl } from '@/config/contants';
 import { useQuery } from '@tanstack/react-query';
 
 import { getMessages } from '../api';
@@ -10,7 +10,12 @@ export const useGetMessages = (chatId: number) => {
     select: (data) => {
       return data.map((message) => ({
         ...message,
-        sender: { ...message.sender, avatar: `${serverAvatarsUrl}/${message.sender.avatar}` },
+        sender: {
+          ...message.sender,
+          avatar: message.sender?.avatar
+            ? `${serverAvatarsUrl}/${message.sender?.avatar}`
+            : placeholderAvatarUrl,
+        },
       }));
     },
   });
