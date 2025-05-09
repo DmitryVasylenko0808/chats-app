@@ -11,7 +11,7 @@ export const SearchUsers = () => {
     <div className="px-6 py-3">
       <div className="relative">
         <TextField placeholder="Search users by name..." onChange={handleChangeSearch} />
-        {data?.length !== 0 && (
+        {search && data?.length !== 0 && (
           <div className="border-body/10 absolute top-full left-0 z-10 my-1 max-h-[420px] min-w-full overflow-auto rounded-2xl border bg-white py-3 shadow-xl">
             {isFetching ? (
               <div className="flex w-full justify-center px-3 py-1.5">
