@@ -36,9 +36,9 @@ export class MessagesService {
     return messages;
   }
 
-  async sendMessage(dto: SendMessageDto) {
+  async sendMessage(chatId: number, userId: number, dto: SendMessageDto) {
     const message = await this.prismaService.message.create({
-      data: dto,
+      data: { chatId, senderId: userId, ...dto },
       include: {
         chat: {
           select: {

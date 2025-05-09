@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { CreateChatDto } from './dto/create-chat.dto';
@@ -47,8 +48,12 @@ export class ChatsController {
   }
 
   @Post(':id/messages')
-  async sendMessage(@Body() dto: SendMessageDto) {
-    return await this.messagesService.sendMessage(dto);
+  async sendMessage(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser('id') userId: number,
+    @Body() dto: SendMessageDto
+  ) {
+    return await this.messagesService.sendMessage(id, userId, dto);
   }
 
   @Patch(':id/messages/:messageId')

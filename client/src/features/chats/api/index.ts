@@ -40,11 +40,10 @@ export const getMessages = async (chatid: number) => {
 type SendMessageParams = {
   chatId: number;
   text: string;
-  senderId?: number;
 };
 
-export const sendMessage = async (data: SendMessageParams) => {
-  const { chatId } = data;
+export const sendMessage = async (params: SendMessageParams) => {
+  const { chatId, ...data } = params;
 
   const response = await axiosInstance.post<SendMessageDto>(
     `${apiUrl}/chats/${chatId}/messages`,

@@ -100,14 +100,14 @@ describe('MessagesService', () => {
 
   describe('sendMessage', () => {
     it('should send message', async () => {
+      const chatId = 1;
+      const senderId = 1;
       const dto: SendMessageDto = {
-        chatId: 1,
-        senderId: 1,
         text: 'text-message',
       };
       const mockCreatedMessage = {
-        ...createMockMessage(1, dto.chatId, dto.senderId),
-        chat: createMockChat(dto.chatId, [1, 2], [11, 12]),
+        ...createMockMessage(1, chatId, senderId),
+        chat: createMockChat(chatId, [1, 2], [11, 12]),
       };
       const { chat, ...expectedMessage } = mockCreatedMessage;
       const refreshChatMessagesSpy = jest
@@ -116,10 +116,10 @@ describe('MessagesService', () => {
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
-      const result = await messagesService.sendMessage(dto);
+      const result = await messagesService.sendMessage(chatId, senderId, dto);
 
       expect(prismaService.message.create).toHaveBeenCalledWith({
-        data: dto,
+        data: { chatId, senderId, ...dto },
         include: {
           chat: {
             select: {

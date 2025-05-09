@@ -1,4 +1,3 @@
-import { useAuth } from '@/features/auth/hooks';
 import { Button, Loader, TextField } from '@/shared/ui';
 import { PaperAirplaneIcon } from '@heroicons/react/16/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +12,6 @@ import { SendMessageFormFields, sendMessageSchema } from '../validations';
 type SendMessageFormProps = { chat: Chat };
 
 export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
-  const { currentUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -28,7 +26,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   useEffect(() => setFocus('text'), [chat]);
 
   const submitHandler = (data: SendMessageFormFields) =>
-    mutateAsync({ ...data, chatId: chat.id, senderId: currentUser?.id })
+    mutateAsync({ ...data, chatId: chat.id })
       .then(() => reset())
       .catch((err) => alert(err.message));
 

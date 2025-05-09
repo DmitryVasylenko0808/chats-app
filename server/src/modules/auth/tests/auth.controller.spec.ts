@@ -3,6 +3,8 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { UsersService } from '@/modules/users/users.service';
+
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
 import { RegisterUserDto } from '../dto/register-user.dto';
@@ -11,15 +13,20 @@ import { SignInUserDto } from '../dto/sing-in.user.dto';
 describe('AuthController', () => {
   let authController: AuthController;
   let authService: DeepMockProxy<AuthService>;
+  let usersService: DeepMockProxy<UsersService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [{ provide: AuthService, useValue: mockDeep<AuthService>() }],
+      providers: [
+        { provide: AuthService, useValue: mockDeep<AuthService>() },
+        { provide: UsersService, useValue: mockDeep<UsersService>() },
+      ],
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
     authService = module.get(AuthService);
+    usersService = module.get(UsersService);
   });
 
   it('should be defined', () => {
