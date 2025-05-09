@@ -1,4 +1,4 @@
-import { Chat } from '@/features/chats/components';
+import { Chat, EmptyChat } from '@/features/chats/components';
 import { useCurrentChatStore } from '@/features/chats/store';
 import { SideBarMenu } from '@/shared/components';
 
@@ -15,9 +15,7 @@ const BaseLayout = () => {
           <Outlet />
         </div>
       </aside>
-      <section className="flex-1">
-        {chatId ? <Chat chatId={chatId} /> : <div>No Chat Selected</div>}
-      </section>
+      <section className="flex-1">{chatId ? <Chat chatId={chatId} /> : <EmptyChat />}</section>
     </main>
   );
 };

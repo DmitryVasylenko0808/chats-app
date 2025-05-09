@@ -1,17 +1,11 @@
-import { useDebounce } from '@/shared/hooks';
 import { Loader, TextField } from '@/shared/ui';
 
-import { useState } from 'react';
 import { Link } from 'react-router';
 
-import { useGetUsers } from '../hooks';
+import { useSearchUsers } from '../hooks';
 
 export const SearchUsers = () => {
-  const [search, setSearch] = useState('');
-  const debounced = useDebounce(search, 500);
-  const { data, isFetching } = useGetUsers(debounced);
-
-  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
+  const { search, handleChangeSearch, data, isFetching } = useSearchUsers();
 
   return (
     <div className="px-6 py-3">

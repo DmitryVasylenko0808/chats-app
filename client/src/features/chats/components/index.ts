@@ -10,3 +10,5 @@ export * from './message';
 export * from './message-menu';
 export * from './send-message-form';
 export * from './edit-message-modal';
+export * from './empty-chat';
+export * from './new-chat-modal';
