@@ -35,8 +35,8 @@ export const Message = ({ message, participantMessage }: Readonly<MessageProps>)
         </h5>
         <div
           className={cn('flex gap-1.5', {
-            'mr-16 flex-row': participantMessage,
-            'ml-16 flex-row-reverse': !participantMessage,
+            'mr-44 flex-row': participantMessage,
+            'ml-44 flex-row-reverse': !participantMessage,
           })}
         >
           <div
