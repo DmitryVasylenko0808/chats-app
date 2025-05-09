@@ -16,11 +16,11 @@ export const SignInUserForm = () => {
   } = useForm<SignInFormFields>({
     resolver: zodResolver(signInSchema),
   });
-  const { signIn, isPending } = useSignInUser();
+  const { mutateAsync, isPending } = useSignInUser();
   const navigate = useNavigate();
 
   const submitHandler = (fields: SignInFormFields) => {
-    signIn(fields)
+    mutateAsync(fields)
       .then(() => navigate('/'))
       .catch((error) => alert(error.message));
   };

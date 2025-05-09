@@ -26,7 +26,7 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
       description: user.description || '',
     },
   });
-  const { editProfile, isPending } = useEditProfile();
+  const { mutateAsync, isPending } = useEditProfile();
   const navigate = useNavigate();
 
   const submitHandler = (fields: EditingProfileFormFields) => {
@@ -34,7 +34,7 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
 
     editProfileData.avatar = fields.avatar?.[0];
 
-    editProfile(editProfileData)
+    mutateAsync(editProfileData)
       .then(() => {
         alert('Profile is successfully edited');
         navigate(`/profile/${currentUser?.id}`);

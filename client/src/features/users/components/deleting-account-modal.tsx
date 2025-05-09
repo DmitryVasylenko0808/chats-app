@@ -8,10 +8,10 @@ type DeletingUserModalProps = ModalProps & {
 };
 
 export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalProps) => {
-  const { deleteUserAccount, isPending } = useDeleteUser();
+  const { mutateAsync, isPending } = useDeleteUser();
 
   const handleClickDelete = () => {
-    deleteUserAccount(user.id)
+    mutateAsync(user.id)
       .then(() => alert('Account is successfully deleted'))
       .catch((error) => alert(error.message));
   };

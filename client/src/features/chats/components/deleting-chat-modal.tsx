@@ -5,10 +5,10 @@ import { useDeleteChat } from '../hooks';
 type DeletingChatModalProps = { chatId: number } & ModalProps;
 
 export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalProps) => {
-  const { deleteChat, isPending } = useDeleteChat();
+  const { mutateAsync, isPending } = useDeleteChat();
 
   const handleClickDeleteChat = () =>
-    deleteChat(chatId)
+    mutateAsync(chatId)
       .then(() => alert('Chat is deleted'))
       .catch((err) => alert(err.message));
 

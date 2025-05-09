@@ -7,16 +7,12 @@ import { useCurrentChatStore } from '../store';
 export const useCreateChat = () => {
   const { currentUser } = useAuth();
   const { setCurrentChat } = useCurrentChatStore();
-  const { mutateAsync, mutate, ...mutationResult } = useMutation({
-    mutationFn: createChat,
+
+  return useMutation({
+    mutationFn: (participantId?: number | null) =>
+      createChat([currentUser?.id as number, participantId as number]),
     onSuccess: (data) => {
       setCurrentChat(data.id);
     },
   });
-
-  const createNewChat = (participantId?: number | null) => {
-    return mutateAsync([participantId as number, currentUser?.id as number]);
-  };
-
-  return { createNewChat, ...mutationResult };
 };

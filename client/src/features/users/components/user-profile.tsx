@@ -16,9 +16,9 @@ export const UserProfile = ({
   sendMessageBtn = true,
 }: Readonly<UserProfileProps>) => {
   const { data, isLoading, isError } = useGetUser(userId);
-  const { createNewChat, isPending } = useCreateChat();
+  const { mutateAsync, isPending } = useCreateChat();
 
-  const handleClick = () => createNewChat(userId).catch((err) => alert(err.message));
+  const handleClick = () => mutateAsync(userId).catch((err) => alert(err.message));
 
   if (isLoading) {
     return (

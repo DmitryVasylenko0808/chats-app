@@ -6,15 +6,12 @@ import { useCurrentChatStore } from '../store';
 export const useDeleteChat = () => {
   const queryClient = useQueryClient();
   const { reset } = useCurrentChatStore();
-  const { mutateAsync, mutate, ...mutationResult } = useMutation({
+
+  return useMutation({
     mutationFn: deleteChatById,
     onSuccess: () => {
       reset();
       queryClient.invalidateQueries({ queryKey: ['chats'] });
     },
   });
-
-  const deleteChat = (id: number) => mutateAsync(id);
-
-  return { deleteChat, ...mutationResult };
 };
