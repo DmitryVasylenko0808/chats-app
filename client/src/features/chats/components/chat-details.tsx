@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/auth/hooks';
-import { UserProfile } from '@/features/users/components';
+import { UserInfo } from '@/features/users/components';
 import { Button } from '@/shared/ui';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
@@ -19,7 +19,7 @@ export const ChatDetails = ({ chat, onHideDetails }: ChatDetailsProps) => {
           <XMarkIcon width={24} height={24} />
         </Button>
       </div>
-      <UserProfile userId={participant?.id} sendMessageBtn={false} />
+      <div className="px-6">{participant && <UserInfo user={participant} />}</div>
     </div>
   );
 };
