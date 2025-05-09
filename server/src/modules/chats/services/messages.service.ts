@@ -56,11 +56,11 @@ export class MessagesService {
     return messageData;
   }
 
-  async editMessage(id: number, dto: EditMessageDto) {
-    await this.findMessageByIdOrThrow(id);
+  async editMessage(chatId: number, messageId: number, dto: EditMessageDto) {
+    await this.findMessageByIdOrThrow(messageId);
 
     const message = await this.prismaService.message.update({
-      where: { id },
+      where: { id: messageId, chatId },
       data: dto,
       include: {
         chat: {

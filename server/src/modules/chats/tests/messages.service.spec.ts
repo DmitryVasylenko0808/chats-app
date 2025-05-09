@@ -138,15 +138,15 @@ describe('MessagesService', () => {
   describe('editMessage', () => {
     it('should edit message', async () => {
       const messageId = 1;
+      const chatId = 1;
       const dto: EditMessageDto = {
-        chatId: 1,
         text: 'text-message',
       };
-      const mockFoundedMessage = createMockMessage(1, dto.chatId, 1);
+      const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
       const mockEditedMessage = {
         ...mockFoundedMessage,
         ...dto,
-        chat: createMockChat(dto.chatId, [1, 2]),
+        chat: createMockChat(chatId, [1, 2]),
       };
       const { chat, ...expectedMessage } = mockEditedMessage;
       const refreshChatMessagesSpy = jest
@@ -157,13 +157,13 @@ describe('MessagesService', () => {
       prismaService.message.update.mockResolvedValueOnce(mockEditedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
-      const result = await messagesService.editMessage(messageId, dto);
+      const result = await messagesService.editMessage(chatId, messageId, dto);
 
       expect(prismaService.message.findUnique).toHaveBeenCalledWith({
         where: { id: messageId },
       });
       expect(prismaService.message.update).toHaveBeenCalledWith({
-        where: { id: 1 },
+        where: { id: messageId, chatId },
         data: dto,
         include: {
           chat: {
@@ -181,13 +181,13 @@ describe('MessagesService', () => {
 
     it('should throw error edit message (message is not found)', async () => {
       const messageId = 9999;
+      const chatId = 1;
       const dto: EditMessageDto = {
-        chatId: 1,
         text: 'text-message',
       };
       prismaService.message.findUnique.mockResolvedValueOnce(null);
 
-      const editMessage = messagesService.editMessage(messageId, dto);
+      const editMessage = messagesService.editMessage(chatId, messageId, dto);
 
       expect(prismaService.message.update).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();

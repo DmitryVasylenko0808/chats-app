@@ -58,10 +58,11 @@ export class ChatsController {
 
   @Patch(':id/messages/:messageId')
   async editMessage(
+    @Param('id', ParseIntPipe) id: number,
     @Param('messageId', ParseIntPipe) messageId: number,
     @Body() dto: EditMessageDto
   ) {
-    return await this.messagesService.editMessage(messageId, dto);
+    return await this.messagesService.editMessage(id, messageId, dto);
   }
 
   @Delete(':id/messages/:messageId')
