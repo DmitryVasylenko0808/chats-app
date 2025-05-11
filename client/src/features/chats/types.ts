@@ -29,6 +29,11 @@ export type MessageWithSender = {
   updatedAt: Date;
 };
 
+export type UpdatedMessages = {
+  chatId: number;
+  messages: MessageWithSender;
+};
+
 export type Chat = {
   id: number;
   members: User[];

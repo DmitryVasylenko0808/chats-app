@@ -175,11 +175,13 @@ export class ChatsService {
     });
 
     const formattedChats = chats
-      .map((c) => ({ id: c.id, members: c.members.map((m) => m.id), lastMessage: c.messages[0] }))
+      .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
       .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
 
     const chatsByMemberId: UserChatRooms = membersIds.reduce((acc, currId) => {
-      const memberChats = formattedChats.filter((item) => item.members.includes(currId));
+      const memberChats = formattedChats.filter((item) =>
+        item.members.map((m) => m.id).includes(currId)
+      );
 
       return { ...acc, [currId]: memberChats };
     }, {});

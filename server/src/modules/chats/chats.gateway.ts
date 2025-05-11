@@ -53,6 +53,8 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   emitUpdateMessages(chatId: number, messages: Message[]) {
-    this.socket.to(chatId.toString()).emit('messages:update', messages);
+    const data = { chatId, messages };
+
+    this.socket.to(chatId.toString()).emit('messages:update', data);
   }
 }
