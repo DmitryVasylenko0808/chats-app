@@ -54,12 +54,7 @@ export const Message = ({ message, participantMessage }: Readonly<MessageProps>)
             >
               {message.text}
             </p>
-            <div
-              className={cn('flex', {
-                'justify-end': participantMessage,
-                'justify-start': !participantMessage,
-              })}
-            >
+            <div className="flex justify-end">
               <span
                 className={cn('inline-flex items-center gap-1 text-xs', {
                   'text-message-time': participantMessage,
