@@ -3,13 +3,12 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ChatsController } from './chats.controller';
 import { ChatsGateway } from './chats.gateway';
-import { ChatsService } from './services/chats.service';
-import { MessagesService } from './services/messages.service';
+import { ChatsService } from './chats.service';
 
 @Module({
   imports: [PrismaModule],
-  providers: [ChatsService, MessagesService, ChatsGateway],
+  providers: [ChatsService, ChatsGateway],
   controllers: [ChatsController],
-  exports: [ChatsService, MessagesService],
+  exports: [ChatsService, ChatsGateway],
 })
 export class ChatsModule {}

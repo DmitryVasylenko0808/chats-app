@@ -4,9 +4,9 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { ChatsGateway } from '../chats.gateway';
-import { CreateChatDto } from '../dto/create-chat.dto';
-import { UserChatRooms } from '../types/chat-room';
+import { ChatsGateway } from './chats.gateway';
+import { CreateChatDto } from './dto/create-chat.dto';
+import { UserChatRooms } from './types/chat-room';
 
 @Injectable()
 export class ChatsService {

@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { multerOptions } from '@/common/storage/multer.config';
 
-import { ChatsService } from '../chats/services/chats.service';
+import { ChatsService } from '../chats/chats.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './users.service';
 

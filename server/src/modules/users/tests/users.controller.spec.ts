@@ -4,7 +4,7 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { ChatsService } from '@/modules/chats/services/chats.service';
+import { ChatsService } from '@/modules/chats/chats.service';
 
 import { UpdateUserDto } from '../dto/update.user.dto';
 import { UsersController } from '../users.controller';

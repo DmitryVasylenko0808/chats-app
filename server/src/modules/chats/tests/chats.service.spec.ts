@@ -8,8 +8,8 @@ import { createMockChat } from '@/common/test-utils/factories/chat.factory';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from '../chats.gateway';
+import { ChatsService } from '../chats.service';
 import { CreateChatDto } from '../dto/create-chat.dto';
-import { ChatsService } from '../services/chats.service';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;

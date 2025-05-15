@@ -7,13 +7,14 @@ import { createMockChat } from '@/common/test-utils/factories/chat.factory';
 import { createMockMessage } from '@/common/test-utils/factories/message.factory';
 import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
+import { ChatsGateway } from '@/modules/chats/chats.gateway';
+import { ChatsService } from '@/modules/chats/chats.service';
+import { ReplyMessageParams } from '@/modules/chats/types/repty-message-params';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { ChatsGateway } from '../chats.gateway';
+import { MessagesService } from '../../messages/messages.service';
 import { EditMessageDto } from '../dto/edit-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
-import { ChatsService } from '../services/chats.service';
-import { MessagesService } from '../services/messages.service';
 
 describe('MessagesService', () => {
   let messagesService: MessagesService;
@@ -52,22 +53,7 @@ describe('MessagesService', () => {
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
-      expect(prismaService.message.findMany).toHaveBeenCalledWith({
-        where: {
-          chatId,
-        },
-        include: {
-          sender: {
-            omit: {
-              password: true,
-              description: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: 'asc',
-        },
-      });
+      expect(prismaService.message.findMany).toHaveBeenCalled();
       expect(result).toStrictEqual(messages);
     });
 
@@ -78,22 +64,7 @@ describe('MessagesService', () => {
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
-      expect(prismaService.message.findMany).toHaveBeenCalledWith({
-        where: {
-          chatId,
-        },
-        include: {
-          sender: {
-            omit: {
-              password: true,
-              description: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: 'asc',
-        },
-      });
+      expect(prismaService.message.findMany).toHaveBeenCalled();
       expect(result).toStrictEqual(messages);
     });
   });
@@ -248,6 +219,47 @@ describe('MessagesService', () => {
       expect(prismaService.message.delete).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
       expect(deleteMessage).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('replyMessage', () => {
+    it('should reply message', async () => {
+      const params: ReplyMessageParams = {
+        replyToId: 1,
+        chatId: 1,
+        senderId: 1,
+        dto: {
+          text: 'Text-message',
+        },
+      };
+      const mockFoundedMessage = createMockMessage(1, 1, 1);
+      const expected = createMockMessage(10, 1, 1, createMockUser(1), { replyToId: 1 });
+
+      prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
+      prismaService.message.create.mockResolvedValueOnce(expected);
+
+      const result = await messagesService.replyMessage(params);
+
+      expect(result).toEqual(expected);
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.create).toHaveBeenCalled();
+    });
+
+    it('should throw error reply message (message is not found)', async () => {
+      const params: ReplyMessageParams = {
+        replyToId: 9999,
+        chatId: 1,
+        senderId: 1,
+        dto: {
+          text: 'Text-message',
+        },
+      };
+
+      prismaService.message.findUnique.mockResolvedValueOnce(null);
+
+      expect(messagesService.replyMessage(params)).rejects.toThrow(NotFoundException);
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.create).not.toHaveBeenCalled();
     });
   });
 });

@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { ChatsGateway } from '../chats.gateway';
-import { EditMessageDto } from '../dto/edit-message.dto';
-import { SendMessageDto } from '../dto/send-message.dto';
-import { ChatsService } from './chats.service';
+import { ChatsGateway } from '../chats/chats.gateway';
+import { ChatsService } from '../chats/chats.service';
+import { ReplyMessageParams } from '../chats/types/repty-message-params';
+import { EditMessageDto } from './dto/edit-message.dto';
+import { SendMessageDto } from './dto/send-message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -25,6 +26,16 @@ export class MessagesService {
           omit: {
             password: true,
             description: true,
+          },
+        },
+        replyToMessage: {
+          include: {
+            sender: {
+              omit: {
+                password: true,
+                description: true,
+              },
+            },
           },
         },
       },
@@ -99,6 +110,18 @@ export class MessagesService {
     await this.chatsService.refreshMembersChats(chat.members);
 
     return { message: 'Message is deleted' };
+  }
+
+  async replyMessage(params: ReplyMessageParams) {
+    const { replyToId, chatId, senderId, dto } = params;
+
+    await this.findMessageByIdOrThrow(replyToId);
+
+    const reply = await this.prismaService.message.create({
+      data: { replyToId, chatId, senderId, ...dto },
+    });
+
+    return reply;
   }
 
   async refreshChatMessages(chatId: number) {
