@@ -1,9 +1,16 @@
 import { Message, User } from '@prisma/client';
 
-export const createMockMessage = (id: number, chatId: number, senderId: number, sender?: User) => ({
+export const createMockMessage = (
+  id: number,
+  chatId: number,
+  senderId: number,
+  sender?: User,
+  overrides?: Partial<Message>
+) => ({
   id,
   chatId,
   senderId,
+  replyToId: null,
   text: `text-${id}`,
   createdAt: new Date(),
   updatedAt: new Date(),
