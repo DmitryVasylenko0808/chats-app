@@ -117,9 +117,20 @@ export class MessagesService {
 
     await this.findMessageByIdOrThrow(replyToId);
 
-    const reply = await this.prismaService.message.create({
+    const message = await this.prismaService.message.create({
       data: { replyToId, chatId, senderId, ...dto },
+      include: {
+        chat: {
+          select: {
+            members: true,
+          },
+        },
+      },
     });
+    const { chat, ...reply } = message;
+
+    await this.refreshChatMessages(chatId);
+    await this.chatsService.refreshMembersChats(chat.members);
 
     return reply;
   }
