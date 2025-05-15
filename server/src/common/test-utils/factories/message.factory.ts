@@ -11,6 +11,7 @@ export const createMockMessage = (
   chatId,
   senderId,
   replyToId: null,
+  forwardedMessageId: null,
   text: `text-${id}`,
   createdAt: new Date(),
   updatedAt: new Date(),

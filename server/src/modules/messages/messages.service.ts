@@ -6,6 +6,7 @@ import { ChatsGateway } from '../chats/chats.gateway';
 import { ChatsService } from '../chats/chats.service';
 import { ReplyMessageParams } from '../chats/types/repty-message-params';
 import { EditMessageDto } from './dto/edit-message.dto';
+import { ForwardMessageDto } from './dto/forward-message.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 
 @Injectable()
@@ -29,6 +30,16 @@ export class MessagesService {
           },
         },
         replyToMessage: {
+          include: {
+            sender: {
+              omit: {
+                password: true,
+                description: true,
+              },
+            },
+          },
+        },
+        forwardedMessage: {
           include: {
             sender: {
               omit: {
@@ -133,6 +144,39 @@ export class MessagesService {
     await this.chatsService.refreshMembersChats(chat.members);
 
     return reply;
+  }
+
+  async forwardMessage(messageId: number, senderId: number, dto: ForwardMessageDto) {
+    const existedChat = await this.chatsService.findOneChat(dto.targetChatId);
+
+    if (!existedChat) {
+      throw new NotFoundException('Chat is not found');
+    }
+
+    await this.findMessageByIdOrThrow(messageId);
+
+    const message = await this.prismaService.message.create({
+      data: {
+        senderId,
+        chatId: dto.targetChatId,
+        text: dto.text,
+        forwardedMessageId: messageId,
+      },
+      include: {
+        chat: {
+          select: {
+            id: true,
+            members: true,
+          },
+        },
+      },
+    });
+    const { chat, ...result } = message;
+
+    await this.refreshChatMessages(chat.id);
+    await this.chatsService.refreshMembersChats(chat.members);
+
+    return result;
   }
 
   async refreshChatMessages(chatId: number) {

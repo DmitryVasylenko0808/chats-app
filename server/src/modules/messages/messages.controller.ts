@@ -14,6 +14,7 @@ import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { EditMessageDto } from './dto/edit-message.dto';
+import { ForwardMessageDto } from './dto/forward-message.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 import { MessagesService } from './messages.service';
 
@@ -58,5 +59,14 @@ export class MessagesController {
     @Body() dto: SendMessageDto
   ) {
     return await this.messagesService.replyMessage({ replyToId, chatId, senderId, dto });
+  }
+
+  @Post(':messageId/forward')
+  async forwardMessage(
+    @Param('messageId', ParseIntPipe) messageId: number,
+    @CurrentUser('id') senderId: number,
+    @Body() dto: ForwardMessageDto
+  ) {
+    return await this.messagesService.forwardMessage(messageId, senderId, dto);
   }
 }

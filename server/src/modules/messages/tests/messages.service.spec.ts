@@ -14,6 +14,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { MessagesService } from '../../messages/messages.service';
 import { EditMessageDto } from '../dto/edit-message.dto';
+import { ForwardMessageDto } from '../dto/forward-message.dto';
 import { SendMessageDto } from '../dto/send-message.dto';
 
 describe('MessagesService', () => {
@@ -275,6 +276,83 @@ describe('MessagesService', () => {
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('forwardMessage', () => {
+    it('should forward message with text', async () => {
+      const messageId = 1;
+      const senderId = 1;
+      const forwardMessageDto: ForwardMessageDto = {
+        targetChatId: 2,
+        text: 'text-message',
+      };
+      const mockFoundedChat = { ...createMockChat(2, [1, 2], [11, 12]), membersCount: 2 };
+      const mockFoundedMessage = createMockMessage(1, 1, 1);
+      const mockCreatedMessage = {
+        ...createMockMessage(10, 1, 1, createMockUser(1)),
+        chat: createMockChat(forwardMessageDto.targetChatId, [1, 2], [11, 12]),
+      };
+      const { chat, ...expected } = mockCreatedMessage;
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
+
+      chatsService.findOneChat.mockResolvedValueOnce(mockFoundedChat);
+      prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
+      prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
+
+      const result = await messagesService.forwardMessage(messageId, senderId, forwardMessageDto);
+
+      expect(result).toEqual(expected);
+      expect(prismaService.message.create).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
+      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
+    });
+
+    it('should throw error forward message (Chat is not found)', async () => {
+      const messageId = 1;
+      const senderId = 1;
+      const forwardMessageDto: ForwardMessageDto = {
+        targetChatId: 9999,
+        text: 'text-message',
+      };
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
+
+      chatsService.findOneChat.mockResolvedValueOnce(null);
+
+      expect(
+        messagesService.forwardMessage(messageId, senderId, forwardMessageDto)
+      ).rejects.toThrow(NotFoundException);
+      expect(chatsService.findOneChat).toHaveBeenCalled();
+      expect(prismaService.message.create).not.toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+    });
+
+    it('should throw error forward message (Message is not found)', async () => {
+      const messageId = 999;
+      const senderId = 1;
+      const forwardMessageDto: ForwardMessageDto = {
+        targetChatId: 2,
+        text: 'text-message',
+      };
+      const mockFoundedChat = { ...createMockChat(2, [1, 2], [11, 12]), membersCount: 2 };
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
+
+      chatsService.findOneChat.mockResolvedValueOnce(mockFoundedChat);
+      prismaService.message.findUnique.mockResolvedValueOnce(null);
+
+      expect(
+        messagesService.forwardMessage(messageId, senderId, forwardMessageDto)
+      ).rejects.toThrow(NotFoundException);
+      expect(prismaService.message.create).not.toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
     });
   });
 });
