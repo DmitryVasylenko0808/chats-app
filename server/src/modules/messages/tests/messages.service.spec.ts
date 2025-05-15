@@ -233,16 +233,26 @@ describe('MessagesService', () => {
         },
       };
       const mockFoundedMessage = createMockMessage(1, 1, 1);
-      const expected = createMockMessage(10, 1, 1, createMockUser(1), { replyToId: 1 });
+      const mockCreatedMessage = {
+        ...createMockMessage(10, 1, 1, createMockUser(1), { replyToId: 1 }),
+        chat: createMockChat(params.chatId, [1, 2], [11, 12]),
+      };
+      const { chat, ...expected } = mockCreatedMessage;
 
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
-      prismaService.message.create.mockResolvedValueOnce(expected);
+      prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
+      chatsService.refreshMembersChats.mockResolvedValueOnce(null);
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
 
       const result = await messagesService.replyMessage(params);
 
       expect(result).toEqual(expected);
       expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
+      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
     });
 
     it('should throw error reply message (message is not found)', async () => {
@@ -254,12 +264,17 @@ describe('MessagesService', () => {
           text: 'Text-message',
         },
       };
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
 
       prismaService.message.findUnique.mockResolvedValueOnce(null);
 
       expect(messagesService.replyMessage(params)).rejects.toThrow(NotFoundException);
       expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.create).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
     });
   });
 });
