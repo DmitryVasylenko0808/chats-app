@@ -147,12 +147,7 @@ export class MessagesService {
   }
 
   async forwardMessage(messageId: number, senderId: number, dto: ForwardMessageDto) {
-    const existedChat = await this.chatsService.findOneChat(dto.targetChatId);
-
-    if (!existedChat) {
-      throw new NotFoundException('Chat is not found');
-    }
-
+    await this.chatsService.findOneChatOrThrow(dto.targetChatId);
     await this.findMessageByIdOrThrow(messageId);
 
     const message = await this.prismaService.message.create({

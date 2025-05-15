@@ -21,7 +21,7 @@ export class ChatsController {
 
   @Get(':id')
   async findOneChat(@Param('id', ParseIntPipe) id: number) {
-    return await this.chatsService.findOneChat(id);
+    return await this.chatsService.findOneChatOrThrow(id);
   }
 
   @Post()

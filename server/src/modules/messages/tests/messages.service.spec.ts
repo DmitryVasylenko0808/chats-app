@@ -298,13 +298,14 @@ describe('MessagesService', () => {
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
 
-      chatsService.findOneChat.mockResolvedValueOnce(mockFoundedChat);
+      chatsService.findOneChatOrThrow.mockResolvedValueOnce(mockFoundedChat);
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
 
       const result = await messagesService.forwardMessage(messageId, senderId, forwardMessageDto);
 
       expect(result).toEqual(expected);
+      expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
       expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
@@ -321,12 +322,12 @@ describe('MessagesService', () => {
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
 
-      chatsService.findOneChat.mockResolvedValueOnce(null);
+      chatsService.findOneChatOrThrow.mockRejectedValueOnce(new NotFoundException());
 
       expect(
         messagesService.forwardMessage(messageId, senderId, forwardMessageDto)
       ).rejects.toThrow(NotFoundException);
-      expect(chatsService.findOneChat).toHaveBeenCalled();
+      expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
@@ -344,12 +345,14 @@ describe('MessagesService', () => {
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
 
-      chatsService.findOneChat.mockResolvedValueOnce(mockFoundedChat);
+      chatsService.findOneChatOrThrow.mockResolvedValueOnce(mockFoundedChat);
+
       prismaService.message.findUnique.mockResolvedValueOnce(null);
 
       expect(
         messagesService.forwardMessage(messageId, senderId, forwardMessageDto)
       ).rejects.toThrow(NotFoundException);
+      expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();

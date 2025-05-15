@@ -45,7 +45,7 @@ export class ChatsService {
     return data;
   }
 
-  async findOneChat(id: number) {
+  async findOneChatOrThrow(id: number) {
     const chat = await this.prismaService.chat.findUnique({
       where: { id },
       include: {
@@ -94,13 +94,7 @@ export class ChatsService {
   }
 
   async deleteChat(id: number) {
-    const chat = await this.prismaService.chat.findUnique({
-      where: { id },
-    });
-
-    if (!chat) {
-      throw new NotFoundException('Chat is not found');
-    }
+    await this.findOneChatOrThrow(id);
 
     const deletedChat = await this.prismaService.chat.delete({
       where: { id },
