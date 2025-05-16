@@ -4,7 +4,7 @@ import { extname } from 'path';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
-export const storageDestination = './uploads/avatars';
+export const storageDestination = './uploads';
 export const allowedFileTypes = ['image/jpeg', 'image/png'];
 export const maxFileSize = 5 * 1024 * 1024;
 

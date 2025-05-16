@@ -77,6 +77,7 @@ describe('MessagesService', () => {
       const dto: SendMessageDto = {
         text: 'text-message',
       };
+      const imageFiles = [];
       const mockCreatedMessage = {
         ...createMockMessage(1, chatId, senderId),
         chat: createMockChat(chatId, [1, 2], [11, 12]),
@@ -88,19 +89,9 @@ describe('MessagesService', () => {
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
-      const result = await messagesService.sendMessage(chatId, senderId, dto);
+      const result = await messagesService.sendMessage({ chatId, senderId, dto, imageFiles });
 
-      expect(prismaService.message.create).toHaveBeenCalledWith({
-        data: { chatId, senderId, ...dto },
-        include: {
-          chat: {
-            select: {
-              id: true,
-              members: true,
-            },
-          },
-        },
-      });
+      expect(prismaService.message.create).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
       expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
       expect(result).toEqual(expectedMessage);

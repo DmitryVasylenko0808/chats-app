@@ -9,6 +9,13 @@ import { EditMessageDto } from './dto/edit-message.dto';
 import { ForwardMessageDto } from './dto/forward-message.dto';
 import { SendMessageDto } from './dto/send-message.dto';
 
+type SendMessageParams = {
+  chatId: number;
+  senderId: number;
+  dto: SendMessageDto;
+  imageFiles: Express.Multer.File[];
+};
+
 @Injectable()
 export class MessagesService {
   constructor(
@@ -58,9 +65,11 @@ export class MessagesService {
     return messages;
   }
 
-  async sendMessage(chatId: number, userId: number, dto: SendMessageDto) {
+  async sendMessage(params: SendMessageParams) {
+    const { chatId, senderId, dto, imageFiles } = params;
+
     const message = await this.prismaService.message.create({
-      data: { chatId, senderId: userId, ...dto },
+      data: { chatId, senderId, ...dto, images: imageFiles.map((img) => img.filename) },
       include: {
         chat: {
           select: {

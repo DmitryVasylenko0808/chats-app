@@ -1,4 +1,4 @@
-import { serverAvatarsUrl } from '@/config/contants';
+import { serverUploadssUrl } from '@/config/contants';
 import { useAuthStore } from '@/features/auth/store';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,7 +10,7 @@ export const useEditProfile = () => {
     mutationFn: updateUser,
     onSuccess: (updatedData) => {
       const { id, ...updatedUser } = updatedData.data;
-      updatedUser.avatar = `${serverAvatarsUrl}/${updatedUser.avatar}`;
+      updatedUser.avatar = `${serverUploadssUrl}/${updatedUser.avatar}`;
 
       updateCurrentUserData(updatedUser);
     },

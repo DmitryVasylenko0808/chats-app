@@ -1,4 +1,4 @@
-import { serverAvatarsUrl } from '@/config/contants';
+import { serverUploadssUrl } from '@/config/contants';
 import { useQuery } from '@tanstack/react-query';
 
 import { getChats } from '../api';
@@ -10,7 +10,7 @@ export const useGetChats = (userId?: number) => {
     select: (data) => {
       const transformedData = data.map((chat) => ({
         ...chat,
-        members: chat.members.map((m) => ({ ...m, avatar: `${serverAvatarsUrl}/${m.avatar}` })),
+        members: chat.members.map((m) => ({ ...m, avatar: `${serverUploadssUrl}/${m.avatar}` })),
       }));
 
       return transformedData;

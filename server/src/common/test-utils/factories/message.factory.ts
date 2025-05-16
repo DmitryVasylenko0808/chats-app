@@ -13,6 +13,7 @@ export const createMockMessage = (
   replyToId: null,
   forwardedMessageId: null,
   text: `text-${id}`,
+  images: [],
   createdAt: new Date(),
   updatedAt: new Date(),
   sender,

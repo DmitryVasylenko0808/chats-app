@@ -14,8 +14,8 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
-  app.useStaticAssets(join(__dirname, '..', '..', 'uploads/avatars'), {
-    prefix: '/avatars',
+  app.useStaticAssets(join(__dirname, '..', '..', 'uploads'), {
+    prefix: '/uploads',
   });
 
   await app.listen(configService.get('PORT') || 4444);

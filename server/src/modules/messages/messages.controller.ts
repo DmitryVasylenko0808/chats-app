@@ -7,11 +7,15 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
+import { multerOptions } from '@/common/storage/multer.config';
 
 import { EditMessageDto } from './dto/edit-message.dto';
 import { ForwardMessageDto } from './dto/forward-message.dto';
@@ -29,12 +33,14 @@ export class MessagesController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor('images', 4, multerOptions))
   async sendMessage(
     @Param('chatId', ParseIntPipe) chatId: number,
-    @CurrentUser('id') userId: number,
-    @Body() dto: SendMessageDto
+    @CurrentUser('id') senderId: number,
+    @Body() dto: SendMessageDto,
+    @UploadedFiles() imageFiles: Express.Multer.File[]
   ) {
-    return await this.messagesService.sendMessage(chatId, userId, dto);
+    return await this.messagesService.sendMessage({ chatId, senderId, dto, imageFiles });
   }
 
   @Patch(':messageId')
