@@ -203,6 +203,28 @@ export class MessagesService {
     return result;
   }
 
+  async unpinMessage(chatId: number, messageId: number) {
+    await this.findMessageByIdOrThrow(messageId);
+
+    const unpinnedMessage = await this.prismaService.message.update({
+      where: { id: messageId },
+      data: { isPinned: false },
+      include: {
+        chat: {
+          select: {
+            id: true,
+            members: true,
+          },
+        },
+      },
+    });
+    const { chat, ...result } = unpinnedMessage;
+
+    await this.refreshChatMessages(chatId);
+
+    return result;
+  }
+
   async refreshChatMessages(chatId: number) {
     const messages = await this.findMessagesByChatId(chatId);
 

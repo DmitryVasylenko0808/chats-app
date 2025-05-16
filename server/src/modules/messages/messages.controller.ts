@@ -83,4 +83,12 @@ export class MessagesController {
   ) {
     return this.messagesService.pinMessage(chatId, messageId);
   }
+
+  @Patch(':messageId/unpin')
+  async unpinMessage(
+    @Param('chatId', ParseIntPipe) chatId: number,
+    @Param('messageId', ParseIntPipe) messageId: number
+  ) {
+    return this.messagesService.unpinMessage(chatId, messageId);
+  }
 }
