@@ -371,7 +371,6 @@ describe('MessagesService', () => {
       expect(prismaService.message.updateMany).toHaveBeenCalled();
       expect(prismaService.message.update).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalled();
-      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
     });
 
     it('should throw error (Message is not found)', async () => {
@@ -390,7 +389,6 @@ describe('MessagesService', () => {
       expect(prismaService.message.updateMany).not.toHaveBeenCalled();
       expect(prismaService.message.update).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
-      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
     });
   });
 });

@@ -199,7 +199,6 @@ export class MessagesService {
     const { chat, ...result } = pinnedMessage;
 
     await this.refreshChatMessages(chat.id);
-    await this.chatsService.refreshMembersChats(chat.members);
 
     return result;
   }
