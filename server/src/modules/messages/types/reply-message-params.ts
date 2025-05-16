@@ -1,4 +1,4 @@
-import { SendMessageDto } from '../../messages/dto/send-message.dto';
+import { SendMessageDto } from '../dto/send-message.dto';
 
 export type ReplyMessageParams = {
   replyToId: number;

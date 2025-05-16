@@ -14,6 +14,7 @@ export const createMockMessage = (
   forwardedMessageId: null,
   text: `text-${id}`,
   images: [],
+  isPinned: false,
   createdAt: new Date(),
   updatedAt: new Date(),
   sender,

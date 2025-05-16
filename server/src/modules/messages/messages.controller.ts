@@ -75,4 +75,12 @@ export class MessagesController {
   ) {
     return await this.messagesService.forwardMessage(messageId, senderId, dto);
   }
+
+  @Patch(':messageId/pin')
+  async pinMessage(
+    @Param('chatId', ParseIntPipe) chatId: number,
+    @Param('messageId', ParseIntPipe) messageId: number
+  ) {
+    return this.messagesService.pinMessage(chatId, messageId);
+  }
 }

@@ -42,6 +42,7 @@ model Message {
   chat     Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   text     String?
   images   String[]
+  isPinned Boolean  @default(false)
 
   replyToId      Int?      @map("reply_to_id")
   replyToMessage Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull, onUpdate: Cascade)

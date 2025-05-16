@@ -9,7 +9,7 @@ import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
 import { ChatsGateway } from '@/modules/chats/chats.gateway';
 import { ChatsService } from '@/modules/chats/chats.service';
-import { ReplyMessageParams } from '@/modules/chats/types/repty-message-params';
+import { ReplyMessageParams } from '@/modules/messages/types/reply-message-params';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { MessagesService } from '../../messages/messages.service';
@@ -345,6 +345,50 @@ describe('MessagesService', () => {
       ).rejects.toThrow(NotFoundException);
       expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).not.toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('pinMessage', () => {
+    it('should pin message', async () => {
+      const chatId = 1;
+      const messageId = 1;
+      const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
+      const mockUpdatedMessage = { ...mockFoundedMessage, chat: createMockChat(1, [1, 2]) };
+      const { chat, ...result } = mockUpdatedMessage;
+      const expected = result;
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
+
+      prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
+      prismaService.message.updateMany.mockResolvedValueOnce({ count: 1 });
+      prismaService.message.update.mockResolvedValueOnce(mockUpdatedMessage);
+
+      await expect(messagesService.pinMessage(chatId, messageId)).resolves.toEqual(expected);
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.updateMany).toHaveBeenCalled();
+      expect(prismaService.message.update).toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+    });
+
+    it('should throw error (Message is not found)', async () => {
+      const chatId = 1;
+      const messageId = 1;
+      const refreshChatMessagesSpy = jest
+        .spyOn(messagesService, 'refreshChatMessages')
+        .mockResolvedValueOnce(null);
+
+      prismaService.message.findUnique.mockResolvedValueOnce(null);
+
+      await expect(messagesService.pinMessage(chatId, messageId)).rejects.toThrow(
+        NotFoundException
+      );
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.updateMany).not.toHaveBeenCalled();
+      expect(prismaService.message.update).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
     });

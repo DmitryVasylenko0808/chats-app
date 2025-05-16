@@ -4,17 +4,10 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from '../chats/chats.gateway';
 import { ChatsService } from '../chats/chats.service';
-import { ReplyMessageParams } from '../chats/types/repty-message-params';
 import { EditMessageDto } from './dto/edit-message.dto';
 import { ForwardMessageDto } from './dto/forward-message.dto';
-import { SendMessageDto } from './dto/send-message.dto';
-
-type SendMessageParams = {
-  chatId: number;
-  senderId: number;
-  dto: SendMessageDto;
-  imageFiles: Express.Multer.File[];
-};
+import { ReplyMessageParams } from './types/reply-message-params';
+import { SendMessageParams } from './types/send-message-params';
 
 @Injectable()
 export class MessagesService {
@@ -176,6 +169,34 @@ export class MessagesService {
       },
     });
     const { chat, ...result } = message;
+
+    await this.refreshChatMessages(chat.id);
+    await this.chatsService.refreshMembersChats(chat.members);
+
+    return result;
+  }
+
+  async pinMessage(chatId: number, messageId: number) {
+    await this.findMessageByIdOrThrow(messageId);
+
+    await this.prismaService.message.updateMany({
+      where: { chatId },
+      data: { isPinned: false },
+    });
+
+    const pinnedMessage = await this.prismaService.message.update({
+      where: { id: messageId },
+      data: { isPinned: true },
+      include: {
+        chat: {
+          select: {
+            id: true,
+            members: true,
+          },
+        },
+      },
+    });
+    const { chat, ...result } = pinnedMessage;
 
     await this.refreshChatMessages(chat.id);
     await this.chatsService.refreshMembersChats(chat.members);
