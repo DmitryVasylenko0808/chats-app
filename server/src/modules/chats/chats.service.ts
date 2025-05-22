@@ -1,5 +1,3 @@
-import { User } from '@prisma/client';
-
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
@@ -7,6 +5,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 import { ChatsGateway } from './chats.gateway';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UserChatRooms } from './types/chat-room';
+import { RefreshChatMember, RefreshMembersChatParams } from './types/refresh-members-chats-params';
 
 @Injectable()
 export class ChatsService {
@@ -88,7 +87,7 @@ export class ChatsService {
       },
     });
 
-    await this.refreshMembersChats(createdChat.members);
+    await this.refreshMembersChats({ chatId: createdChat.id });
 
     return createdChat;
   }
@@ -103,7 +102,7 @@ export class ChatsService {
       },
     });
 
-    await this.refreshMembersChats(deletedChat.members);
+    await this.refreshMembersChats({ members: deletedChat.members });
 
     return { message: 'Chat is deleted' };
   }
@@ -139,7 +138,16 @@ export class ChatsService {
     return chat;
   }
 
-  async refreshMembersChats(members: User[]) {
+  async refreshMembersChats(params: RefreshMembersChatParams) {
+    let members: RefreshChatMember[];
+
+    if ('chatId' in params) {
+      const chat = await this.findOneChatOrThrow(params.chatId);
+      members = chat.members;
+    } else {
+      members = params.members;
+    }
+
     const membersIds = members.map((m) => m.id);
 
     const chats = await this.prismaService.chat.findMany({

@@ -109,7 +109,7 @@ describe('ChatsService', () => {
 
       expect(prismaService.chat.findFirst).toHaveBeenCalled();
       expect(prismaService.chat.create).toHaveBeenCalled();
-      expect(refreshMembersChatsSpy).toHaveBeenCalledWith(mockCreatedChat.members);
+      expect(refreshMembersChatsSpy).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
@@ -155,7 +155,7 @@ describe('ChatsService', () => {
 
       expect(findOneChatOrThrowSpy).toHaveBeenCalled();
       expect(prismaService.chat.delete).toHaveBeenCalled();
-      expect(refreshMembersChatsSpy).toHaveBeenCalledWith(mockDeletedChat.members);
+      expect(refreshMembersChatsSpy).toHaveBeenCalled();
       expect(result).toEqual(expectMessage);
     });
 

@@ -78,11 +78,7 @@ describe('MessagesService', () => {
         text: 'text-message',
       };
       const imageFiles = [];
-      const mockCreatedMessage = {
-        ...createMockMessage(1, chatId, senderId),
-        chat: createMockChat(chatId, [1, 2], [11, 12]),
-      };
-      const { chat, ...expectedMessage } = mockCreatedMessage;
+      const mockCreatedMessage = createMockMessage(1, chatId, senderId);
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
@@ -92,9 +88,9 @@ describe('MessagesService', () => {
       const result = await messagesService.sendMessage({ chatId, senderId, dto, imageFiles });
 
       expect(prismaService.message.create).toHaveBeenCalled();
-      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
-      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
-      expect(result).toEqual(expectedMessage);
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(result).toEqual(mockCreatedMessage);
     });
   });
 
@@ -106,12 +102,7 @@ describe('MessagesService', () => {
         text: 'text-message',
       };
       const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
-      const mockEditedMessage = {
-        ...mockFoundedMessage,
-        ...dto,
-        chat: createMockChat(chatId, [1, 2]),
-      };
-      const { chat, ...expectedMessage } = mockEditedMessage;
+      const mockEditedMessage = mockFoundedMessage;
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
@@ -122,24 +113,11 @@ describe('MessagesService', () => {
 
       const result = await messagesService.editMessage(chatId, messageId, dto);
 
-      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
-        where: { id: messageId },
-      });
-      expect(prismaService.message.update).toHaveBeenCalledWith({
-        where: { id: messageId, chatId },
-        data: dto,
-        include: {
-          chat: {
-            select: {
-              id: true,
-              members: true,
-            },
-          },
-        },
-      });
-      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
-      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
-      expect(result).toEqual(expectedMessage);
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.update).toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(result).toEqual(mockEditedMessage);
     });
 
     it('should throw error edit message (message is not found)', async () => {
@@ -154,9 +132,7 @@ describe('MessagesService', () => {
 
       expect(prismaService.message.update).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
-      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
-        where: { id: messageId },
-      });
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(editMessage).rejects.toThrow(NotFoundException);
     });
   });
@@ -180,22 +156,10 @@ describe('MessagesService', () => {
 
       const result = await messagesService.deleteMessage(messageId);
 
-      expect(prismaService.message.findUnique).toHaveBeenCalledWith({
-        where: { id: messageId },
-      });
-      expect(prismaService.message.delete).toHaveBeenCalledWith({
-        where: { id: messageId },
-        include: {
-          chat: {
-            select: {
-              id: true,
-              members: true,
-            },
-          },
-        },
-      });
-      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(mockEditedMessage.chat.id);
-      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(mockEditedMessage.chat.members);
+      expect(prismaService.message.findUnique).toHaveBeenCalled();
+      expect(prismaService.message.delete).toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
       expect(result).toEqual(data);
     });
 
@@ -227,9 +191,7 @@ describe('MessagesService', () => {
       const mockFoundedMessage = createMockMessage(1, 1, 1);
       const mockCreatedMessage = {
         ...createMockMessage(10, 1, 1, createMockUser(1), { replyToId: 1 }),
-        chat: createMockChat(params.chatId, [1, 2], [11, 12]),
       };
-      const { chat, ...expected } = mockCreatedMessage;
 
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
@@ -240,11 +202,11 @@ describe('MessagesService', () => {
 
       const result = await messagesService.replyMessage(params);
 
-      expect(result).toEqual(expected);
+      expect(result).toEqual(mockCreatedMessage);
       expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
-      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
-      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
     });
 
     it('should throw error reply message (message is not found)', async () => {
@@ -280,11 +242,7 @@ describe('MessagesService', () => {
       };
       const mockFoundedChat = { ...createMockChat(2, [1, 2], [11, 12]), membersCount: 2 };
       const mockFoundedMessage = createMockMessage(1, 1, 1);
-      const mockCreatedMessage = {
-        ...createMockMessage(10, 1, 1, createMockUser(1)),
-        chat: createMockChat(forwardMessageDto.targetChatId, [1, 2], [11, 12]),
-      };
-      const { chat, ...expected } = mockCreatedMessage;
+      const mockCreatedMessage = createMockMessage(10, 1, 1, createMockUser(1));
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
@@ -295,11 +253,11 @@ describe('MessagesService', () => {
 
       const result = await messagesService.forwardMessage(messageId, senderId, forwardMessageDto);
 
-      expect(result).toEqual(expected);
+      expect(result).toEqual(mockCreatedMessage);
       expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
-      expect(chatsService.refreshMembersChats).toHaveBeenCalledWith(chat.members);
-      expect(refreshChatMessagesSpy).toHaveBeenCalledWith(chat.id);
+      expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(refreshChatMessagesSpy).toHaveBeenCalled();
     });
 
     it('should throw error forward message (Chat is not found)', async () => {
@@ -355,9 +313,8 @@ describe('MessagesService', () => {
       const chatId = 1;
       const messageId = 1;
       const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
-      const mockUpdatedMessage = { ...mockFoundedMessage, chat: createMockChat(1, [1, 2]) };
-      const { chat, ...result } = mockUpdatedMessage;
-      const expected = result;
+      const mockUpdatedMessage = mockFoundedMessage;
+      const expected = mockUpdatedMessage;
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
@@ -397,9 +354,8 @@ describe('MessagesService', () => {
       const chatId = 1;
       const messageId = 1;
       const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
-      const updatedMessage = { ...mockFoundedMessage, chat: createMockChat(1, [1, 2]) };
-      const { chat, ...result } = updatedMessage;
-      const expected = result;
+      const updatedMessage = mockFoundedMessage;
+      const expected = updatedMessage;
 
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')

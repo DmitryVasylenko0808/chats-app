@@ -63,21 +63,12 @@ export class MessagesService {
 
     const message = await this.prismaService.message.create({
       data: { chatId, senderId, ...dto, images: imageFiles.map((img) => img.filename) },
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
-    const { chat, ...messageData } = message;
 
-    await this.refreshChatMessages(chat.id);
-    await this.chatsService.refreshMembersChats(chat.members);
+    await this.refreshChatMessages(message.chatId);
+    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
 
-    return messageData;
+    return message;
   }
 
   async editMessage(chatId: number, messageId: number, dto: EditMessageDto) {
@@ -86,21 +77,12 @@ export class MessagesService {
     const message = await this.prismaService.message.update({
       where: { id: messageId, chatId },
       data: dto,
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
-    const { chat, ...messageData } = message;
 
-    await this.refreshChatMessages(chat.id);
-    await this.chatsService.refreshMembersChats(chat.members);
+    await this.refreshChatMessages(message.chatId);
+    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
 
-    return messageData;
+    return message;
   }
 
   async deleteMessage(id: number) {
@@ -117,10 +99,9 @@ export class MessagesService {
         },
       },
     });
-    const { chat } = deletedMessage;
 
-    await this.refreshChatMessages(chat.id);
-    await this.chatsService.refreshMembersChats(chat.members);
+    await this.refreshChatMessages(deletedMessage.chatId);
+    await this.chatsService.refreshMembersChats({ chatId: deletedMessage.chatId });
 
     return { message: 'Message is deleted' };
   }
@@ -140,12 +121,11 @@ export class MessagesService {
         },
       },
     });
-    const { chat, ...reply } = message;
 
-    await this.refreshChatMessages(chatId);
-    await this.chatsService.refreshMembersChats(chat.members);
+    await this.refreshChatMessages(message.chatId);
+    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
 
-    return reply;
+    return message;
   }
 
   async forwardMessage(messageId: number, senderId: number, dto: ForwardMessageDto) {
@@ -159,21 +139,12 @@ export class MessagesService {
         text: dto.text,
         forwardedMessageId: messageId,
       },
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
-    const { chat, ...result } = message;
 
-    await this.refreshChatMessages(chat.id);
-    await this.chatsService.refreshMembersChats(chat.members);
+    await this.refreshChatMessages(message.chatId);
+    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
 
-    return result;
+    return message;
   }
 
   async pinMessage(chatId: number, messageId: number) {
@@ -187,20 +158,11 @@ export class MessagesService {
     const pinnedMessage = await this.prismaService.message.update({
       where: { id: messageId },
       data: { isPinned: true },
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
-    const { chat, ...result } = pinnedMessage;
 
-    await this.refreshChatMessages(chat.id);
+    await this.refreshChatMessages(pinnedMessage.chatId);
 
-    return result;
+    return pinnedMessage;
   }
 
   async unpinMessage(chatId: number, messageId: number) {
@@ -209,20 +171,11 @@ export class MessagesService {
     const unpinnedMessage = await this.prismaService.message.update({
       where: { id: messageId },
       data: { isPinned: false },
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
-    const { chat, ...result } = unpinnedMessage;
 
-    await this.refreshChatMessages(chatId);
+    await this.refreshChatMessages(unpinnedMessage.chatId);
 
-    return result;
+    return unpinnedMessage;
   }
 
   async refreshChatMessages(chatId: number) {
