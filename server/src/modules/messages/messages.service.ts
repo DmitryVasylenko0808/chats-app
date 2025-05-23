@@ -1,3 +1,5 @@
+import { Reaction } from '@prisma/client';
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
@@ -49,13 +51,20 @@ export class MessagesService {
             },
           },
         },
+        reactions: true,
       },
       orderBy: {
         createdAt: 'asc',
       },
     });
 
-    return messages;
+    return messages.map((m) => ({
+      ...m,
+      reactions: m.reactions.reduce(
+        (acc, curr) => ({ ...acc, [curr.emoji]: acc[curr.emoji] ? acc[curr.emoji]++ : 1 }),
+        {}
+      ),
+    }));
   }
 
   async sendMessage(params: SendMessageParams) {
@@ -184,7 +193,7 @@ export class MessagesService {
     this.chatsGateway.emitUpdateMessages(chatId, messages);
   }
 
-  private async findMessageByIdOrThrow(id: number) {
+  async findMessageByIdOrThrow(id: number) {
     const existedMessage = await this.prismaService.message.findUnique({
       where: { id },
     });

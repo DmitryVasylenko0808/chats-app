@@ -47,15 +47,17 @@ describe('MessagesService', () => {
     it('should find messages by chat id', async () => {
       const chatId = 1;
       const messages = [
-        createMockMessage(19, chatId, 1, createMockUser(1)),
-        createMockMessage(20, chatId, 2, createMockUser(2)),
+        { ...createMockMessage(19, chatId, 1, createMockUser(1)), reactions: [] },
+        { ...createMockMessage(20, chatId, 2, createMockUser(2)), reactions: [] },
       ];
+      const expectedResult = messages.map((m) => ({ ...m, reactions: {} }));
+
       prismaService.message.findMany.mockResolvedValueOnce(messages);
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
       expect(prismaService.message.findMany).toHaveBeenCalled();
-      expect(result).toStrictEqual(messages);
+      expect(result).toStrictEqual(expectedResult);
     });
 
     it('should not find messages by chat id', async () => {

@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ChatsModule } from './modules/chats/chats.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import { ReactionsModule } from './modules/reactions/reactions.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     ChatsModule,
     MessagesModule,
+    ReactionsModule,
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: LoggingInterceptor }],
 })

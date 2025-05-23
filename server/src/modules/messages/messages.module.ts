@@ -9,5 +9,6 @@ import { MessagesService } from './messages.service';
   imports: [PrismaModule, ChatsModule],
   providers: [MessagesService],
   controllers: [MessagesController],
+  exports: [MessagesService],
 })
 export class MessagesModule {}

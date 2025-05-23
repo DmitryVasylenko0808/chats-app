@@ -18,4 +18,5 @@ export const createMockMessage = (
   createdAt: new Date(),
   updatedAt: new Date(),
   sender,
+  ...overrides,
 });
