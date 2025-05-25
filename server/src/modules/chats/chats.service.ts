@@ -4,6 +4,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from './chats.gateway';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { ChatPreview } from './types/chat-preview';
 import { UserChatRooms } from './types/chat-room';
 import { RefreshChatMember, RefreshMembersChatParams } from './types/refresh-members-chats-params';
 
@@ -32,11 +33,7 @@ export class ChatsService {
       },
     });
 
-    const data = chats
-      .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
-      .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
-
-    return data;
+    return this.sortChatsByLastMessage(chats);
   }
 
   async findOneChatOrThrow(id: number) {
@@ -134,7 +131,15 @@ export class ChatsService {
 
     const membersIds = members.map((m) => m.id);
 
-    const chats = await this.prismaService.chat.findMany({
+    const chats = await this.findChatsByMembers(membersIds);
+    const sortedChats = this.sortChatsByLastMessage(chats);
+    const chatsByMemberId: UserChatRooms = this.groupChatsByMember(membersIds, sortedChats);
+
+    this.chatsGateway.emitUpdateChats(chatsByMemberId);
+  }
+
+  private async findChatsByMembers(membersIds: number[]) {
+    return await this.prismaService.chat.findMany({
       where: {
         members: {
           some: {
@@ -154,21 +159,19 @@ export class ChatsService {
         },
       },
     });
+  }
 
-    const formattedChats = chats
+  private sortChatsByLastMessage(chats: ChatPreview[]) {
+    return chats
       .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
       .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
+  }
 
-    const chatsByMemberId: UserChatRooms = membersIds.reduce((acc, currId) => {
-      const memberChats = formattedChats.filter((item) =>
-        item.members.map((m) => m.id).includes(currId)
-      );
+  private groupChatsByMember(membersIds: number[], chats: ChatPreview[]) {
+    return membersIds.reduce((acc, currId) => {
+      const memberChats = chats.filter((item) => item.members.map((m) => m.id).includes(currId));
 
       return { ...acc, [currId]: memberChats };
     }, {});
-
-    this.chatsGateway.emitUpdateChats(chatsByMemberId);
-
-    return chatsByMemberId;
   }
 }
