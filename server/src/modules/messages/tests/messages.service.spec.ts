@@ -50,14 +50,13 @@ describe('MessagesService', () => {
         { ...createMockMessage(19, chatId, 1, createMockUser(1)), reactions: [] },
         { ...createMockMessage(20, chatId, 2, createMockUser(2)), reactions: [] },
       ];
-      const expectedResult = messages.map((m) => ({ ...m, reactions: {} }));
 
       prismaService.message.findMany.mockResolvedValueOnce(messages);
 
       const result = await messagesService.findMessagesByChatId(chatId);
 
       expect(prismaService.message.findMany).toHaveBeenCalled();
-      expect(result).toStrictEqual(expectedResult);
+      expect(result).toStrictEqual(messages);
     });
 
     it('should not find messages by chat id', async () => {
@@ -143,17 +142,13 @@ describe('MessagesService', () => {
     it('should delete message', async () => {
       const messageId = 1;
       const mockFoundedMessage = createMockMessage(messageId, 1, 1);
-      const mockEditedMessage = {
-        ...mockFoundedMessage,
-        chat: createMockChat(1, [1, 2]),
-      };
-      const data = { message: 'Message is deleted' };
+      const mockDeletedMessage = mockFoundedMessage;
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
 
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
-      prismaService.message.delete.mockResolvedValueOnce(mockEditedMessage);
+      prismaService.message.delete.mockResolvedValueOnce(mockDeletedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
 
       const result = await messagesService.deleteMessage(messageId);
@@ -162,7 +157,7 @@ describe('MessagesService', () => {
       expect(prismaService.message.delete).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).toHaveBeenCalled();
-      expect(result).toEqual(data);
+      expect(result).toEqual(mockDeletedMessage);
     });
 
     it('should throw error delete message (message not found)', async () => {

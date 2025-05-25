@@ -1,14 +1,25 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
 
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
+import { UserEntity, UserGroup } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { SignInUserDto } from './dto/sing-in.user.dto';
 
 @Controller('auth')
+@SerializeOptions({ groups: [UserGroup.USER_DETAILS] })
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -17,7 +28,8 @@ export class AuthController {
 
   @Post('register')
   async registerUser(@Body() dto: RegisterUserDto) {
-    return await this.authService.registerUser(dto);
+    const user = await this.authService.registerUser(dto);
+    return new UserEntity(user);
   }
 
   @Post('sign-in')
@@ -29,6 +41,7 @@ export class AuthController {
   @Get('me')
   @UseGuards(PrivateAuthGuard)
   async getMe(@CurrentUser('id') id: number) {
-    return await this.userService.findUserOrThrow(id);
+    const user = await this.userService.findUserOrThrow(id);
+    return new UserEntity(user);
   }
 }

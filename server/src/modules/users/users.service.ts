@@ -20,10 +20,6 @@ export class UsersService {
           mode: 'insensitive',
         },
       },
-      omit: {
-        password: true,
-        description: true,
-      },
     });
 
     return users;
@@ -32,7 +28,6 @@ export class UsersService {
   async findUserOrThrow(id: number) {
     const user = await this.prismaService.user.findUnique({
       where: { id },
-      omit: { password: true },
     });
 
     if (!user) {
@@ -56,12 +51,9 @@ export class UsersService {
         avatar: 'placeholder.jpg',
         ...dto,
       },
-      omit: {
-        password: true,
-      },
     });
 
-    return { data: user, message: 'User is successfully created' };
+    return user;
   }
 
   async updateUser(id: number, dto: UpdateUserDto, avatar?: string) {
@@ -75,20 +67,19 @@ export class UsersService {
         ...dto,
         avatar,
       },
-      omit: { password: true },
     });
 
-    return { data: updatedUser, message: 'User is successfully updated' };
+    return updatedUser;
   }
 
   async deleteUser(id: number) {
     await this.findUserOrThrow(id);
 
-    await this.prismaService.user.delete({
+    const deletedUser = await this.prismaService.user.delete({
       where: { id },
     });
 
-    return { message: 'User is successfully deleted' };
+    return deletedUser;
   }
 
   async checkOtherUsersWithUsername(username: string, exceptUserId?: number) {

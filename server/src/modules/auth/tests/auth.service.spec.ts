@@ -46,14 +46,8 @@ describe('AuthService', () => {
 
     it('should register user', async () => {
       const hashedPassword = 'password-hashed';
-      const mockCreateUserResult = {
-        data: createMockUser(4, dto),
-        message: 'User is successfully created',
-      };
-      const expectedResult = {
-        data: mockCreateUserResult.data,
-        message: 'Registering has been successfully proceed',
-      };
+      const mockCreateUserResult = createMockUser(4, dto);
+      const expectedResult = mockCreateUserResult;
       const bcryptSpy = jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashedPassword as never);
       usersService.checkOtherUsersWithUsername.mockResolvedValueOnce();
       usersService.checkOtherUsersWithEmail.mockResolvedValueOnce();

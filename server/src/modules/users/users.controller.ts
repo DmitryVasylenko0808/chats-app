@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Query,
+  SerializeOptions,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -17,11 +18,14 @@ import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { multerOptions } from '@/common/storage/multer.config';
 
 import { ChatsService } from '../chats/chats.service';
+import { ChatEntity } from '../chats/entities/chat.entity';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { UserEntity, UserGroup } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
 @UseGuards(PrivateAuthGuard)
+@SerializeOptions({ groups: [UserGroup.USER_DETAILS] })
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -29,13 +33,16 @@ export class UsersController {
   ) {}
 
   @Get()
-  async findUsers(@Query('search') search: string) {
-    return await this.usersService.findUsers(search);
+  @SerializeOptions({ groups: [] })
+  async findUsers(@Query('search') search: string): Promise<UserEntity[]> {
+    const users = await this.usersService.findUsers(search);
+    return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
   async findUser(@Param('id', ParseIntPipe) id: number) {
-    return await this.usersService.findUserOrThrow(id);
+    const user = await this.usersService.findUserOrThrow(id);
+    return new UserEntity(user);
   }
 
   @Patch(':id')
@@ -45,16 +52,19 @@ export class UsersController {
     @Body() dto: UpdateUserDto,
     @UploadedFile() avatarFile?: Express.Multer.File
   ) {
-    return await this.usersService.updateUser(id, dto, avatarFile?.filename);
+    const user = await this.usersService.updateUser(id, dto, avatarFile?.filename);
+    return new UserEntity(user);
   }
 
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    return await this.usersService.deleteUser(id);
+    const user = await this.usersService.deleteUser(id);
+    return new UserEntity(user);
   }
 
   @Get(':id/chats')
   async findUserChats(@Param('id', ParseIntPipe) id: number) {
-    return await this.chatsService.findChats(id);
+    const chats = await this.chatsService.findChats(id);
+    return chats.map((c) => new ChatEntity(c));
   }
 }

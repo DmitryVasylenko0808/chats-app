@@ -22,12 +22,7 @@ export class ChatsService {
         },
       },
       include: {
-        members: {
-          omit: {
-            password: true,
-            description: true,
-          },
-        },
+        members: true,
         messages: {
           orderBy: {
             createdAt: 'desc',
@@ -48,11 +43,7 @@ export class ChatsService {
     const chat = await this.prismaService.chat.findUnique({
       where: { id },
       include: {
-        members: {
-          omit: {
-            password: true,
-          },
-        },
+        members: true,
       },
     });
 
@@ -60,9 +51,7 @@ export class ChatsService {
       throw new NotFoundException('Chat is not found');
     }
 
-    const data = { ...chat, membersCount: chat.members.length };
-
-    return data;
+    return chat;
   }
 
   async createChat(dto: CreateChatDto) {
@@ -104,7 +93,7 @@ export class ChatsService {
 
     await this.refreshMembersChats({ members: deletedChat.members });
 
-    return { message: 'Chat is deleted' };
+    return deletedChat;
   }
 
   private async checkChatExists(membersIds: number[]) {
@@ -126,12 +115,7 @@ export class ChatsService {
         ],
       },
       include: {
-        members: {
-          omit: {
-            password: true,
-            description: true,
-          },
-        },
+        members: true,
       },
     });
 
@@ -161,12 +145,7 @@ export class ChatsService {
         },
       },
       include: {
-        members: {
-          omit: {
-            password: true,
-            description: true,
-          },
-        },
+        members: true,
         messages: {
           orderBy: {
             createdAt: 'desc',

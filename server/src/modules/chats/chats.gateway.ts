@@ -9,6 +9,8 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 
+import { MessageEntity } from '../messages/entities/message.entity';
+import { ChatEntity } from './entities/chat.entity';
 import { UserChatRooms } from './types/chat-room';
 
 @WebSocketGateway({ cors: '*' })
@@ -48,12 +50,15 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     Object.entries(chatsByMemberId).forEach(([userId, chats]) => {
       const client = this.userSocketsMap.get(userId);
 
-      client?.emit('chats:update', chats);
+      client?.emit(
+        'chats:update',
+        chats.map((c) => new ChatEntity(c))
+      );
     });
   }
 
   emitUpdateMessages(chatId: number, messages: Message[]) {
-    const data = { chatId, messages };
+    const data = { chatId, messages: messages.map((m) => new MessageEntity(m)) };
 
     this.socket.to(chatId.toString()).emit('messages:update', data);
   }

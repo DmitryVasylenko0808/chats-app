@@ -20,14 +20,12 @@ export class AuthService {
     await this.usersService.checkOtherUsersWithUsername(dto.username);
     await this.usersService.checkOtherUsersWithEmail(dto.email);
 
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
-    const createUserData: CreateUserDto = {
+    const registeredUser = await this.usersService.createUser({
       ...dto,
-      password: hashedPassword,
-    };
-    const registeredUser = await this.usersService.createUser(createUserData);
+      password: await bcrypt.hash(dto.password, 10),
+    });
 
-    return { data: registeredUser.data, message: 'Registering has been successfully proceed' };
+    return registeredUser;
   }
 
   async signInUser(dto: SignInUserDto) {

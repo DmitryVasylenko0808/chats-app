@@ -73,8 +73,8 @@ describe('ChatsService', () => {
     const chatId = 1;
 
     it('should find chat by id', async () => {
-      const mockFoundedChat = createMockChat(1, [1, 2]);
-      const expectedResult = { ...mockFoundedChat, membersCount: mockFoundedChat.members.length };
+      const mockFoundedChat = createMockChat(chatId, [1, 2]);
+      const expectedResult = mockFoundedChat;
       prismaService.chat.findUnique.mockResolvedValueOnce(mockFoundedChat);
 
       const result = await chatsService.findOneChatOrThrow(chatId);
@@ -139,9 +139,8 @@ describe('ChatsService', () => {
   describe('deleteChat', () => {
     it('should delete chat by id', async () => {
       const id = 1;
-      const mockFoundedChat = { ...createMockChat(1, [1, 2]), membersCount: 2 };
-      const mockDeletedChat = createMockChat(1, [1, 2]);
-      const expectMessage = { message: 'Chat is deleted' };
+      const mockFoundedChat = createMockChat(1, [1, 2]);
+      const mockDeletedChat = mockFoundedChat;
       const findOneChatOrThrowSpy = jest
         .spyOn(chatsService, 'findOneChatOrThrow')
         .mockResolvedValueOnce(mockFoundedChat);
@@ -156,7 +155,7 @@ describe('ChatsService', () => {
       expect(findOneChatOrThrowSpy).toHaveBeenCalled();
       expect(prismaService.chat.delete).toHaveBeenCalled();
       expect(refreshMembersChatsSpy).toHaveBeenCalled();
-      expect(result).toEqual(expectMessage);
+      expect(result).toEqual(mockDeletedChat);
     });
 
     it('should throw error delete chat by id (chat is not found)', async () => {

@@ -13,6 +13,7 @@ import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { ChatEntity } from './entities/chat.entity';
 
 @Controller('chats')
 @UseGuards(PrivateAuthGuard)
@@ -21,16 +22,19 @@ export class ChatsController {
 
   @Get(':id')
   async findOneChat(@Param('id', ParseIntPipe) id: number) {
-    return await this.chatsService.findOneChatOrThrow(id);
+    const chat = await this.chatsService.findOneChatOrThrow(id);
+    return new ChatEntity(chat);
   }
 
   @Post()
   async createChat(@Body() dto: CreateChatDto) {
-    return await this.chatsService.createChat(dto);
+    const chat = await this.chatsService.createChat(dto);
+    return new ChatEntity(chat);
   }
 
   @Delete(':id')
   async deleteChat(@Param('id', ParseIntPipe) id: number) {
-    return await this.chatsService.deleteChat(id);
+    const chat = await this.chatsService.deleteChat(id);
+    return new ChatEntity(chat);
   }
 }

@@ -1,5 +1,3 @@
-import { Reaction } from '@prisma/client';
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
@@ -25,30 +23,15 @@ export class MessagesService {
         chatId,
       },
       include: {
-        sender: {
-          omit: {
-            password: true,
-            description: true,
-          },
-        },
+        sender: true,
         replyToMessage: {
           include: {
-            sender: {
-              omit: {
-                password: true,
-                description: true,
-              },
-            },
+            sender: true,
           },
         },
         forwardedMessage: {
           include: {
-            sender: {
-              omit: {
-                password: true,
-                description: true,
-              },
-            },
+            sender: true,
           },
         },
         reactions: true,
@@ -58,13 +41,7 @@ export class MessagesService {
       },
     });
 
-    return messages.map((m) => ({
-      ...m,
-      reactions: m.reactions.reduce(
-        (acc, curr) => ({ ...acc, [curr.emoji]: acc[curr.emoji] ? acc[curr.emoji]++ : 1 }),
-        {}
-      ),
-    }));
+    return messages;
   }
 
   async sendMessage(params: SendMessageParams) {
@@ -99,20 +76,12 @@ export class MessagesService {
 
     const deletedMessage = await this.prismaService.message.delete({
       where: { id },
-      include: {
-        chat: {
-          select: {
-            id: true,
-            members: true,
-          },
-        },
-      },
     });
 
     await this.refreshChatMessages(deletedMessage.chatId);
     await this.chatsService.refreshMembersChats({ chatId: deletedMessage.chatId });
 
-    return { message: 'Message is deleted' };
+    return deletedMessage;
   }
 
   async replyMessage(params: ReplyMessageParams) {
@@ -122,13 +91,6 @@ export class MessagesService {
 
     const message = await this.prismaService.message.create({
       data: { replyToId, chatId, senderId, ...dto },
-      include: {
-        chat: {
-          select: {
-            members: true,
-          },
-        },
-      },
     });
 
     await this.refreshChatMessages(message.chatId);

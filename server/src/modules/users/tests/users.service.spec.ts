@@ -118,17 +118,13 @@ describe('UsersService', () => {
         email: 'test-email@mail.com',
         password: 'test-password',
       };
-      const expectedResult = {
-        data: createMockUser(4),
-        message: 'User is successfully created',
-      };
-      prismaService.user.create.mockResolvedValueOnce(expectedResult.data);
+      const expectedResult = createMockUser(4);
+      prismaService.user.create.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.createUser(dto);
 
       expect(result).toBeTruthy();
-      expect(result.data).toEqual(expectedResult.data);
-      expect(result.message).toBe(expectedResult.message);
+      expect(result).toEqual(expectedResult);
     });
   });
 
@@ -142,19 +138,15 @@ describe('UsersService', () => {
     };
 
     it('should update user', async () => {
-      const expectedResult = {
-        data: createMockUser(1, dto),
-        messsage: 'User is successfully updated',
-      };
-      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
+      const expectedResult = createMockUser(1, dto);
+      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
       prismaService.user.findFirst.mockResolvedValue(null);
-      prismaService.user.update.mockResolvedValueOnce(expectedResult.data);
+      prismaService.user.update.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.updateUser(id, dto);
 
       expect(result).toBeTruthy();
-      expect(result.data).toEqual(expectedResult.data);
-      expect(result.message).toBe(expectedResult.messsage);
+      expect(result).toEqual(expectedResult);
     });
 
     it('should throw error update user (not found)', async () => {
@@ -189,14 +181,14 @@ describe('UsersService', () => {
   describe('deleteUser', () => {
     it('should delete user by id', async () => {
       const id = 1;
-      const expectedResult = { message: 'User is successfully deleted' };
-      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
-      prismaService.user.delete.mockResolvedValue({ id: 1 } as User);
+      const expectedResult = createMockUser(id);
+      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+      prismaService.user.delete.mockResolvedValue(expectedResult);
 
       const result = await usersService.deleteUser(id);
 
       expect(result).toBeTruthy();
-      expect(result.message).toBe(expectedResult.message);
+      expect(result).toBe(expectedResult);
     });
 
     it('should throw error delete user by id (user not found)', async () => {

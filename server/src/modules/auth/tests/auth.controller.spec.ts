@@ -3,6 +3,8 @@ import { DeepMockProxy, mockDeep } from 'jest-mock-extended';
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { createMockUser } from '@/common/test-utils/factories/user.factory';
+
 import { UsersService } from '@/modules/users/users.service';
 
 import { AuthController } from '../auth.controller';
@@ -42,19 +44,7 @@ describe('AuthController', () => {
     };
 
     it('should register user', async () => {
-      const expectedResult = {
-        data: {
-          name: dto.name,
-          username: dto.username,
-          email: dto.email,
-          id: 1,
-          description: null,
-          avatar: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        message: 'Registering has been successfully proceed',
-      };
+      const expectedResult = createMockUser(1, { ...dto });
       authService.registerUser.mockResolvedValueOnce(expectedResult);
 
       const result = await authController.registerUser(dto);
