@@ -1,6 +1,6 @@
 import { Message } from '@prisma/client';
 
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform, Type } from 'class-transformer';
 
 import { ReactionEntity } from '@/modules/reactions/entities/reaction.entity';
 import { UserEntity } from '@/modules/users/entities/user.entity';
@@ -10,7 +10,10 @@ export class MessageEntity implements Message {
   senderId: number;
   chatId: number;
   text: string;
+
+  @Transform(({ value }) => value?.map((v) => `${process.env.SERVER_UPLOADS_URL}/${v}`))
   images: string[];
+
   isPinned: boolean;
   replyToId: number;
   forwardedMessageId: number;
