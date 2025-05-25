@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 
 export enum UserGroup {
   USER_DETAILS = 'user_details',
@@ -21,6 +21,7 @@ export class UserEntity implements User {
   @Expose({ groups: [UserGroup.USER_DETAILS] })
   description: string | null;
 
+  @Transform(({ value }) => `${process.env.SERVER_UPLOADS_URL}/${value}`)
   avatar: string | null;
 
   createdAt: Date;
