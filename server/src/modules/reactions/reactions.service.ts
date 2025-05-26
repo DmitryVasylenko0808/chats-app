@@ -15,19 +15,10 @@ export class ReactionsService {
 
     const reaction = await this.prismaService.reaction.upsert({
       where: {
-        userId_messageId: {
-          messageId,
-          userId,
-        },
+        userId_messageId: { messageId, userId },
       },
-      create: {
-        userId,
-        messageId,
-        emoji,
-      },
-      update: {
-        emoji,
-      },
+      create: { userId, messageId, emoji },
+      update: { emoji },
     });
 
     await this.messagesService.refreshChatMessages(message.chatId);

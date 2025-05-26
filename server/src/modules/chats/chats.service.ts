@@ -25,9 +25,7 @@ export class ChatsService {
       include: {
         members: true,
         messages: {
-          orderBy: {
-            createdAt: 'desc',
-          },
+          orderBy: { createdAt: 'desc' },
           take: 1,
         },
       },
@@ -39,9 +37,7 @@ export class ChatsService {
   async findOneChatOrThrow(id: number) {
     const chat = await this.prismaService.chat.findUnique({
       where: { id },
-      include: {
-        members: true,
-      },
+      include: { members: true },
     });
 
     if (!chat) {
@@ -68,9 +64,7 @@ export class ChatsService {
           connect: dto.membersIds.map((m) => ({ id: m })),
         },
       },
-      include: {
-        members: true,
-      },
+      include: { members: true },
     });
 
     await this.refreshMembersChats({ chatId: createdChat.id });
@@ -83,9 +77,7 @@ export class ChatsService {
 
     const deletedChat = await this.prismaService.chat.delete({
       where: { id },
-      include: {
-        members: true,
-      },
+      include: { members: true },
     });
 
     await this.refreshMembersChats({ members: deletedChat.members });
@@ -111,9 +103,7 @@ export class ChatsService {
           },
         ],
       },
-      include: {
-        members: true,
-      },
+      include: { members: true },
     });
 
     return chat;
@@ -143,18 +133,14 @@ export class ChatsService {
       where: {
         members: {
           some: {
-            id: {
-              in: membersIds,
-            },
+            id: { in: membersIds },
           },
         },
       },
       include: {
         members: true,
         messages: {
-          orderBy: {
-            createdAt: 'desc',
-          },
+          orderBy: { createdAt: 'desc' },
           take: 1,
         },
       },

@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -29,18 +30,30 @@ export class AuthService {
   }
 
   async signInUser(dto: SignInUserDto) {
-    const user = await this.usersService.findUserByUsername(dto.username);
+    const { username, password } = dto;
+
+    const user = await this.validateUser(username, password);
+
+    return await this.generateAccessToken(user);
+  }
+
+  private async validateUser(username: string, password: string) {
+    const user = await this.usersService.findUserByUsername(username);
 
     if (!user) {
       throw new BadRequestException('Invalid username or password');
     }
 
-    const isValidPass = await bcrypt.compare(dto.password, user.password);
+    const isValidPass = await bcrypt.compare(password, user.password);
 
     if (!isValidPass) {
       throw new BadRequestException('Invalid username or password');
     }
 
+    return user;
+  }
+
+  private async generateAccessToken(user: User) {
     const tokenPayload: AccessTokenPayload = { id: user.id };
     const accessToken = await this.jwtService.signAsync(tokenPayload);
 

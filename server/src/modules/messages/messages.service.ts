@@ -18,30 +18,20 @@ export class MessagesService {
   ) {}
 
   async findMessagesByChatId(chatId: number) {
-    const messages = await this.prismaService.message.findMany({
-      where: {
-        chatId,
-      },
+    return await this.prismaService.message.findMany({
+      where: { chatId },
       include: {
         sender: true,
         replyToMessage: {
-          include: {
-            sender: true,
-          },
+          include: { sender: true },
         },
         forwardedMessage: {
-          include: {
-            sender: true,
-          },
+          include: { sender: true },
         },
         reactions: true,
       },
-      orderBy: {
-        createdAt: 'asc',
-      },
+      orderBy: { createdAt: 'asc' },
     });
-
-    return messages;
   }
 
   async sendMessage(params: SendMessageParams) {
