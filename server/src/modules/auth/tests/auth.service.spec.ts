@@ -49,8 +49,8 @@ describe('AuthService', () => {
       const mockCreateUserResult = createMockUser(4, dto);
       const expectedResult = mockCreateUserResult;
       const bcryptSpy = jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashedPassword as never);
-      usersService.checkOtherUsersWithUsername.mockResolvedValueOnce();
-      usersService.checkOtherUsersWithEmail.mockResolvedValueOnce();
+      usersService.verifyUsernameNotTaken.mockResolvedValueOnce();
+      usersService.verifyEmailNotTaken.mockResolvedValueOnce();
       usersService.createUser.mockResolvedValueOnce(mockCreateUserResult);
 
       const result = await authService.registerUser(dto);
@@ -61,7 +61,7 @@ describe('AuthService', () => {
     });
 
     it('should throw error register user (username is already exists)', async () => {
-      usersService.checkOtherUsersWithUsername.mockRejectedValueOnce(new BadRequestException());
+      usersService.verifyUsernameNotTaken.mockRejectedValueOnce(new BadRequestException());
 
       const registerUser = authService.registerUser(dto);
 
@@ -69,8 +69,8 @@ describe('AuthService', () => {
     });
 
     it('should throw error register user (email is already exists)', async () => {
-      usersService.checkOtherUsersWithUsername.mockResolvedValueOnce();
-      usersService.checkOtherUsersWithEmail.mockRejectedValueOnce(new BadRequestException());
+      usersService.verifyUsernameNotTaken.mockResolvedValueOnce();
+      usersService.verifyEmailNotTaken.mockRejectedValueOnce(new BadRequestException());
 
       const registerUser = authService.registerUser(dto);
 

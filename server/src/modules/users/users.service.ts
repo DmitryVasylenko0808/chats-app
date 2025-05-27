@@ -58,8 +58,8 @@ export class UsersService {
 
   async updateUser(id: number, dto: UpdateUserDto, avatar?: string) {
     await this.findUserOrThrow(id);
-    await this.checkOtherUsersWithUsername(dto.username, id);
-    await this.checkOtherUsersWithEmail(dto.email, id);
+    await this.verifyUsernameNotTaken(dto.username, id);
+    await this.verifyEmailNotTaken(dto.email, id);
 
     const updatedUser = await this.prismaService.user.update({
       where: { id },
@@ -82,7 +82,7 @@ export class UsersService {
     return deletedUser;
   }
 
-  async checkOtherUsersWithUsername(username: string, exceptUserId?: number) {
+  async verifyUsernameNotTaken(username: string, exceptUserId?: number) {
     const userWithUsername = await this.prismaService.user.findFirst({
       where: {
         id: { not: exceptUserId },
@@ -95,7 +95,7 @@ export class UsersService {
     }
   }
 
-  async checkOtherUsersWithEmail(email: string, exceptUserId?: number) {
+  async verifyEmailNotTaken(email: string, exceptUserId?: number) {
     const userWithEmail = await this.prismaService.user.findFirst({
       where: {
         id: { not: exceptUserId },

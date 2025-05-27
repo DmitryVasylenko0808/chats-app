@@ -18,8 +18,8 @@ export class AuthService {
   ) {}
 
   async registerUser(dto: RegisterUserDto) {
-    await this.usersService.checkOtherUsersWithUsername(dto.username);
-    await this.usersService.checkOtherUsersWithEmail(dto.email);
+    await this.usersService.verifyUsernameNotTaken(dto.username);
+    await this.usersService.verifyEmailNotTaken(dto.email);
 
     const registeredUser = await this.usersService.createUser({
       ...dto,

@@ -52,7 +52,7 @@ export class ChatsService {
       throw new BadRequestException('Chat must contain only 2 members');
     }
 
-    const chat = await this.checkChatExists(dto.membersIds);
+    const chat = await this.findExistingChatBetweenUsers(dto.membersIds);
 
     if (chat) {
       return chat;
@@ -85,30 +85,6 @@ export class ChatsService {
     return deletedChat;
   }
 
-  private async checkChatExists(membersIds: number[]) {
-    const [firstUserId, secondUserId] = membersIds;
-
-    const chat = await this.prismaService.chat.findFirst({
-      where: {
-        AND: [
-          {
-            members: {
-              some: { id: firstUserId },
-            },
-          },
-          {
-            members: {
-              some: { id: secondUserId },
-            },
-          },
-        ],
-      },
-      include: { members: true },
-    });
-
-    return chat;
-  }
-
   async refreshMembersChats(params: RefreshMembersChatParams) {
     let members: RefreshChatMember[];
 
@@ -123,7 +99,7 @@ export class ChatsService {
 
     const chats = await this.findChatsByMembers(membersIds);
     const sortedChats = this.sortChatsByLastMessage(chats);
-    const chatsByMemberId: UserChatRooms = this.groupChatsByMember(membersIds, sortedChats);
+    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
 
     this.chatsGateway.emitUpdateChats(chatsByMemberId);
   }
@@ -147,13 +123,35 @@ export class ChatsService {
     });
   }
 
+  private async findExistingChatBetweenUsers(membersIds: number[]) {
+    const [firstUserId, secondUserId] = membersIds;
+
+    return await this.prismaService.chat.findFirst({
+      where: {
+        AND: [
+          {
+            members: {
+              some: { id: firstUserId },
+            },
+          },
+          {
+            members: {
+              some: { id: secondUserId },
+            },
+          },
+        ],
+      },
+      include: { members: true },
+    });
+  }
+
   private sortChatsByLastMessage(chats: ChatPreview[]) {
     return chats
       .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
       .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
   }
 
-  private groupChatsByMember(membersIds: number[], chats: ChatPreview[]) {
+  private groupChatsByMember(membersIds: number[], chats: ChatPreview[]): UserChatRooms {
     return membersIds.reduce((acc, currId) => {
       const memberChats = chats.filter((item) => item.members.map((m) => m.id).includes(currId));
 
