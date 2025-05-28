@@ -6,12 +6,14 @@ import { MessageItem } from './message-item';
 type MessagesListProps = {
   messages?: Message[];
   onEditItem?: (message: Message) => void;
+  onReplyItem?: (message: Message) => void;
   onDeleteItem?: (message: Message) => void;
 };
 
 export const MessagesList = ({
   messages = [],
   onEditItem,
+  onReplyItem,
   onDeleteItem,
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
@@ -24,6 +26,7 @@ export const MessagesList = ({
           participantMessage={m.senderId !== currentUser?.id}
           key={m.id}
           onEdit={() => onEditItem?.(m)}
+          onReply={() => onReplyItem?.(m)}
           onDelete={() => onDeleteItem?.(m)}
         />
       ))}

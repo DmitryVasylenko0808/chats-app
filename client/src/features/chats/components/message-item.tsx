@@ -8,6 +8,7 @@ type MessageProps = {
   message: Message;
   participantMessage: boolean;
   onEdit?: () => void;
+  onReply?: () => void;
   onDelete?: () => void;
 };
 
@@ -15,6 +16,7 @@ export const MessageItem = ({
   message,
   participantMessage,
   onEdit,
+  onReply,
   onDelete,
 }: Readonly<MessageProps>) => {
   return (
@@ -48,6 +50,19 @@ export const MessageItem = ({
               'bg-current-user-message': !participantMessage,
             })}
           >
+            {message.replyToMessage && (
+              <div
+                className={cn('mb-1.5 rounded-xl p-2.5', {
+                  'bg-reply-user-message': !participantMessage,
+                  'bg-primary-light text-white': participantMessage,
+                })}
+              >
+                <h6 className="font-semibold">
+                  {message.replyToMessage.sender?.name || 'Deleted Account'}
+                </h6>
+                <p>{message.replyToMessage.text}</p>
+              </div>
+            )}
             <p
               className={cn('mb-1.5', {
                 'text-white': participantMessage,
@@ -68,13 +83,12 @@ export const MessageItem = ({
             </div>
           </div>
           <div className="">
-            {!participantMessage && (
-              <MessageMenu
-                participantMessage={participantMessage}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            )}
+            <MessageMenu
+              participantMessage={participantMessage}
+              onEdit={onEdit}
+              onReply={onReply}
+              onDelete={onDelete}
+            />
           </div>
         </div>
       </div>

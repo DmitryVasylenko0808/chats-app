@@ -1,20 +1,30 @@
 import { useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
 import { cn } from '@/utils/cn';
-import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
+import {
+  ArrowUturnLeftIcon,
+  EllipsisVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/16/solid';
 
 type MessageMenuProps = {
   participantMessage: boolean;
   onEdit?: () => void;
+  onReply?: () => void;
   onDelete?: () => void;
 };
 
 export const MessageMenu = ({
   participantMessage,
   onEdit,
+  onReply,
   onDelete,
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
+
+  const canEdit = !participantMessage && onEdit;
+  const canDelete = !participantMessage && onDelete;
 
   return (
     <Menu
@@ -25,14 +35,19 @@ export const MessageMenu = ({
       }
       content={
         <ul>
-          {onEdit && (
+          {canEdit && (
             <li>
               <Button variant="menu" onClick={onEdit}>
                 <PencilIcon width={20} height={20} /> Edit
               </Button>
             </li>
           )}
-          {onDelete && (
+          <li>
+            <Button variant="menu" onClick={onReply}>
+              <ArrowUturnLeftIcon width={20} height={20} /> Reply
+            </Button>
+          </li>
+          {canDelete && (
             <li>
               <Button variant="menu" onClick={onDelete}>
                 <TrashIcon width={20} height={20} /> Delete

@@ -14,3 +14,4 @@ export * from './edit-message-modal';
 export * from './empty-chat';
 export * from './new-chat-modal';
 export * from './socket-container';
+export * from './reply-message-modal';

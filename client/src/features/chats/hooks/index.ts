@@ -6,3 +6,4 @@ export * from './use-get-messages';
 export * from './use-send-message';
 export * from './use-edit-message';
 export * from './use-delete-message';
+export * from './use-reply-message';

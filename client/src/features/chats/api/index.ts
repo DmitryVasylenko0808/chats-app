@@ -85,3 +85,20 @@ export const deleteMessage = async ({ chatId, messageId }: DeleteMessageParams) 
 
   return response.data;
 };
+
+type ReplyMessageParams = {
+  chatId: number;
+  messageId: number;
+  text: string;
+};
+
+export const replyMessage = async (params: ReplyMessageParams) => {
+  const { chatId, messageId, ...data } = params;
+
+  const result = await axiosInstance.post(
+    `${apiUrl}/chats/${chatId}/messages/${messageId}/reply`,
+    data
+  );
+
+  return result.data;
+};
