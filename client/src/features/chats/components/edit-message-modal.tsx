@@ -4,13 +4,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
-import { useEditMessage } from '../hooks';
 import { Message } from '../types';
 import { EditMessageFormFields, editMessageSchema } from '../validations';
 
-type EditMessageModalProps = ModalProps & { message: Message };
+type EditMessageModalProps = ModalProps & {
+  message: Message;
+  onEditSubmit: (message: Message, data: EditMessageFormFields) => void;
+  isPending?: boolean;
+};
 
-export const EditMessageModal = ({ message, ...modalProps }: Readonly<EditMessageModalProps>) => {
+export const EditMessageModal = ({
+  message,
+  isPending,
+  onEditSubmit,
+  ...modalProps
+}: Readonly<EditMessageModalProps>) => {
   const {
     register,
     handleSubmit,
@@ -21,15 +29,8 @@ export const EditMessageModal = ({ message, ...modalProps }: Readonly<EditMessag
       text: message.text,
     },
   });
-  const { mutateAsync, isPending } = useEditMessage();
 
-  const submitHandler = (data: EditMessageFormFields) =>
-    mutateAsync({ chatId: message.chatId, messageId: message.id, ...data })
-      .then(() => {
-        modalProps.onClose();
-        alert('Message is edited');
-      })
-      .catch((err) => alert(err.message));
+  const submitHandler = (data: EditMessageFormFields) => onEditSubmit(message, data);
 
   return (
     <Modal {...modalProps}>

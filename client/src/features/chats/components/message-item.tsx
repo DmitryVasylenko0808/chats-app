@@ -7,9 +7,16 @@ import { MessageMenu } from './message-menu';
 type MessageProps = {
   message: Message;
   participantMessage: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 };
 
-export const MessageItem = ({ message, participantMessage }: Readonly<MessageProps>) => {
+export const MessageItem = ({
+  message,
+  participantMessage,
+  onEdit,
+  onDelete,
+}: Readonly<MessageProps>) => {
   return (
     <li
       className={cn('flex', {
@@ -62,7 +69,11 @@ export const MessageItem = ({ message, participantMessage }: Readonly<MessagePro
           </div>
           <div className="">
             {!participantMessage && (
-              <MessageMenu message={message} participantMessage={participantMessage} />
+              <MessageMenu
+                participantMessage={participantMessage}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
             )}
           </div>
         </div>

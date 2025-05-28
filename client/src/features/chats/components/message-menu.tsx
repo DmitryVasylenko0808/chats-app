@@ -1,56 +1,49 @@
-import { useModal, useToogleMenu } from '@/shared/hooks';
+import { useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
 
-import { useDeleteMessage } from '../hooks';
-import { Message } from '../types';
-import { EditMessageModal } from './edit-message-modal';
+type MessageMenuProps = {
+  participantMessage: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
+};
 
-type MessageMenuProps = { message: Message; participantMessage: boolean };
-
-export const MessageMenu = ({ message, participantMessage }: Readonly<MessageMenuProps>) => {
+export const MessageMenu = ({
+  participantMessage,
+  onEdit,
+  onDelete,
+}: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
-  const editModal = useModal();
-  const { mutateAsync: deleteMessage } = useDeleteMessage();
-
-  const handleClickEdit = editModal.handleClickOpen;
-  const handleDeleteMessage = () =>
-    deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
-      alert(err.message)
-    );
 
   return (
-    <>
-      <Menu
-        trigger={
-          <Button variant="text" onClick={handleToggle}>
-            <EllipsisVerticalIcon width={18} height={18} />
-          </Button>
-        }
-        content={
-          <ul>
+    <Menu
+      trigger={
+        <Button variant="text" onClick={handleToggle}>
+          <EllipsisVerticalIcon width={18} height={18} />
+        </Button>
+      }
+      content={
+        <ul>
+          {onEdit && (
             <li>
-              <Button variant="menu" onClick={handleClickEdit}>
+              <Button variant="menu" onClick={onEdit}>
                 <PencilIcon width={20} height={20} /> Edit
               </Button>
             </li>
+          )}
+          {onDelete && (
             <li>
-              <Button variant="menu" onClick={handleDeleteMessage}>
+              <Button variant="menu" onClick={onDelete}>
                 <TrashIcon width={20} height={20} /> Delete
               </Button>
             </li>
-          </ul>
-        }
-        open={open}
-        ref={ref}
-        className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
-      />
-      <EditMessageModal
-        open={editModal.open}
-        onClose={editModal.handleClickClose}
-        message={message}
-      />
-    </>
+          )}
+        </ul>
+      }
+      open={open}
+      ref={ref}
+      className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
+    />
   );
 };
