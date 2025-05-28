@@ -19,19 +19,11 @@ export type Message = {
   updatedAt: Date;
 };
 
-export type MessageWithSender = {
-  id: number;
-  chatId: number;
-  senderId: number | null;
-  sender: Sender | null;
-  text: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export type MessageWithSender = Message & { sender: Sender | null };
 
 export type UpdatedMessages = {
   chatId: number;
-  messages: MessageWithSender;
+  messages: MessageWithSender[];
 };
 
 export type Chat = {

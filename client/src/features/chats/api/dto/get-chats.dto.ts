@@ -5,7 +5,7 @@ type User = {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  avatar: string | null;
+  avatar?: string;
 };
 
 type Message = {
