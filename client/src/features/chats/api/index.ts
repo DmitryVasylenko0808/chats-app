@@ -41,9 +41,18 @@ type SendMessageParams = {
 export const sendMessage = async (params: SendMessageParams) => {
   const { chatId, ...data } = params;
 
+  const formData = new FormData();
+
+  Object.entries(data).forEach(([k, v]) => formData.append(k, v));
+
   const response = await axiosInstance.post<SendMessageDto>(
     `${apiUrl}/chats/${chatId}/messages`,
-    data
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
   );
 
   return response.data;
