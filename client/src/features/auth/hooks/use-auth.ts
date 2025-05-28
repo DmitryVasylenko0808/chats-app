@@ -1,4 +1,3 @@
-import { serverUploadssUrl } from '@/config/contants';
 import { useQuery } from '@tanstack/react-query';
 
 import { getMe } from '../api';
@@ -11,7 +10,6 @@ export const useAuth = () => {
     queryFn: getMe,
     enabled: false,
     retry: false,
-    select: (data) => ({ ...data, avatar: `${serverUploadssUrl}/${data.avatar}` }),
   });
 
   const accessToken = localStorage.getItem('access_token');

@@ -1,4 +1,3 @@
-import { placeholderAvatarUrl } from '@/config/contants';
 import { cn } from '@/utils/cn';
 import { ClockIcon } from '@heroicons/react/16/solid';
 
@@ -19,11 +18,7 @@ export const Message = ({ message, participantMessage }: Readonly<MessageProps>)
       })}
     >
       <div className="mx-3 w-10">
-        <img
-          src={message.sender?.avatar || placeholderAvatarUrl}
-          alt="sender-avatar"
-          className="h-10 w-10 rounded-full"
-        />
+        <img src={message.sender?.avatar} alt="sender-avatar" className="h-10 w-10 rounded-full" />
       </div>
       <div className="flex-1">
         <h5

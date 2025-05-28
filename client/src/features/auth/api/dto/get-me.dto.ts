@@ -6,5 +6,5 @@ export type GetMeDto = {
   createdAt: Date;
   updatedAt: Date;
   description?: string | null;
-  avatar?: string | null;
+  avatar?: string;
 };
