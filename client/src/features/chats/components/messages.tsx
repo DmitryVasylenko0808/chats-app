@@ -2,10 +2,17 @@ import { Loader } from '@/shared/ui';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { useDeleteMessage, useEditMessage, useGetMessages, useReplyMessage } from '../hooks';
+import {
+  useDeleteMessage,
+  useEditMessage,
+  useForwardMessage,
+  useGetMessages,
+  useReplyMessage,
+} from '../hooks';
 import { Message } from '../types';
 import { EditMessageFormFields, ReplyMessageFormFields } from '../validations';
 import { EditMessageModal } from './edit-message-modal';
+import { ForwardMessageModal } from './forward-message-modal';
 import { MessagesList } from './messages-list';
 import { ReplyMessageModal } from './reply-message-modal';
 
@@ -17,9 +24,11 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const { data, isLoading, error } = useGetMessages(chatId);
   const { mutateAsync: editMessage, isPending: isPendingEdit } = useEditMessage();
   const { mutateAsync: replyMessage, isPending: isPendingReply } = useReplyMessage();
+  const { mutateAsync: forwardMessage } = useForwardMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
   const [editableMessage, setEditableMessage] = useState<Message | null>(null);
   const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
+  const [forwardingMessage, setForwardingMessage] = useState<Message | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,6 +57,17 @@ export const Messages = ({ chatId }: MessagesProps) => {
       .catch((err) => alert(err.message));
   };
 
+  const handleClickForward = (message: Message) => setForwardingMessage(message);
+  const handleClickCloseForward = () => setForwardingMessage(null);
+  const handleForwardMessage = (message: Message, targetChatId: number) => {
+    forwardMessage({ chatId: message.chatId, messageId: message.id, targetChatId })
+      .then(() => {
+        setForwardingMessage(null);
+        alert('Message is forwarded');
+      })
+      .catch((err) => alert(err.message));
+  };
+
   const handleDeleteMessage = (message: Message) => {
     deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
       alert(err.message)
@@ -72,6 +92,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
         messages={data}
         onEditItem={handleClickEdit}
         onReplyItem={handleClickReply}
+        onForwardItem={handleClickForward}
         onDeleteItem={handleDeleteMessage}
       />
       <div ref={bottomRef} />
@@ -91,6 +112,14 @@ export const Messages = ({ chatId }: MessagesProps) => {
           isPending={isPendingReply}
           onClose={handleClickCloseReply}
           onSubmitReply={handleReplyMessage}
+        />
+      )}
+      {forwardingMessage && (
+        <ForwardMessageModal
+          open={!!forwardingMessage}
+          message={forwardingMessage}
+          onClose={handleClickCloseForward}
+          onForward={handleForwardMessage}
         />
       )}
     </div>

@@ -3,6 +3,7 @@ import { Button, Menu } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 import {
   ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
   EllipsisVerticalIcon,
   PencilIcon,
   TrashIcon,
@@ -12,6 +13,7 @@ type MessageMenuProps = {
   participantMessage: boolean;
   onEdit?: () => void;
   onReply?: () => void;
+  onForward?: () => void;
   onDelete?: () => void;
 };
 
@@ -19,6 +21,7 @@ export const MessageMenu = ({
   participantMessage,
   onEdit,
   onReply,
+  onForward,
   onDelete,
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
@@ -45,6 +48,11 @@ export const MessageMenu = ({
           <li>
             <Button variant="menu" onClick={onReply}>
               <ArrowUturnLeftIcon width={20} height={20} /> Reply
+            </Button>
+          </li>
+          <li>
+            <Button variant="menu" onClick={onForward}>
+              <ArrowUturnRightIcon width={20} height={20} /> Forward
             </Button>
           </li>
           {canDelete && (

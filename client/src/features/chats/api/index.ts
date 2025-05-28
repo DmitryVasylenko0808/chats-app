@@ -102,3 +102,20 @@ export const replyMessage = async (params: ReplyMessageParams) => {
 
   return result.data;
 };
+
+type ForwardMessageParams = {
+  chatId: number;
+  messageId: number;
+  targetChatId: number;
+};
+
+export const forwardMessage = async (params: ForwardMessageParams) => {
+  const { chatId, messageId, ...data } = params;
+
+  const result = await axiosInstance.post(
+    `${apiUrl}/chats/${chatId}/messages/${messageId}/forward`,
+    data
+  );
+
+  return result.data;
+};

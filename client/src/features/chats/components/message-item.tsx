@@ -9,6 +9,7 @@ type MessageProps = {
   participantMessage: boolean;
   onEdit?: () => void;
   onReply?: () => void;
+  onForward?: () => void;
   onDelete?: () => void;
 };
 
@@ -17,6 +18,7 @@ export const MessageItem = ({
   participantMessage,
   onEdit,
   onReply,
+  onForward,
   onDelete,
 }: Readonly<MessageProps>) => {
   return (
@@ -63,6 +65,19 @@ export const MessageItem = ({
                 <p>{message.replyToMessage.text}</p>
               </div>
             )}
+            {message.forwardedMessage && (
+              <div
+                className={cn('mb-1.5 rounded-xl p-2.5', {
+                  'bg-reply-user-message': !participantMessage,
+                  'bg-primary-light text-white': participantMessage,
+                })}
+              >
+                <h6 className="font-semibold">
+                  Forwarded from {message.forwardedMessage.sender?.name || 'Deleted Account'}
+                </h6>
+                <p>{message.forwardedMessage.text}</p>
+              </div>
+            )}
             <p
               className={cn('mb-1.5', {
                 'text-white': participantMessage,
@@ -87,6 +102,7 @@ export const MessageItem = ({
               participantMessage={participantMessage}
               onEdit={onEdit}
               onReply={onReply}
+              onForward={onForward}
               onDelete={onDelete}
             />
           </div>

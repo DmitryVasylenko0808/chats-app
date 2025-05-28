@@ -7,6 +7,7 @@ type MessagesListProps = {
   messages?: Message[];
   onEditItem?: (message: Message) => void;
   onReplyItem?: (message: Message) => void;
+  onForwardItem?: (message: Message) => void;
   onDeleteItem?: (message: Message) => void;
 };
 
@@ -14,6 +15,7 @@ export const MessagesList = ({
   messages = [],
   onEditItem,
   onReplyItem,
+  onForwardItem,
   onDeleteItem,
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
@@ -27,6 +29,7 @@ export const MessagesList = ({
           key={m.id}
           onEdit={() => onEditItem?.(m)}
           onReply={() => onReplyItem?.(m)}
+          onForward={() => onForwardItem?.(m)}
           onDelete={() => onDeleteItem?.(m)}
         />
       ))}
