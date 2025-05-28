@@ -21,7 +21,7 @@ export const ChatMenu = ({ chatId }: Readonly<ChatMenuProps>) => {
         content={
           <ul>
             <li>
-              <Button variant="menu" onClick={deleteChatModal.handleClickOpen}>
+              <Button variant="menu-danger" onClick={deleteChatModal.handleClickOpen}>
                 <TrashIcon width={18} height={18} />
                 Delete
               </Button>

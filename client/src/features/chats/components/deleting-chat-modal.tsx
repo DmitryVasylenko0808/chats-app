@@ -20,7 +20,7 @@ export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalPr
         message history will be permanently deleted.
       </p>
       <div className="flex justify-end">
-        <Button variant="primary" onClick={handleClickDeleteChat}>
+        <Button variant="danger" onClick={handleClickDeleteChat}>
           {isPending ? <Loader variant="secondary" size="sm" /> : 'Delete Chat'}
         </Button>
       </div>

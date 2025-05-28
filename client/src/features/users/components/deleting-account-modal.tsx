@@ -24,7 +24,7 @@ export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalP
         including chats, messages and settings, will be permanently deleted.
       </p>
       <div className="flex justify-end">
-        <Button variant="primary" onClick={handleClickDelete}>
+        <Button variant="danger" onClick={handleClickDelete}>
           {isPending ? <Loader variant="secondary" size="sm" /> : 'Delete'}
         </Button>
       </div>

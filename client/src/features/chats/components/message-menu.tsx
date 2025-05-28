@@ -57,7 +57,7 @@ export const MessageMenu = ({
           </li>
           {canDelete && (
             <li>
-              <Button variant="menu" onClick={onDelete}>
+              <Button variant="menu-danger" onClick={onDelete}>
                 <TrashIcon width={20} height={20} /> Delete
               </Button>
             </li>

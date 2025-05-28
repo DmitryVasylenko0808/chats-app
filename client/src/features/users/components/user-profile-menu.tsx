@@ -34,7 +34,7 @@ export const UserProfileMenu = ({ user }: Readonly<UserProfileMenuProps>) => {
               </Button>
             </li>
             <li>
-              <Button variant="menu" onClick={handleClickDelete}>
+              <Button variant="menu-danger" onClick={handleClickDelete}>
                 <TrashIcon width={18} height={18} />
                 Delete
               </Button>

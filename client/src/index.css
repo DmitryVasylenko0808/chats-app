@@ -23,6 +23,8 @@ body {
     --color-current-user-message: #f5f7fb;
     --color-scroll: #d1d5db;
     --color-reply-user-message: #e6ebf5;
+    --color-red: #f14b4b;
+    --color-red-hovered: #df3c3c;
 
     --default-font-family: "Public Sans", sans-serif;
 }
