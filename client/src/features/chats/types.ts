@@ -1,13 +1,11 @@
 import { User } from '../users/types';
 
-type Sender = {
-  id?: number;
-  username?: string;
-  email?: string;
-  name?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  avatar?: string;
+export type Reaction = {
+  id: number;
+  createdAt: Date;
+  emoji: string;
+  userId: number;
+  messageId: number;
 };
 
 export type Message = {
@@ -15,15 +13,22 @@ export type Message = {
   chatId: number;
   senderId: number | null;
   text: string;
+  images: string[];
+  isPinned: boolean;
+  replyToId: number | null;
+  forwardedMessageId: number | null;
   createdAt: Date;
   updatedAt: Date;
+  sender?: User | null;
+  replyToMessage?: Message;
+  forwardedMessage?: Message;
+  reactionsByEmoji?: Record<string, Reaction>;
+  reactionsByEmojiCount?: Record<string, number>;
 };
-
-export type MessageWithSender = Message & { sender: Sender | null };
 
 export type UpdatedMessages = {
   chatId: number;
-  messages: MessageWithSender[];
+  messages: Message[];
 };
 
 export type Chat = {

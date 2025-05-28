@@ -1,15 +1,15 @@
 import { cn } from '@/utils/cn';
 import { ClockIcon } from '@heroicons/react/16/solid';
 
-import { MessageWithSender } from '../types';
+import { Message } from '../types';
 import { MessageMenu } from './message-menu';
 
 type MessageProps = {
-  message: MessageWithSender;
+  message: Message;
   participantMessage: boolean;
 };
 
-export const Message = ({ message, participantMessage }: Readonly<MessageProps>) => {
+export const MessageItem = ({ message, participantMessage }: Readonly<MessageProps>) => {
   return (
     <li
       className={cn('flex', {

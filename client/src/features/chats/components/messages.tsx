@@ -4,7 +4,7 @@ import { Loader } from '@/shared/ui';
 import { useEffect, useRef } from 'react';
 
 import { useGetMessages } from '../hooks';
-import { Message } from './message';
+import { MessageItem } from './message';
 
 type MessagesProps = {
   chatId: number;
@@ -35,7 +35,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
     <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto p-6">
       <ul className="flex flex-col space-y-4">
         {data?.map((m) => (
-          <Message message={m} participantMessage={m.senderId !== currentUser?.id} key={m.id} />
+          <MessageItem message={m} participantMessage={m.senderId !== currentUser?.id} key={m.id} />
         ))}
       </ul>
       <div ref={bottomRef} />

@@ -8,7 +8,7 @@ export const useEditProfile = () => {
   return useMutation({
     mutationFn: updateUser,
     onSuccess: (updatedData) => {
-      const { id, ...updatedUser } = updatedData.data;
+      const { id, ...updatedUser } = updatedData;
 
       updateCurrentUserData(updatedUser);
     },

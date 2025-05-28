@@ -1,8 +1,7 @@
 import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
-import { GetMeDto } from './dto/get-me.dto';
-import { SignInUserDto } from './dto/sign-in-user.dto';
+import { GetMeDto, SignInUserDto } from './dto';
 
 export type RegisterUserParams = {
   username: string;

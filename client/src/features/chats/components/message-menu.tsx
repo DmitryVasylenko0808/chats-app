@@ -4,10 +4,10 @@ import { cn } from '@/utils/cn';
 import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
 
 import { useDeleteMessage } from '../hooks';
-import { MessageWithSender } from '../types';
+import { Message } from '../types';
 import { EditMessageModal } from './edit-message-modal';
 
-type MessageMenuProps = { message: MessageWithSender; participantMessage: boolean };
+type MessageMenuProps = { message: Message; participantMessage: boolean };
 
 export const MessageMenu = ({ message, participantMessage }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();

@@ -35,7 +35,7 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
                   onClick={() => handleClick(user.id)}
                 >
                   <div className="flex items-center gap-3">
-                    <img src={user.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
+                    <img src={user?.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
                     <div className="justify-center-center flex flex-col">
                       <p className="font-medium">{user.name}</p>
                       <span className="text-body text-sm font-normal">{user.username}</span>

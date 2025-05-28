@@ -1,9 +1,7 @@
 import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
-import { GetUserDto } from './dto/get-user.dto';
-import { GetUsersDto } from './dto/get-users.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUserDto, GetUsersDto, UpdateUserDto } from './dto';
 
 export const getUsers = async (search?: string) => {
   const response = await axiosInstance.get<GetUsersDto>(`${apiUrl}/users`, {

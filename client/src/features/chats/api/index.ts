@@ -1,11 +1,7 @@
 import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
-import { CreateChatDto } from './dto/create-chat.dto';
-import { GetChatDto } from './dto/get-chat.dto';
-import { GetChatsDto } from './dto/get-chats.dto';
-import { GetMessagesDto } from './dto/get-messages.dto';
-import { SendMessageDto } from './dto/send-message.dto';
+import { CreateChatDto, GetChatDto, GetChatsDto, GetMessagesDto, SendMessageDto } from './dto';
 
 export const getChats = async (userId?: number) => {
   const response = await axiosInstance.get<GetChatsDto>(`${apiUrl}/users/${userId}/chats`);
