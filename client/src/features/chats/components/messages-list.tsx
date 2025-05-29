@@ -5,17 +5,19 @@ import { MessageItem } from './message-item';
 
 type MessagesListProps = {
   messages?: Message[];
-  onEditItem?: (message: Message) => void;
   onReplyItem?: (message: Message) => void;
   onForwardItem?: (message: Message) => void;
+  onPinItem?: (message: Message) => void;
+  onEditItem?: (message: Message) => void;
   onDeleteItem?: (message: Message) => void;
 };
 
 export const MessagesList = ({
   messages = [],
-  onEditItem,
   onReplyItem,
   onForwardItem,
+  onPinItem,
+  onEditItem,
   onDeleteItem,
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
@@ -27,9 +29,10 @@ export const MessagesList = ({
           message={m}
           participantMessage={m.senderId !== currentUser?.id}
           key={m.id}
-          onEdit={() => onEditItem?.(m)}
           onReply={() => onReplyItem?.(m)}
           onForward={() => onForwardItem?.(m)}
+          onPin={() => onPinItem?.(m)}
+          onEdit={() => onEditItem?.(m)}
           onDelete={() => onDeleteItem?.(m)}
         />
       ))}

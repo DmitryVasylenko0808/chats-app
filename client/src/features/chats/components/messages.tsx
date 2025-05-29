@@ -7,13 +7,16 @@ import {
   useEditMessage,
   useForwardMessage,
   useGetMessages,
+  usePinMessage,
   useReplyMessage,
+  useUnpinMessage,
 } from '../hooks';
 import { Message } from '../types';
 import { EditMessageFormFields, ReplyMessageFormFields } from '../validations';
 import { EditMessageModal } from './edit-message-modal';
 import { ForwardMessageModal } from './forward-message-modal';
 import { MessagesList } from './messages-list';
+import { PinnedMessage } from './pinned-message';
 import { ReplyMessageModal } from './reply-message-modal';
 
 type MessagesProps = {
@@ -25,6 +28,8 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const { mutateAsync: editMessage, isPending: isPendingEdit } = useEditMessage();
   const { mutateAsync: replyMessage, isPending: isPendingReply } = useReplyMessage();
   const { mutateAsync: forwardMessage } = useForwardMessage();
+  const { mutateAsync: pinMessage } = usePinMessage();
+  const { mutateAsync: unpinMessage } = useUnpinMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
   const [editableMessage, setEditableMessage] = useState<Message | null>(null);
   const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
@@ -68,6 +73,18 @@ export const Messages = ({ chatId }: MessagesProps) => {
       .catch((err) => alert(err.message));
   };
 
+  const handlePinMessage = (message: Message) => {
+    pinMessage({ chatId: message.chatId, messageId: message.id })
+      .then(() => alert('Successfully pinned!'))
+      .catch((err) => alert(err.message));
+  };
+
+  const handleUnpinMessage = (message: Message) => {
+    unpinMessage({ chatId: message.chatId, messageId: message.id })
+      .then(() => alert('Successfully unpinned!'))
+      .catch((err) => alert(err.message));
+  };
+
   const handleDeleteMessage = (message: Message) => {
     deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
       alert(err.message)
@@ -87,15 +104,19 @@ export const Messages = ({ chatId }: MessagesProps) => {
   }
 
   return (
-    <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto p-6">
-      <MessagesList
-        messages={data}
-        onEditItem={handleClickEdit}
-        onReplyItem={handleClickReply}
-        onForwardItem={handleClickForward}
-        onDeleteItem={handleDeleteMessage}
-      />
-      <div ref={bottomRef} />
+    <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto">
+      <PinnedMessage pinnedMessage={data?.find((m) => m.isPinned)} onUnpin={handleUnpinMessage} />
+      <div className="p-6">
+        <MessagesList
+          messages={data}
+          onReplyItem={handleClickReply}
+          onForwardItem={handleClickForward}
+          onPinItem={handlePinMessage}
+          onEditItem={handleClickEdit}
+          onDeleteItem={handleDeleteMessage}
+        />
+        <div ref={bottomRef} />
+      </div>
       {editableMessage && (
         <EditMessageModal
           open={!!editableMessage}

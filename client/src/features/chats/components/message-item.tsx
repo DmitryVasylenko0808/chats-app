@@ -7,18 +7,20 @@ import { MessageMenu } from './message-menu';
 type MessageProps = {
   message: Message;
   participantMessage: boolean;
-  onEdit?: () => void;
   onReply?: () => void;
   onForward?: () => void;
+  onPin?: () => void;
+  onEdit?: () => void;
   onDelete?: () => void;
 };
 
 export const MessageItem = ({
   message,
   participantMessage,
-  onEdit,
   onReply,
   onForward,
+  onPin,
+  onEdit,
   onDelete,
 }: Readonly<MessageProps>) => {
   return (
@@ -100,9 +102,10 @@ export const MessageItem = ({
           <div className="">
             <MessageMenu
               participantMessage={participantMessage}
-              onEdit={onEdit}
               onReply={onReply}
               onForward={onForward}
+              onPin={onPin}
+              onEdit={onEdit}
               onDelete={onDelete}
             />
           </div>

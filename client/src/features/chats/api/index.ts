@@ -1,7 +1,15 @@
 import { axiosInstance } from '@/config/axios.config';
 import { apiUrl } from '@/config/contants';
 
-import { CreateChatDto, GetChatDto, GetChatsDto, GetMessagesDto, SendMessageDto } from './dto';
+import {
+  CreateChatDto,
+  GetChatDto,
+  GetChatsDto,
+  GetMessagesDto,
+  PinMessageDto,
+  SendMessageDto,
+  UnpinMessageDto,
+} from './dto';
 
 export const getChats = async (userId?: number) => {
   const response = await axiosInstance.get<GetChatsDto>(`${apiUrl}/users/${userId}/chats`);
@@ -115,6 +123,30 @@ export const forwardMessage = async (params: ForwardMessageParams) => {
   const result = await axiosInstance.post(
     `${apiUrl}/chats/${chatId}/messages/${messageId}/forward`,
     data
+  );
+
+  return result.data;
+};
+
+type PinMessageParams = { chatId: number; messageId: number };
+
+export const pinMessage = async (params: PinMessageParams) => {
+  const { chatId, messageId } = params;
+
+  const result = await axiosInstance.patch<PinMessageDto>(
+    `${apiUrl}/chats/${chatId}/messages/${messageId}/pin`
+  );
+
+  return result.data;
+};
+
+type UnpinMessageParams = { chatId: number; messageId: number };
+
+export const unpinMessage = async (params: UnpinMessageParams) => {
+  const { chatId, messageId } = params;
+
+  const result = await axiosInstance.patch<UnpinMessageDto>(
+    `${apiUrl}/chats/${chatId}/messages/${messageId}/unpin`
   );
 
   return result.data;

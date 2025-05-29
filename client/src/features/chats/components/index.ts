@@ -16,3 +16,4 @@ export * from './new-chat-modal';
 export * from './socket-container';
 export * from './reply-message-modal';
 export * from './forward-message-modal';
+export * from './pinned-message';
