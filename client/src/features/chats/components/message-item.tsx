@@ -88,6 +88,13 @@ export const MessageItem = ({
             >
               {message.text}
             </p>
+            <ul className="mb-1.5 flex gap-2">
+              {message.images.map((img) => (
+                <li key={img}>
+                  <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
+                </li>
+              ))}
+            </ul>
             <div className="flex justify-end">
               <span
                 className={cn('inline-flex items-center gap-1 text-xs', {

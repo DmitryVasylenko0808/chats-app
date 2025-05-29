@@ -44,14 +44,16 @@ export const getMessages = async (chatid: number) => {
 type SendMessageParams = {
   chatId: number;
   text: string;
+  images?: File[];
 };
 
 export const sendMessage = async (params: SendMessageParams) => {
-  const { chatId, ...data } = params;
+  const { chatId, images, ...data } = params;
 
   const formData = new FormData();
 
   Object.entries(data).forEach(([k, v]) => formData.append(k, v));
+  images?.map((img) => formData.append('images', img));
 
   const response = await axiosInstance.post<SendMessageDto>(
     `${apiUrl}/chats/${chatId}/messages`,
