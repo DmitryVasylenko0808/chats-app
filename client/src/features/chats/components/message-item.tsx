@@ -65,6 +65,13 @@ export const MessageItem = ({
                   {message.replyToMessage.sender?.name || 'Deleted Account'}
                 </h6>
                 <p>{message.replyToMessage.text}</p>
+                <ul className="mt-1.5 flex gap-2">
+                  {message.replyToMessage.images.map((img) => (
+                    <li key={img}>
+                      <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
             {message.forwardedMessage && (
@@ -78,6 +85,13 @@ export const MessageItem = ({
                   Forwarded from {message.forwardedMessage.sender?.name || 'Deleted Account'}
                 </h6>
                 <p>{message.forwardedMessage.text}</p>
+                <ul className="mt-1.5 flex gap-2">
+                  {message.forwardedMessage.images.map((img) => (
+                    <li key={img}>
+                      <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
             <p
