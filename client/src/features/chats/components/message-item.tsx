@@ -1,10 +1,12 @@
 import { cn } from '@/utils/cn';
 import { ClockIcon } from '@heroicons/react/16/solid';
 
+import { PropsWithChildren } from 'react';
+
 import { Message } from '../types';
 import { MessageMenu } from './message-menu';
 
-type MessageProps = {
+type MessageItemProps = {
   message: Message;
   participantMessage: boolean;
   onReply?: () => void;
@@ -22,7 +24,7 @@ export const MessageItem = ({
   onPin,
   onEdit,
   onDelete,
-}: Readonly<MessageProps>) => {
+}: Readonly<MessageItemProps>) => {
   return (
     <li
       className={cn('flex', {
@@ -30,70 +32,26 @@ export const MessageItem = ({
         'flex-row-reverse': !participantMessage,
       })}
     >
-      <div className="mx-3 w-10">
-        <img src={message.sender?.avatar} alt="sender-avatar" className="h-10 w-10 rounded-full" />
-      </div>
+      <MessageAvatar src={message.sender?.avatar} />
       <div className="flex-1">
-        <h5
-          className={cn('mb-0.5 font-semibold', {
-            'text-left': participantMessage,
-            'text-right': !participantMessage,
-          })}
-        >
-          {message.sender?.name || 'Deleted Account'}
-        </h5>
+        <MessageSender sender={message.sender} participantMessage={participantMessage} />
         <div
           className={cn('flex gap-1.5', {
             'mr-44 flex-row': participantMessage,
             'ml-44 flex-row-reverse': !participantMessage,
           })}
         >
-          <div
-            className={cn('rounded-2xl px-5 py-3', {
-              'bg-primary': participantMessage,
-              'bg-current-user-message': !participantMessage,
-            })}
-          >
-            {message.replyToMessage && (
-              <div
-                className={cn('mb-1.5 rounded-xl p-2.5', {
-                  'bg-reply-user-message': !participantMessage,
-                  'bg-primary-light text-white': participantMessage,
-                })}
-              >
-                <h6 className="font-semibold">
-                  {message.replyToMessage.sender?.name || 'Deleted Account'}
-                </h6>
-                <p>{message.replyToMessage.text}</p>
-                <ul className="mt-1.5 flex gap-2">
-                  {message.replyToMessage.images.map((img) => (
-                    <li key={img}>
-                      <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {message.forwardedMessage && (
-              <div
-                className={cn('mb-1.5 rounded-xl p-2.5', {
-                  'bg-reply-user-message': !participantMessage,
-                  'bg-primary-light text-white': participantMessage,
-                })}
-              >
-                <h6 className="font-semibold">
-                  Forwarded from {message.forwardedMessage.sender?.name || 'Deleted Account'}
-                </h6>
-                <p>{message.forwardedMessage.text}</p>
-                <ul className="mt-1.5 flex gap-2">
-                  {message.forwardedMessage.images.map((img) => (
-                    <li key={img}>
-                      <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          <MessageContent participantMessage={participantMessage}>
+            <EmbeddedMessage
+              variant="reply"
+              message={message.replyToMessage}
+              participantMessage={participantMessage}
+            />
+            <EmbeddedMessage
+              variant="forward"
+              message={message.forwardedMessage}
+              participantMessage={participantMessage}
+            />
             <p
               className={cn('mb-1.5', {
                 'text-white': participantMessage,
@@ -102,24 +60,9 @@ export const MessageItem = ({
             >
               {message.text}
             </p>
-            <ul className="mb-1.5 flex gap-2">
-              {message.images.map((img) => (
-                <li key={img}>
-                  <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
-                </li>
-              ))}
-            </ul>
-            <div className="flex justify-end">
-              <span
-                className={cn('inline-flex items-center gap-1 text-xs', {
-                  'text-message-time': participantMessage,
-                  'text-body': !participantMessage,
-                })}
-              >
-                <ClockIcon width={14} height={14} /> {new Date(message.createdAt).toLocaleString()}
-              </span>
-            </div>
-          </div>
+            <MessageImages images={message.images} />
+            <MessageMeta message={message} participantMessage={participantMessage} />
+          </MessageContent>
           <div className="">
             <MessageMenu
               participantMessage={participantMessage}
@@ -135,3 +78,103 @@ export const MessageItem = ({
     </li>
   );
 };
+
+type MessageAvatarProps = { src?: string };
+const MessageAvatar = ({ src }: Readonly<MessageAvatarProps>) => (
+  <div className="mx-3 w-10">
+    <img src={src} alt="sender-avatar" className="h-10 w-10 rounded-full" />
+  </div>
+);
+
+type MessageSenderProps = { participantMessage: boolean; sender?: Message['sender'] };
+const MessageSender = ({ participantMessage, sender }: Readonly<MessageSenderProps>) => {
+  return (
+    <h5
+      className={cn('mb-0.5 font-semibold', {
+        'text-left': participantMessage,
+        'text-right': !participantMessage,
+      })}
+    >
+      {sender?.name || 'Deleted Account'}
+    </h5>
+  );
+};
+
+type MessageContentProps = { participantMessage: boolean } & PropsWithChildren;
+const MessageContent = ({ participantMessage, children }: Readonly<MessageContentProps>) => {
+  return (
+    <div
+      className={cn('rounded-2xl px-5 py-3', {
+        'bg-primary': participantMessage,
+        'bg-current-user-message': !participantMessage,
+      })}
+    >
+      {children}
+    </div>
+  );
+};
+
+type EmbeddedMessageProps = {
+  variant: 'reply' | 'forward';
+  participantMessage: boolean;
+  message?: Message;
+};
+const EmbeddedMessage = ({
+  variant,
+  participantMessage,
+  message,
+}: Readonly<EmbeddedMessageProps>) => {
+  if (!message) {
+    return null;
+  }
+
+  const senderName = message.sender?.name || 'Deleted Account';
+  const title = variant === 'reply' ? senderName : `Forwarded from ${senderName}`;
+
+  return (
+    <div
+      className={cn('mb-1.5 rounded-xl p-2.5', {
+        'bg-reply-user-message': !participantMessage,
+        'bg-primary-light text-white': participantMessage,
+      })}
+    >
+      <h6 className="font-semibold">{title}</h6>
+      <p>{message.text}</p>
+      <MessageImages images={message.images} />
+    </div>
+  );
+};
+
+type MessageImagesProps = { images: string[] };
+const MessageImages = ({ images }: Readonly<MessageImagesProps>) => {
+  if (!images.length) {
+    return null;
+  }
+
+  return (
+    <ul className="mt-1.5 flex gap-2">
+      {images.map((img) => (
+        <li key={img}>
+          <img src={img} className="h-28 w-28 rounded-xl" alt={`image-${img}`} />
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+type MessageMetaProps = {
+  message: Message;
+  participantMessage: boolean;
+};
+const MessageMeta = ({ message, participantMessage }: Readonly<MessageMetaProps>) => (
+  <div className="mt-1.5 flex justify-end">
+    <span
+      className={cn('inline-flex items-center gap-1 text-xs', {
+        'text-message-time': participantMessage,
+        'text-body': !participantMessage,
+      })}
+    >
+      <ClockIcon width={14} height={14} /> {new Date(message.createdAt).toLocaleString()}
+    </span>
+  </div>
+);
