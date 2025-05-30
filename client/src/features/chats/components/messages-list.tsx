@@ -8,6 +8,7 @@ type MessagesListProps = {
   onReplyItem?: (message: Message) => void;
   onForwardItem?: (message: Message) => void;
   onPinItem?: (message: Message) => void;
+  onCopyItem?: (message: Message) => void;
   onEditItem?: (message: Message) => void;
   onDeleteItem?: (message: Message) => void;
 };
@@ -17,6 +18,7 @@ export const MessagesList = ({
   onReplyItem,
   onForwardItem,
   onPinItem,
+  onCopyItem,
   onEditItem,
   onDeleteItem,
 }: Readonly<MessagesListProps>) => {
@@ -32,6 +34,7 @@ export const MessagesList = ({
           onReply={() => onReplyItem?.(m)}
           onForward={() => onForwardItem?.(m)}
           onPin={() => onPinItem?.(m)}
+          onCopy={() => onCopyItem?.(m)}
           onEdit={() => onEditItem?.(m)}
           onDelete={() => onDeleteItem?.(m)}
         />

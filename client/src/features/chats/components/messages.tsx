@@ -1,3 +1,4 @@
+import { useCopy } from '@/shared/hooks';
 import { Loader } from '@/shared/ui';
 
 import { useEffect, useRef, useState } from 'react';
@@ -31,6 +32,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const { mutateAsync: pinMessage } = usePinMessage();
   const { mutateAsync: unpinMessage } = useUnpinMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
+  const { handleCopy } = useCopy();
   const [editableMessage, setEditableMessage] = useState<Message | null>(null);
   const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
   const [forwardingMessage, setForwardingMessage] = useState<Message | null>(null);
@@ -91,6 +93,12 @@ export const Messages = ({ chatId }: MessagesProps) => {
     );
   };
 
+  const handleClickCopy = (message: Message) => {
+    handleCopy(message.text)
+      .then(() => alert('Copied!'))
+      .catch(() => alert('Cannot copy text message'));
+  };
+
   if (isLoading) {
     return (
       <div className="flex h-full w-full items-center justify-center">
@@ -112,6 +120,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
           onReplyItem={handleClickReply}
           onForwardItem={handleClickForward}
           onPinItem={handlePinMessage}
+          onCopyItem={handleClickCopy}
           onEditItem={handleClickEdit}
           onDeleteItem={handleDeleteMessage}
         />

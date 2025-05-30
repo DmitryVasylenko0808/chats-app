@@ -4,6 +4,7 @@ import { cn } from '@/utils/cn';
 import {
   ArrowUturnLeftIcon,
   ArrowUturnRightIcon,
+  DocumentDuplicateIcon,
   EllipsisVerticalIcon,
   PaperClipIcon,
   PencilIcon,
@@ -15,6 +16,7 @@ type MessageMenuProps = {
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
+  onCopy?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
 };
@@ -24,6 +26,7 @@ export const MessageMenu = ({
   onReply,
   onForward,
   onPin,
+  onCopy,
   onEdit,
   onDelete,
 }: Readonly<MessageMenuProps>) => {
@@ -44,6 +47,11 @@ export const MessageMenu = ({
           <li>
             <Button variant="menu" onClick={onReply}>
               <ArrowUturnLeftIcon width={20} height={20} /> Reply
+            </Button>
+          </li>
+          <li>
+            <Button variant="menu" onClick={onCopy}>
+              <DocumentDuplicateIcon width={20} height={20} /> Copy
             </Button>
           </li>
           <li>

@@ -12,6 +12,7 @@ type MessageItemProps = {
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
+  onCopy?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
 };
@@ -22,6 +23,7 @@ export const MessageItem = ({
   onReply,
   onForward,
   onPin,
+  onCopy,
   onEdit,
   onDelete,
 }: Readonly<MessageItemProps>) => {
@@ -69,6 +71,7 @@ export const MessageItem = ({
               onReply={onReply}
               onForward={onForward}
               onPin={onPin}
+              onCopy={onCopy}
               onEdit={onEdit}
               onDelete={onDelete}
             />
