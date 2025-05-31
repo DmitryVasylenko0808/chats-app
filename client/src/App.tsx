@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Route, Routes } from 'react-router';
+import { ToastContainer } from 'react-toastify';
 
 import { AuthChecker, RequireAuth } from './features/auth/components';
 import AuthLayout from './layouts/auth-layout';
@@ -37,6 +38,7 @@ function App() {
           </Route>
         </Routes>
       </AuthChecker>
+      <ToastContainer hideProgressBar position="top-center" autoClose={2500} />
     </QueryClientProvider>
   );
 }

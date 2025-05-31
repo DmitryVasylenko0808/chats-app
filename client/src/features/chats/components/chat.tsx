@@ -1,6 +1,7 @@
 import { Loader } from '@/shared/ui';
 
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { useGetChatById } from '../hooks';
 import { useCurrentChatStore } from '../store';
@@ -29,7 +30,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
   }
 
   if (error) {
-    alert(error.message);
+    toast(error.message);
     reset();
   }
 

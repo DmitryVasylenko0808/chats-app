@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { useEditProfile } from '../hooks';
 import { User } from '../types';
@@ -36,10 +37,10 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
 
     mutateAsync(editProfileData)
       .then(() => {
-        alert('Profile is successfully edited');
+        toast('Profile is successfully edited');
         navigate(`/profile/${currentUser?.id}`);
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => toast(error.message));
   };
 
   return (

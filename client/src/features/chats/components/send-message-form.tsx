@@ -5,6 +5,7 @@ import { EmojiClickData } from 'emoji-picker-react';
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { useSendMessage } from '../hooks';
 import { Chat } from '../types';
@@ -38,7 +39,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const submitHandler = (data: SendMessageFormFields) =>
     mutateAsync({ ...data, chatId: chat.id })
       .then(() => reset())
-      .catch((err) => alert(err.message));
+      .catch((err) => toast(err.message));
 
   const files = watch('images');
 

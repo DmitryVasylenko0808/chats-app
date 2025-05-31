@@ -1,5 +1,7 @@
 import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
 
+import { toast } from 'react-toastify';
+
 import { useDeleteUser } from '../hooks';
 import { User } from '../types';
 
@@ -12,8 +14,8 @@ export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalP
 
   const handleClickDelete = () => {
     mutateAsync(user.id)
-      .then(() => alert('Account is successfully deleted'))
-      .catch((error) => alert(error.message));
+      .then(() => toast('Account is successfully deleted'))
+      .catch((error) => toast(error.message));
   };
 
   return (

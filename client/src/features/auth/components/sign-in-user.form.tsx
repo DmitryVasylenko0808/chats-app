@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { useSignInUser } from '../hooks';
 import { SignInFormFields, signInSchema } from '../validations';
@@ -22,7 +23,7 @@ export const SignInUserForm = () => {
   const submitHandler = (fields: SignInFormFields) => {
     mutateAsync(fields)
       .then(() => navigate('/'))
-      .catch((error) => alert(error.message));
+      .catch((error) => toast(error.message));
   };
 
   return (

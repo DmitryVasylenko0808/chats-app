@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { useRegisterUser } from '../hooks';
 import { RegisterFormFields, registerSchema } from '../validations';
@@ -25,9 +26,9 @@ export const RegisterUserForm = () => {
     mutateAsync(data)
       .then(() => {
         navigate('/auth/sign-in');
-        alert('Success');
+        toast('Success');
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => toast(error.message));
   };
 
   return (

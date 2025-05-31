@@ -1,6 +1,7 @@
 import { PaperClipIcon } from '@heroicons/react/16/solid';
 
 import { ComponentProps } from 'react';
+import { toast } from 'react-toastify';
 
 type FilesUploadButtonProps = ComponentProps<'input'> & {
   label?: string;
@@ -15,7 +16,7 @@ export const FilesUploadButton = ({
   ...props
 }: Readonly<FilesUploadButtonProps>) => {
   if (error) {
-    alert(error);
+    toast(error);
   }
 
   return (

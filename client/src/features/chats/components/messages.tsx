@@ -2,6 +2,7 @@ import { useCopy } from '@/shared/hooks';
 import { Loader } from '@/shared/ui';
 
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import {
   useDeleteMessage,
@@ -48,9 +49,9 @@ export const Messages = ({ chatId }: MessagesProps) => {
     editMessage({ chatId: message.chatId, messageId: message.id, ...data })
       .then(() => {
         setEditableMessage(null);
-        alert('Message is edited');
+        toast('Message is edited');
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => toast(err.message));
   };
 
   const handleClickReply = (message: Message) => setReplyingMessage(message);
@@ -59,9 +60,9 @@ export const Messages = ({ chatId }: MessagesProps) => {
     replyMessage({ chatId: message.chatId, messageId: message.id, ...data })
       .then(() => {
         setReplyingMessage(null);
-        alert('Message is replied');
+        toast('Message is replied');
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => toast(err.message));
   };
 
   const handleClickForward = (message: Message) => setForwardingMessage(message);
@@ -70,33 +71,33 @@ export const Messages = ({ chatId }: MessagesProps) => {
     forwardMessage({ chatId: message.chatId, messageId: message.id, targetChatId })
       .then(() => {
         setForwardingMessage(null);
-        alert('Message is forwarded');
+        toast('Message is forwarded');
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => toast(err.message));
   };
 
   const handlePinMessage = (message: Message) => {
     pinMessage({ chatId: message.chatId, messageId: message.id })
-      .then(() => alert('Successfully pinned!'))
-      .catch((err) => alert(err.message));
+      .then(() => toast('Successfully pinned!'))
+      .catch((err) => toast(err.message));
   };
 
   const handleUnpinMessage = (message: Message) => {
     unpinMessage({ chatId: message.chatId, messageId: message.id })
-      .then(() => alert('Successfully unpinned!'))
-      .catch((err) => alert(err.message));
+      .then(() => toast('Successfully unpinned!'))
+      .catch((err) => toast(err.message));
   };
 
   const handleDeleteMessage = (message: Message) => {
     deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
-      alert(err.message)
+      toast(err.message)
     );
   };
 
   const handleClickCopy = (message: Message) => {
     handleCopy(message.text)
-      .then(() => alert('Copied!'))
-      .catch(() => alert('Cannot copy text message'));
+      .then(() => toast('Copied!'))
+      .catch(() => toast('Cannot copy text message'));
   };
 
   if (isLoading) {
@@ -108,7 +109,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   }
 
   if (error) {
-    alert(error.message);
+    toast(error.message);
   }
 
   return (
