@@ -37,10 +37,10 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
 
     mutateAsync(editProfileData)
       .then(() => {
-        toast('Profile is successfully edited');
+        toast.success('Profile is successfully edited');
         navigate(`/profile/${currentUser?.id}`);
       })
-      .catch((error) => toast(error.message));
+      .catch((error) => toast.error(error.message));
   };
 
   return (

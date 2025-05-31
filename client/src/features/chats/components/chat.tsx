@@ -30,7 +30,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
   }
 
   if (error) {
-    toast(error.message);
+    toast.error(error.message);
     reset();
   }
 

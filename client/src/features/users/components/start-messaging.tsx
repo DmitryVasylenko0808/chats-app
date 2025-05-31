@@ -10,7 +10,7 @@ type StartMessagingProps = { user: User };
 export const StartMessaging = ({ user }: Readonly<StartMessagingProps>) => {
   const { mutateAsync, isPending } = useCreateChat();
 
-  const handleClick = () => mutateAsync(Number(user.id)).catch((err) => toast(err.message));
+  const handleClick = () => mutateAsync(Number(user.id)).catch((err) => toast.error(err.message));
 
   return (
     <div className="w-full py-6">

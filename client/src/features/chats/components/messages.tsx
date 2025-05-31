@@ -49,9 +49,9 @@ export const Messages = ({ chatId }: MessagesProps) => {
     editMessage({ chatId: message.chatId, messageId: message.id, ...data })
       .then(() => {
         setEditableMessage(null);
-        toast('Message is edited');
+        toast.success('Message is edited');
       })
-      .catch((err) => toast(err.message));
+      .catch((err) => toast.error(err.message));
   };
 
   const handleClickReply = (message: Message) => setReplyingMessage(message);
@@ -60,9 +60,9 @@ export const Messages = ({ chatId }: MessagesProps) => {
     replyMessage({ chatId: message.chatId, messageId: message.id, ...data })
       .then(() => {
         setReplyingMessage(null);
-        toast('Message is replied');
+        toast.success('Message is replied');
       })
-      .catch((err) => toast(err.message));
+      .catch((err) => toast.error(err.message));
   };
 
   const handleClickForward = (message: Message) => setForwardingMessage(message);
@@ -71,33 +71,33 @@ export const Messages = ({ chatId }: MessagesProps) => {
     forwardMessage({ chatId: message.chatId, messageId: message.id, targetChatId })
       .then(() => {
         setForwardingMessage(null);
-        toast('Message is forwarded');
+        toast.success('Message is forwarded');
       })
-      .catch((err) => toast(err.message));
+      .catch((err) => toast.error(err.message));
   };
 
   const handlePinMessage = (message: Message) => {
     pinMessage({ chatId: message.chatId, messageId: message.id })
-      .then(() => toast('Successfully pinned!'))
-      .catch((err) => toast(err.message));
+      .then(() => toast.success('Successfully pinned!'))
+      .catch((err) => toast.error(err.message));
   };
 
   const handleUnpinMessage = (message: Message) => {
     unpinMessage({ chatId: message.chatId, messageId: message.id })
-      .then(() => toast('Successfully unpinned!'))
-      .catch((err) => toast(err.message));
+      .then(() => toast.success('Successfully unpinned!'))
+      .catch((err) => toast.error(err.message));
   };
 
   const handleDeleteMessage = (message: Message) => {
     deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
-      toast(err.message)
+      toast.error(err.message)
     );
   };
 
   const handleClickCopy = (message: Message) => {
     handleCopy(message.text)
-      .then(() => toast('Copied!'))
-      .catch(() => toast('Cannot copy text message'));
+      .then(() => toast.success('Copied!'))
+      .catch(() => toast.error('Cannot copy text message'));
   };
 
   if (isLoading) {
@@ -109,7 +109,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   }
 
   if (error) {
-    toast(error.message);
+    toast.error(error.message);
   }
 
   return (

@@ -16,7 +16,7 @@ export const FilesUploadButton = ({
   ...props
 }: Readonly<FilesUploadButtonProps>) => {
   if (error) {
-    toast(error);
+    toast.error(error);
   }
 
   return (

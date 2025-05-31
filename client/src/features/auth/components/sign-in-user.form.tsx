@@ -23,7 +23,7 @@ export const SignInUserForm = () => {
   const submitHandler = (fields: SignInFormFields) => {
     mutateAsync(fields)
       .then(() => navigate('/'))
-      .catch((error) => toast(error.message));
+      .catch((error) => toast.error(error.message));
   };
 
   return (

@@ -14,8 +14,8 @@ export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalP
 
   const handleClickDelete = () => {
     mutateAsync(user.id)
-      .then(() => toast('Account is successfully deleted'))
-      .catch((error) => toast(error.message));
+      .then(() => toast.success('Account is successfully deleted'))
+      .catch((error) => toast.error(error.message));
   };
 
   return (

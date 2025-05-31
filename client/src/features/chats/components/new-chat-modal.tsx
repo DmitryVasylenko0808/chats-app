@@ -11,7 +11,8 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
   const { search, data, isFetching, handleChangeSearch } = useSearchUsers();
   const { mutateAsync } = useCreateChat();
 
-  const handleClick = (userId: number) => mutateAsync(userId).catch((err) => toast(err.message));
+  const handleClick = (userId: number) =>
+    mutateAsync(userId).catch((err) => toast.error(err.message));
 
   const isShowList = search && data;
 

@@ -26,9 +26,9 @@ export const RegisterUserForm = () => {
     mutateAsync(data)
       .then(() => {
         navigate('/auth/sign-in');
-        toast('Success');
+        toast.success('Success');
       })
-      .catch((error) => toast(error.message));
+      .catch((error) => toast.error(error.message));
   };
 
   return (

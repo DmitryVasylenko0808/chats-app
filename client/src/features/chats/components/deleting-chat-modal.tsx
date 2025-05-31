@@ -11,8 +11,8 @@ export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalPr
 
   const handleClickDeleteChat = () =>
     mutateAsync(chatId)
-      .then(() => toast('Chat is deleted'))
-      .catch((err) => toast(err.message));
+      .then(() => toast.success('Chat is deleted'))
+      .catch((err) => toast.error(err.message));
 
   return (
     <Modal {...modalProps}>
