@@ -26,16 +26,18 @@ export const Menu = ({
       {trigger}
       {open && (
         <div
-          className={cn('absolute z-30 m-1 w-max min-w-32', {
-            'top-full right-0': contentContainerPosition === 'bottom',
-            'right-0 bottom-full': contentContainerPosition === 'top',
-          })}
+          className={cn(
+            'absolute z-30 m-1 w-max min-w-32',
+            {
+              'top-full right-0': contentContainerPosition === 'bottom',
+              'right-0 bottom-full': contentContainerPosition === 'top',
+            },
+            className
+          )}
           ref={ref}
         >
           {header}
-          <div
-            className={cn('border-body/30 rounded-xl border bg-white py-2 shadow-xl', className)}
-          >
+          <div className={cn('border-body/30 rounded-xl border bg-white py-2 shadow-xl')}>
             {content}
           </div>
         </div>

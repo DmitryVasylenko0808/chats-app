@@ -96,7 +96,7 @@ export const MessageMenu = ({
         }
         open={open}
         ref={ref}
-        className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
+        className={cn({ 'right-0': !participantMessage, 'left-0': participantMessage })}
       />
     </div>
   );

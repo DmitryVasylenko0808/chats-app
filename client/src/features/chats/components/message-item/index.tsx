@@ -59,8 +59,8 @@ export const MessageItem = ({
         <MessageSender sender={message.sender} participantMessage={participantMessage} />
         <div
           className={cn('flex gap-1.5', {
-            'mr-44 flex-row': participantMessage,
-            'ml-44 flex-row-reverse': !participantMessage,
+            'mr-72 flex-row': participantMessage,
+            'ml-72 flex-row-reverse': !participantMessage,
           })}
         >
           <MessageContent participantMessage={participantMessage}>
