@@ -10,6 +10,7 @@ import {
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/16/solid';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 type MessageMenuProps = {
   participantMessage: boolean;
@@ -19,6 +20,7 @@ type MessageMenuProps = {
   onCopy?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onAddReaction?: (emoji: string) => void;
 };
 
 export const MessageMenu = ({
@@ -29,60 +31,73 @@ export const MessageMenu = ({
   onCopy,
   onEdit,
   onDelete,
+  onAddReaction,
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
+
+  const handleClickReactionPicker = (emojiData: EmojiClickData) => onAddReaction?.(emojiData.emoji);
 
   const canEdit = !participantMessage && onEdit;
   const canDelete = !participantMessage && onDelete;
 
   return (
-    <Menu
-      trigger={
-        <Button variant="text" onClick={handleToggle}>
-          <EllipsisVerticalIcon width={18} height={18} />
-        </Button>
-      }
-      content={
-        <ul>
-          <li>
-            <Button variant="menu" onClick={onReply}>
-              <ArrowUturnLeftIcon width={20} height={20} /> Reply
-            </Button>
-          </li>
-          <li>
-            <Button variant="menu" onClick={onCopy}>
-              <DocumentDuplicateIcon width={20} height={20} /> Copy
-            </Button>
-          </li>
-          <li>
-            <Button variant="menu" onClick={onForward}>
-              <ArrowUturnRightIcon width={20} height={20} /> Forward
-            </Button>
-          </li>
-          <li>
-            <Button variant="menu" onClick={onPin}>
-              <PaperClipIcon width={20} height={20} /> Pin
-            </Button>
-          </li>
-          {canEdit && (
+    <div className="relative">
+      <Menu
+        trigger={
+          <Button variant="text" onClick={handleToggle}>
+            <EllipsisVerticalIcon width={18} height={18} />
+          </Button>
+        }
+        header={
+          <EmojiPicker
+            className="mb-1"
+            reactionsDefaultOpen
+            allowExpandReactions={false}
+            onReactionClick={handleClickReactionPicker}
+          />
+        }
+        content={
+          <ul>
             <li>
-              <Button variant="menu" onClick={onEdit}>
-                <PencilIcon width={20} height={20} /> Edit
+              <Button variant="menu" onClick={onReply}>
+                <ArrowUturnLeftIcon width={20} height={20} /> Reply
               </Button>
             </li>
-          )}
-          {canDelete && (
             <li>
-              <Button variant="menu-danger" onClick={onDelete}>
-                <TrashIcon width={20} height={20} /> Delete
+              <Button variant="menu" onClick={onCopy}>
+                <DocumentDuplicateIcon width={20} height={20} /> Copy
               </Button>
             </li>
-          )}
-        </ul>
-      }
-      open={open}
-      ref={ref}
-      className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
-    />
+            <li>
+              <Button variant="menu" onClick={onForward}>
+                <ArrowUturnRightIcon width={20} height={20} /> Forward
+              </Button>
+            </li>
+            <li>
+              <Button variant="menu" onClick={onPin}>
+                <PaperClipIcon width={20} height={20} /> Pin
+              </Button>
+            </li>
+            {canEdit && (
+              <li>
+                <Button variant="menu" onClick={onEdit}>
+                  <PencilIcon width={20} height={20} /> Edit
+                </Button>
+              </li>
+            )}
+            {canDelete && (
+              <li>
+                <Button variant="menu-danger" onClick={onDelete}>
+                  <TrashIcon width={20} height={20} /> Delete
+                </Button>
+              </li>
+            )}
+          </ul>
+        }
+        open={open}
+        ref={ref}
+        className={cn({ 'right-0': participantMessage, 'left-0': !participantMessage })}
+      />
+    </div>
   );
 };

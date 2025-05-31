@@ -30,6 +30,7 @@ export const MessagesList = ({
         <MessageItem
           message={m}
           participantMessage={m.senderId !== currentUser?.id}
+          currentUser={currentUser}
           key={m.id}
           onReply={() => onReplyItem?.(m)}
           onForward={() => onForwardItem?.(m)}

@@ -1,14 +1,17 @@
+import { User } from '@/features/users/types';
 import { cn } from '@/utils/cn';
 import { ClockIcon } from '@heroicons/react/16/solid';
 
 import { PropsWithChildren } from 'react';
 
-import { Message } from '../types';
+import { useAddReaction, useDeleteReaction } from '../hooks';
+import { Message, Reaction } from '../types';
 import { MessageMenu } from './message-menu';
 
 type MessageItemProps = {
   message: Message;
   participantMessage: boolean;
+  currentUser?: User | null;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
@@ -20,6 +23,7 @@ type MessageItemProps = {
 export const MessageItem = ({
   message,
   participantMessage,
+  currentUser,
   onReply,
   onForward,
   onPin,
@@ -27,6 +31,18 @@ export const MessageItem = ({
   onEdit,
   onDelete,
 }: Readonly<MessageItemProps>) => {
+  // optimistic updates?
+  const { mutateAsync: addReaction } = useAddReaction();
+  const { mutateAsync: deleteReaction } = useDeleteReaction();
+
+  const handleAddReaction = (emoji: string) => {
+    addReaction({ messageId: message.id, emoji });
+  };
+
+  const handleDeleteReaction = (emoji: string) => {
+    deleteReaction({ messageId: message.id, emoji });
+  };
+
   return (
     <li
       className={cn('flex', {
@@ -63,22 +79,78 @@ export const MessageItem = ({
               {message.text}
             </p>
             <MessageImages images={message.images} />
+            <MessageReactions
+              reactions={message.reactionsByEmoji}
+              participantMessage={participantMessage}
+              currentUser={currentUser}
+              onAddReaction={handleAddReaction}
+              onDeleteReaction={handleDeleteReaction}
+            />
             <MessageMeta message={message} participantMessage={participantMessage} />
           </MessageContent>
-          <div className="">
-            <MessageMenu
-              participantMessage={participantMessage}
-              onReply={onReply}
-              onForward={onForward}
-              onPin={onPin}
-              onCopy={onCopy}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          </div>
+          <MessageMenu
+            participantMessage={participantMessage}
+            onReply={onReply}
+            onForward={onForward}
+            onPin={onPin}
+            onCopy={onCopy}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onAddReaction={handleAddReaction}
+          />
         </div>
       </div>
     </li>
+  );
+};
+
+type MessageReactionsProps = {
+  participantMessage: boolean;
+  reactions?: Message['reactionsByEmoji'];
+  currentUser?: User | null;
+  onAddReaction?: (emoji: string) => void;
+  onDeleteReaction?: (emoji: string) => void;
+};
+const MessageReactions = ({
+  reactions,
+  participantMessage,
+  currentUser,
+  onAddReaction,
+  onDeleteReaction,
+}: Readonly<MessageReactionsProps>) => {
+  if (!reactions) {
+    return null;
+  }
+
+  const isOwnReaction = (reactions: Reaction[]) =>
+    reactions.find((r) => r.userId === currentUser?.id);
+
+  const handleClickReaction = (emoji: string, reactions: Reaction[]) => {
+    if (isOwnReaction(reactions)) {
+      onDeleteReaction?.(emoji);
+    } else {
+      onAddReaction?.(emoji);
+    }
+  };
+
+  // reaction item
+  return (
+    <div className="mt-1.5">
+      <ul className="flex flex-wrap gap-x-1 gap-y-1.5">
+        {Object.entries(reactions).map(([emoji, reactions]) => (
+          <li
+            className={cn('inline-flex cursor-pointer rounded-2xl px-2 py-0.5 text-sm', {
+              'bg-primary-light text-white': participantMessage,
+              'bg-reply-user-message text-black': !participantMessage,
+              'bg-primary text-white': !participantMessage && isOwnReaction(reactions),
+              'bg-current-user-message text-black': participantMessage && isOwnReaction(reactions),
+            })}
+            key={emoji}
+            onClick={() => handleClickReaction(emoji, reactions)}
+          >{`${emoji} ${reactions.length}`}</li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

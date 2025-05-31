@@ -22,7 +22,7 @@ export type Message = {
   sender?: User | null;
   replyToMessage?: Message;
   forwardedMessage?: Message;
-  reactionsByEmoji?: Record<string, Reaction>;
+  reactionsByEmoji?: Record<string, Reaction[]>;
   reactionsByEmojiCount?: Record<string, number>;
 };
 
