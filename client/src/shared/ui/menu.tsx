@@ -26,7 +26,7 @@ export const Menu = ({
       {trigger}
       {open && (
         <div
-          className={cn('absolute z-10 m-1 w-max min-w-32', {
+          className={cn('absolute z-30 m-1 w-max min-w-32', {
             'top-full right-0': contentContainerPosition === 'bottom',
             'right-0 bottom-full': contentContainerPosition === 'top',
           })}

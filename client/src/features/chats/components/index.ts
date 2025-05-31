@@ -8,7 +8,6 @@ export * from './deleting-chat-modal';
 export * from './messages';
 export * from './messages-list';
 export * from './message-item';
-export * from './message-menu';
 export * from './send-message-form';
 export * from './edit-message-modal';
 export * from './empty-chat';
