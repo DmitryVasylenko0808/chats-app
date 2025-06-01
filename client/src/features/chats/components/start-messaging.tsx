@@ -1,9 +1,8 @@
 import { useCreateChat } from '@/features/chats/hooks';
+import { User } from '@/features/users/types';
 import { Button, Loader } from '@/shared/ui';
 
 import { toast } from 'react-toastify';
-
-import { User } from '../types';
 
 type StartMessagingProps = { user: User };
 

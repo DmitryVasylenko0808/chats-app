@@ -1,10 +1,10 @@
 import { useAuth } from '@/features/auth/hooks';
+import { StartMessaging } from '@/features/chats/components';
 import { Loader } from '@/shared/ui';
 
 import { useParams } from 'react-router';
 
 import { useGetUser } from '../hooks';
-import { StartMessaging } from './start-messaging';
 import { UserInfo } from './user-info';
 import { UserProfileHeader } from './user-profile-header';
 
