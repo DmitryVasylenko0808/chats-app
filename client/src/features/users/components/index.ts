@@ -8,3 +8,4 @@ export * from './search-users';
 export * from './user-info';
 export * from './user-profile-header';
 export * from './search-users';
+export * from './users-list';

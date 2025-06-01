@@ -1,11 +1,16 @@
 import { Loader, TextField } from '@/shared/ui';
 
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useSearchUsers } from '../hooks';
+import { User } from '../types';
+import { UsersList } from './users-list';
 
 export const SearchUsers = () => {
   const { search, handleChangeSearch, data, isFetching } = useSearchUsers();
+  const navigate = useNavigate();
+
+  const handleClick = (user: User) => navigate(`/profile/${user.id}`);
 
   return (
     <div className="px-6 py-3">
@@ -18,22 +23,7 @@ export const SearchUsers = () => {
                 <Loader variant="primary" size="sm" />
               </div>
             ) : (
-              <ul className="flex flex-col">
-                {data?.map((user) => (
-                  <li
-                    className="hover:bg-secondary flex cursor-pointer px-3 py-1.5 duration-100"
-                    key={user.id}
-                  >
-                    <Link to={`/profile/${user.id}`} className="flex items-center gap-3">
-                      <img src={user.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
-                      <div className="justify-center-center flex flex-col">
-                        <p className="font-medium">{user.name}</p>
-                        <span className="text-body text-sm font-normal">{user.username}</span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <UsersList users={data} onClickItem={handleClick} />
             )}
           </div>
         )}
