@@ -1,9 +1,11 @@
 import { useAuth } from '@/features/auth/hooks';
+import { User } from '@/features/users/types';
 import { Loader } from '@/shared/ui';
+import { cn } from '@/utils/cn';
 
 import { useGetChats } from '../hooks';
 import { useCurrentChatStore } from '../store';
-import { ChatListItem } from './chat-list-item';
+import { Chat } from '../types';
 
 export const RecentChats = () => {
   const { currentUser } = useAuth();
@@ -26,9 +28,10 @@ export const RecentChats = () => {
       <div className="scrollbar-custom h-[calc(100vh-60px-64px-64px)] overflow-y-auto">
         <ul className="flex flex-col">
           {data?.map((item) => (
-            <ChatListItem
+            <RecentChatsItem
               chat={item}
               active={item.id === chatId}
+              participant={item.members.find((m) => m.id !== currentUser?.id)}
               key={item.id}
               onClick={() => handleClickChat(item.id)}
             />
@@ -38,3 +41,40 @@ export const RecentChats = () => {
     </div>
   );
 };
+
+type RecentChatsItemProps = {
+  chat: Chat;
+  active: boolean;
+  onClick: () => void;
+  participant?: User;
+};
+
+export const RecentChatsItem = ({
+  chat,
+  active,
+  participant,
+  onClick,
+}: Readonly<RecentChatsItemProps>) => (
+  <li
+    className={cn('hover:bg-active-chat flex cursor-pointer px-5 py-4 duration-100', {
+      'bg-active-chat': active,
+    })}
+  >
+    <div onClick={onClick} className="flex w-full items-center gap-3">
+      <img src={participant?.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
+      <div className="flex w-full min-w-0 flex-col">
+        <div className="flex items-center justify-between">
+          <p className="truncate font-medium">{participant?.name || 'Deleted Account'}</p>
+          {chat.lastMessage && (
+            <span className="text-body text-xs font-normal">
+              {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+        <span className="text-body white truncate text-sm font-normal">
+          {chat.lastMessage?.text}
+        </span>
+      </div>
+    </div>
+  </li>
+);
