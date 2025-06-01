@@ -43,7 +43,7 @@ export const getMessages = async (chatid: number) => {
 
 type SendMessageParams = {
   chatId: number;
-  text: string;
+  text?: string;
   images?: File[];
 };
 

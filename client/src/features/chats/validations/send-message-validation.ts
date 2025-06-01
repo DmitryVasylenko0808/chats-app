@@ -7,9 +7,14 @@ const imagesSchema = z
     'Only supported .jpeg and .png formats'
   );
 
-export const sendMessageSchema = z.object({
-  text: z.string().min(1, 'Text is required').trim(),
-  images: imagesSchema.optional(),
-});
+export const sendMessageSchema = z
+  .object({
+    text: z.string().trim().optional(),
+    images: imagesSchema.optional(),
+  })
+  .refine(({ text, images }) => text || images?.length, {
+    message: 'Cannot send message without text or images',
+    path: ['text'],
+  });
 
 export type SendMessageFormFields = z.infer<typeof sendMessageSchema>;
