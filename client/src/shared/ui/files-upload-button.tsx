@@ -20,7 +20,7 @@ export const FilesUploadButton = ({
   }
 
   return (
-    <label className="text-primary relative" htmlFor={name}>
+    <label className="text-primary relative cursor-pointer" htmlFor={name}>
       <PaperClipIcon width={24} height={24} /> {label}
       <input type="file" className="hidden" id={name} {...props} />
       {!!attachedFilesCount && (
