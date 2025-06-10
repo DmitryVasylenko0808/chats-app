@@ -1,9 +1,9 @@
+import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
 
 import { useSignInUser } from '../hooks';
 import { SignInFormFields, signInSchema } from '../validations';
@@ -18,12 +18,13 @@ export const SignInUserForm = () => {
     resolver: zodResolver(signInSchema),
   });
   const { mutateAsync, isPending } = useSignInUser();
+  const { notify } = useAlerts();
   const navigate = useNavigate();
 
   const submitHandler = (fields: SignInFormFields) => {
     mutateAsync(fields)
       .then(() => navigate('/'))
-      .catch((error) => toast.error(error.message));
+      .catch((error) => notify({ variant: 'error', text: error.message }));
   };
 
   return (

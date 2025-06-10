@@ -1,10 +1,10 @@
 import { useAuth } from '@/features/auth/hooks';
+import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
 
 import { useEditProfile } from '../hooks';
 import { User } from '../types';
@@ -28,6 +28,7 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
     },
   });
   const { mutateAsync, isPending } = useEditProfile();
+  const { notify } = useAlerts();
   const navigate = useNavigate();
 
   const submitHandler = (fields: EditingProfileFormFields) => {
@@ -37,10 +38,10 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
 
     mutateAsync(editProfileData)
       .then(() => {
-        toast.success('Profile is successfully edited');
+        notify({ variant: 'success', text: 'Profile is successfully edited' });
         navigate(`/profile/${currentUser?.id}`);
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => notify({ variant: 'error', text: error.message }));
   };
 
   return (

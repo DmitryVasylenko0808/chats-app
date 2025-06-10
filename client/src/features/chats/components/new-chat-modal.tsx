@@ -1,9 +1,8 @@
 import { UsersList } from '@/features/users/components';
 import { useSearchUsers } from '@/features/users/hooks';
 import { User } from '@/features/users/types';
+import { useAlerts } from '@/shared/hooks';
 import { Loader, Modal, ModalProps, TextField } from '@/shared/ui';
-
-import { toast } from 'react-toastify';
 
 import { useCreateChat } from '../hooks';
 
@@ -12,8 +11,10 @@ type NewChatModalProps = ModalProps;
 export const NewChatModal = (modalProps: NewChatModalProps) => {
   const { search, data, isFetching, handleChangeSearch } = useSearchUsers();
   const { mutateAsync } = useCreateChat();
+  const { notify } = useAlerts();
 
-  const handleClick = (user: User) => mutateAsync(user.id).catch((err) => toast.error(err.message));
+  const handleClick = (user: User) =>
+    mutateAsync(user.id).catch((err) => notify({ variant: 'error', text: err.message }));
 
   const isShowList = search && data;
 

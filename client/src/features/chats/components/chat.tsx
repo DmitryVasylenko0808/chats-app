@@ -1,7 +1,7 @@
+import { useAlerts } from '@/shared/hooks';
 import { Loader } from '@/shared/ui';
 
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 import { useGetChatById } from '../hooks';
 import { useCurrentChatStore } from '../store';
@@ -16,6 +16,7 @@ type ChatProps = { chatId: number };
 export const Chat = ({ chatId }: Readonly<ChatProps>) => {
   const { data, isLoading, error } = useGetChatById(chatId);
   const { reset } = useCurrentChatStore();
+  const { notify } = useAlerts();
   const [showDetails, setShowDetails] = useState(false);
 
   const handleClickShowDetails = () => setShowDetails(true);
@@ -30,7 +31,7 @@ export const Chat = ({ chatId }: Readonly<ChatProps>) => {
   }
 
   if (error) {
-    toast.error(error.message);
+    notify({ variant: 'error', text: error.message });
     reset();
   }
 

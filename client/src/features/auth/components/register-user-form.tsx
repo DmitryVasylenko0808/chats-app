@@ -1,9 +1,9 @@
+import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
 
 import { useRegisterUser } from '../hooks';
 import { RegisterFormFields, registerSchema } from '../validations';
@@ -18,6 +18,7 @@ export const RegisterUserForm = () => {
     resolver: zodResolver(registerSchema),
   });
   const { mutateAsync, isPending } = useRegisterUser();
+  const { notify } = useAlerts();
   const navigate = useNavigate();
 
   const submitHandler = (fields: RegisterFormFields) => {
@@ -26,9 +27,9 @@ export const RegisterUserForm = () => {
     mutateAsync(data)
       .then(() => {
         navigate('/auth/sign-in');
-        toast.success('Success');
+        notify({ variant: 'success', text: 'Success' });
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => notify({ variant: 'error', text: error.message }));
   };
 
   return (

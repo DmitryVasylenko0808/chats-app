@@ -1,3 +1,4 @@
+import { useAlerts } from '@/shared/hooks';
 import { Button, FilesUploadButton, Loader, TextArea } from '@/shared/ui';
 import { PaperAirplaneIcon } from '@heroicons/react/16/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,7 +6,6 @@ import { EmojiClickData } from 'emoji-picker-react';
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
 
 import { useSendMessage } from '../hooks';
 import { Chat } from '../types';
@@ -30,6 +30,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
     resolver: zodResolver(sendMessageSchema),
   });
   const { mutateAsync, isPending } = useSendMessage();
+  const { notify } = useAlerts();
 
   useEffect(() => setFocus('text'), [chat]);
 
@@ -41,7 +42,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const submitHandler = (data: SendMessageFormFields) =>
     mutateAsync({ ...data, chatId: chat.id })
       .then(() => reset())
-      .catch((err) => toast.error(err.message));
+      .catch((err) => notify({ variant: 'error', text: err.message }));
 
   const files = watch('images');
 

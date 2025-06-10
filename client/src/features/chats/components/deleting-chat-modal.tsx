@@ -1,6 +1,5 @@
+import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
-
-import { toast } from 'react-toastify';
 
 import { useDeleteChat } from '../hooks';
 
@@ -8,11 +7,12 @@ type DeletingChatModalProps = { chatId: number } & ModalProps;
 
 export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalProps) => {
   const { mutateAsync, isPending } = useDeleteChat();
+  const { notify } = useAlerts();
 
   const handleClickDeleteChat = () =>
     mutateAsync(chatId)
-      .then(() => toast.success('Chat is deleted'))
-      .catch((err) => toast.error(err.message));
+      .then(() => notify({ variant: 'success', text: 'Chat is deleted' }))
+      .catch((err) => notify({ variant: 'error', text: err.message }));
 
   return (
     <Modal {...modalProps}>

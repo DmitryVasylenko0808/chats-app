@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Route, Routes } from 'react-router';
-import { ToastContainer } from 'react-toastify';
 
 import { AuthChecker, RequireAuth } from './features/auth/components';
 import AuthLayout from './layouts/auth-layout';
@@ -11,6 +10,7 @@ import EditingProfilePage from './pages/editing-profile-page';
 import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
 import SignInPage from './pages/sign-in-page';
+import { AlertsContainer } from './shared/components';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,7 +38,7 @@ function App() {
           </Route>
         </Routes>
       </AuthChecker>
-      <ToastContainer hideProgressBar position="top-center" autoClose={2500} />
+      <AlertsContainer />
     </QueryClientProvider>
   );
 }
