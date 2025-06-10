@@ -1,5 +1,6 @@
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { v4 } from 'uuid';
 
 import { UnprocessableEntityException } from '@nestjs/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
@@ -9,7 +10,7 @@ export const allowedFileTypes = ['image/jpeg', 'image/png'];
 export const maxFileSize = 5 * 1024 * 1024;
 
 export const generateFilename = (file: Express.Multer.File) => {
-  const name = `${Date.now()}${extname(file.originalname)}`;
+  const name = `${v4()}${extname(file.originalname)}`;
 
   return name;
 };
