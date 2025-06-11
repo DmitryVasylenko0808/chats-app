@@ -1,7 +1,6 @@
 import { useAlerts } from '@/shared/hooks';
 import { Button, FilesUploadButton, Loader, TextArea } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EmojiClickData } from 'emoji-picker-react';
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -34,8 +33,8 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
 
   useEffect(() => setFocus('text'), [chat]);
 
-  const handleEmojiClick = (emoji: EmojiClickData) => {
-    setValue('text', getValues('text') + emoji.emoji);
+  const handleEmojiClick = (emoji: string) => {
+    setValue('text', getValues('text') + emoji);
   };
   const handleClosePreview = () => setValue('images', []);
 
@@ -72,7 +71,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
               />
             )}
           />
-          <ChatEmojiPicker onEmojiClick={handleEmojiClick} />
+          <ChatEmojiPicker onClickEmoji={handleEmojiClick} />
           <Button type="submit" variant="primary" className="min-w-max px-4">
             {isPending ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
           </Button>

@@ -1,7 +1,6 @@
 import { useToogleMenu } from '@/shared/hooks';
-import { Button, Menu } from '@/shared/ui';
+import { Button, Menu, ReactionPicker } from '@/shared/ui';
 import { cn } from '@/utils/cn';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 import {
   AiOutlineCopy,
@@ -35,7 +34,7 @@ export const MessageMenu = ({
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
 
-  const handleClickReactionPicker = (emojiData: EmojiClickData) => onAddReaction?.(emojiData.emoji);
+  const handleClickReactionPicker = (reaction: string) => onAddReaction?.(reaction);
 
   const canEdit = !participantMessage && onEdit;
   const canDelete = !participantMessage && onDelete;
@@ -48,14 +47,7 @@ export const MessageMenu = ({
             <AiOutlineMore size={24} />
           </Button>
         }
-        header={
-          <EmojiPicker
-            className="mb-1"
-            reactionsDefaultOpen
-            allowExpandReactions={false}
-            onReactionClick={handleClickReactionPicker}
-          />
-        }
+        header={<ReactionPicker onClickReaction={handleClickReactionPicker} className="mb-1" />}
         content={
           <ul>
             <li>

@@ -6,3 +6,5 @@ export * from './textarea';
 export * from './modal';
 export * from './files-upload-button';
 export * from './portal';
+export * from './emoji-picker';
+export * from './reaction-picker';

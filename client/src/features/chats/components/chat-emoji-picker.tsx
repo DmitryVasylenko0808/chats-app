@@ -1,13 +1,12 @@
 import { useClickOutside } from '@/shared/hooks';
-import { Button } from '@/shared/ui';
-import EmojiPicker, { PickerProps } from 'emoji-picker-react';
+import { Button, EmojiPicker } from '@/shared/ui';
 
 import { useRef, useState } from 'react';
 import { AiOutlineSmile } from 'react-icons/ai';
 
-type ChatEmojiPickerProps = PickerProps;
+type ChatEmojiPickerProps = { onClickEmoji: (emoji: string) => void };
 
-export const ChatEmojiPicker = (props: Readonly<ChatEmojiPickerProps>) => {
+export const ChatEmojiPicker = ({ onClickEmoji }: Readonly<ChatEmojiPickerProps>) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -25,8 +24,8 @@ export const ChatEmojiPicker = (props: Readonly<ChatEmojiPickerProps>) => {
       >
         <AiOutlineSmile size={24} />
       </Button>
-      <div className="absolute -top-[500px] -left-[380px]" ref={ref}>
-        {showEmojiPicker && <EmojiPicker {...props} />}
+      <div className="absolute -top-[450px] -left-[380px]" ref={ref}>
+        {showEmojiPicker && <EmojiPicker onClickEmoji={onClickEmoji} />}
       </div>
     </div>
   );
