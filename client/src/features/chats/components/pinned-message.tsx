@@ -1,5 +1,6 @@
 import { Button } from '@/shared/ui';
-import { XMarkIcon } from '@heroicons/react/16/solid';
+
+import { AiOutlineClose } from 'react-icons/ai';
 
 import { Message } from '../types';
 
@@ -19,7 +20,7 @@ export const PinnedMessage = ({ pinnedMessage, onUnpin }: Readonly<PinnedMessage
         <p className="text-body w-full max-w-[1350px] truncate">{pinnedMessage.text}</p>
       </div>
       <Button variant="text" onClick={handleClickUnpin}>
-        <XMarkIcon width={24} height={24} />
+        <AiOutlineClose size={24} />
       </Button>
     </div>
   );

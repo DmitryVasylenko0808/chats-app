@@ -1,5 +1,6 @@
 import { cn } from '@/utils/cn';
-import { ClockIcon } from '@heroicons/react/16/solid';
+
+import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import { Message } from '../../types';
 
@@ -16,7 +17,7 @@ export const MessageMeta = ({ message, participantMessage }: Readonly<MessageMet
         'text-body': !participantMessage,
       })}
     >
-      <ClockIcon width={14} height={14} /> {new Date(message.createdAt).toLocaleString()}
+      <AiOutlineClockCircle size={14} /> {new Date(message.createdAt).toLocaleString()}
     </span>
   </div>
 );

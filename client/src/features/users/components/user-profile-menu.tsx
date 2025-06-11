@@ -1,7 +1,7 @@
 import { useModal, useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
-import { EllipsisVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/16/solid';
 
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineMore } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
 import { User } from '../types';
@@ -22,20 +22,20 @@ export const UserProfileMenu = ({ user }: Readonly<UserProfileMenuProps>) => {
       <Menu
         trigger={
           <Button aria-label="menu" variant="text" onClick={handleToggle}>
-            <EllipsisVerticalIcon width={18} height={18} />
+            <AiOutlineMore size={24} />
           </Button>
         }
         content={
           <ul>
             <li>
               <Button variant="menu" onClick={handleClickEdit}>
-                <PencilIcon width={18} height={18} />
+                <AiOutlineEdit size={18} />
                 Edit
               </Button>
             </li>
             <li>
               <Button variant="menu-danger" onClick={handleClickDelete}>
-                <TrashIcon width={18} height={18} />
+                <AiOutlineDelete size={18} />
                 Delete
               </Button>
             </li>

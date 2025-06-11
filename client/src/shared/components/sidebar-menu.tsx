@@ -1,7 +1,7 @@
 import { useAuth } from '@/features/auth/hooks';
 import { UserMenu } from '@/features/users/components';
-import { ChatBubbleOvalLeftIcon, UserIcon } from '@heroicons/react/16/solid';
 
+import { AiOutlineMessage, AiOutlineUser } from 'react-icons/ai';
 import { NavLink } from 'react-router';
 
 import { Logo } from './logo';
@@ -12,8 +12,8 @@ export const SideBarMenu = () => {
   const { currentUser } = useAuth();
 
   const navItems: NavItem[] = [
-    { href: `/profile/${currentUser?.id}`, icon: <UserIcon width={24} height={24} /> },
-    { href: '/', icon: <ChatBubbleOvalLeftIcon width={24} height={24} /> },
+    { href: `/profile/${currentUser?.id}`, icon: <AiOutlineUser size={24} /> },
+    { href: '/', icon: <AiOutlineMessage size={24} /> },
   ];
 
   return (

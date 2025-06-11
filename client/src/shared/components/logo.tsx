@@ -1,9 +1,7 @@
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/16/solid';
+import { AiFillMessage } from 'react-icons/ai';
 
 type LogoProps = { size?: number | string };
 
 export const Logo = ({ size = 46 }: Readonly<LogoProps>) => {
-  return (
-    <ChatBubbleOvalLeftEllipsisIcon className="text-primary inline" width={size} height={size} />
-  );
+  return <AiFillMessage className="text-primary inline" size={size} />;
 };

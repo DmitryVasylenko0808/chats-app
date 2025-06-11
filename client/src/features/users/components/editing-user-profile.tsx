@@ -1,7 +1,7 @@
 import { useAuth } from '@/features/auth/hooks';
 import { Button, Loader } from '@/shared/ui';
-import { ArrowLeftIcon } from '@heroicons/react/16/solid';
 
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
 import { useGetUser } from '../hooks';
@@ -30,7 +30,7 @@ export const EditingUserProfile = () => {
     <div>
       <div className="flex items-center justify-between p-6">
         <Button variant="text" onClick={handleClickBack}>
-          <ArrowLeftIcon width={18} height={18} />
+          <AiOutlineArrowLeft size={18} />
         </Button>
       </div>
       <div className="px-6">{data && <EditingUserProfileForm user={data} />}</div>

@@ -35,7 +35,6 @@ export const MessageItem = ({
   onEdit,
   onDelete,
 }: Readonly<MessageItemProps>) => {
-  // optimistic updates?
   const { mutateAsync: addReaction } = useAddReaction();
   const { mutateAsync: deleteReaction } = useDeleteReaction();
 
@@ -58,7 +57,7 @@ export const MessageItem = ({
       <div className="flex-1">
         <MessageSender sender={message.sender} participantMessage={participantMessage} />
         <div
-          className={cn('flex gap-1.5', {
+          className={cn('flex', {
             'mr-72 flex-row': participantMessage,
             'ml-72 flex-row-reverse': !participantMessage,
           })}

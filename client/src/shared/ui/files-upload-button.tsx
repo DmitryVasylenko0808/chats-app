@@ -1,6 +1,5 @@
-import { PaperClipIcon } from '@heroicons/react/16/solid';
-
 import { ComponentProps } from 'react';
+import { AiOutlinePicture } from 'react-icons/ai';
 
 import { useAlerts } from '../hooks';
 
@@ -24,7 +23,7 @@ export const FilesUploadButton = ({
 
   return (
     <label className="text-primary relative cursor-pointer" htmlFor={name}>
-      <PaperClipIcon width={24} height={24} /> {label}
+      <AiOutlinePicture size={24} /> {label}
       <input type="file" className="hidden" id={name} {...props} />
       {!!attachedFilesCount && (
         <span className="bg-primary absolute top-0 right-0 z-20 inline-flex h-4 w-4 items-center justify-center rounded-full text-white">

@@ -1,8 +1,8 @@
 import { usePreviewImages } from '@/shared/hooks';
 import { Button } from '@/shared/ui';
-import { XMarkIcon } from '@heroicons/react/16/solid';
 
 import { ComponentProps } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
 
 type PreviewImagesProps = ComponentProps<'div'> & {
   images?: File[];
@@ -27,7 +27,7 @@ export const PreviewMessageImages = ({
     >
       <div className="mb-0.5 flex justify-end">
         <Button variant="text" onClick={onClose}>
-          <XMarkIcon width={24} height={24} />
+          <AiOutlineClose size={24} />
         </Button>
       </div>
       <ul className="flex flex-wrap gap-4">

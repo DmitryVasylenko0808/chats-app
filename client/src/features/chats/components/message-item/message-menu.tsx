@@ -1,16 +1,16 @@
 import { useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
 import { cn } from '@/utils/cn';
-import {
-  ArrowUturnLeftIcon,
-  ArrowUturnRightIcon,
-  DocumentDuplicateIcon,
-  EllipsisVerticalIcon,
-  PaperClipIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/16/solid';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+
+import {
+  AiOutlineCopy,
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineMore,
+  AiOutlinePushpin,
+} from 'react-icons/ai';
+import { TiArrowBackOutline, TiArrowForwardOutline } from 'react-icons/ti';
 
 type MessageMenuProps = {
   participantMessage: boolean;
@@ -45,7 +45,7 @@ export const MessageMenu = ({
       <Menu
         trigger={
           <Button variant="text" onClick={handleToggle}>
-            <EllipsisVerticalIcon width={18} height={18} />
+            <AiOutlineMore size={24} />
           </Button>
         }
         header={
@@ -60,35 +60,35 @@ export const MessageMenu = ({
           <ul>
             <li>
               <Button variant="menu" onClick={onReply}>
-                <ArrowUturnLeftIcon width={20} height={20} /> Reply
+                <TiArrowBackOutline size={20} /> Reply
               </Button>
             </li>
             <li>
               <Button variant="menu" onClick={onCopy}>
-                <DocumentDuplicateIcon width={20} height={20} /> Copy
+                <AiOutlineCopy size={20} /> Copy
               </Button>
             </li>
             <li>
               <Button variant="menu" onClick={onForward}>
-                <ArrowUturnRightIcon width={20} height={20} /> Forward
+                <TiArrowForwardOutline size={20} /> Forward
               </Button>
             </li>
             <li>
               <Button variant="menu" onClick={onPin}>
-                <PaperClipIcon width={20} height={20} /> Pin
+                <AiOutlinePushpin size={20} /> Pin
               </Button>
             </li>
             {canEdit && (
               <li>
                 <Button variant="menu" onClick={onEdit}>
-                  <PencilIcon width={20} height={20} /> Edit
+                  <AiOutlineEdit size={20} /> Edit
                 </Button>
               </li>
             )}
             {canDelete && (
               <li>
                 <Button variant="menu-danger" onClick={onDelete}>
-                  <TrashIcon width={20} height={20} /> Delete
+                  <AiOutlineDelete size={20} /> Delete
                 </Button>
               </li>
             )}

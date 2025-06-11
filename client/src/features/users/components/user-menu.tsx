@@ -1,8 +1,8 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
 import { useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
-import { ArrowLeftStartOnRectangleIcon, UserIcon } from '@heroicons/react/16/solid';
 
+import { AiOutlineLogout, AiOutlineUser } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
 export const UserMenu = () => {
@@ -29,12 +29,12 @@ export const UserMenu = () => {
         <ul>
           <li>
             <Button variant="menu" onClick={handleClickProfile}>
-              <UserIcon width={20} height={20} /> Profile
+              <AiOutlineUser size={20} /> Profile
             </Button>
           </li>
           <li>
             <Button variant="menu" onClick={handleClickLogOut}>
-              <ArrowLeftStartOnRectangleIcon width={20} height={20} /> Log out
+              <AiOutlineLogout size={20} /> Log out
             </Button>
           </li>
         </ul>

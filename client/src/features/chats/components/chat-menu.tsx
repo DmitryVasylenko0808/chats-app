@@ -1,6 +1,7 @@
 import { useModal, useToogleMenu } from '@/shared/hooks';
 import { Button, Menu } from '@/shared/ui';
-import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/16/solid';
+
+import { AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 
 import { DeletingChatModal } from './deleting-chat-modal';
 
@@ -15,14 +16,14 @@ export const ChatMenu = ({ chatId }: Readonly<ChatMenuProps>) => {
       <Menu
         trigger={
           <Button variant="text" onClick={handleToggle}>
-            <EllipsisVerticalIcon width={24} height={24} />
+            <AiOutlineMore size={24} />
           </Button>
         }
         content={
           <ul>
             <li>
               <Button variant="menu-danger" onClick={deleteChatModal.handleClickOpen}>
-                <TrashIcon width={18} height={18} />
+                <AiOutlineDelete size={18} />
                 Delete
               </Button>
             </li>

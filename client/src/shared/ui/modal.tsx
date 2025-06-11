@@ -1,7 +1,7 @@
 import { cn } from '@/utils/cn';
-import { XMarkIcon } from '@heroicons/react/16/solid';
 
 import { ComponentProps } from 'react';
+import { AiOutlineClose } from 'react-icons/ai';
 
 import { Button } from './button';
 import Portal from './portal';
@@ -28,7 +28,7 @@ export const Modal = ({ open, className, children, onClose }: ModalProps) => {
           <div className="p-6">
             <div className="mb-6 flex justify-end">
               <Button variant="text" onClick={onClose}>
-                <XMarkIcon width={24} height={24} />
+                <AiOutlineClose size={24} />
               </Button>
             </div>
             <div onClick={(e) => e.stopPropagation()}>{children}</div>

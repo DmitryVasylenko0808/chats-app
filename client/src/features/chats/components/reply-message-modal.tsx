@@ -1,8 +1,8 @@
 import { Button, Loader, Modal, ModalProps, TextArea } from '@/shared/ui';
-import { PaperAirplaneIcon } from '@heroicons/react/16/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
+import { AiOutlineSend } from 'react-icons/ai';
 
 import { Message } from '../types';
 import { ReplyMessageFormFields, replyMessageSchema } from '../validations';
@@ -39,11 +39,7 @@ export const ReplyMessageModal = ({
           {...register('text')}
         />
         <Button variant="primary" className="min-w-max px-4">
-          {isPending ? (
-            <Loader variant="secondary" size="sm" />
-          ) : (
-            <PaperAirplaneIcon width={24} height={24} />
-          )}
+          {isPending ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
         </Button>
       </form>
     </Modal>

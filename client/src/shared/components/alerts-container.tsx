@@ -1,11 +1,10 @@
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from '@heroicons/react/16/solid';
-
 import { ReactNode, useEffect } from 'react';
+import {
+  AiOutlineCheckCircle,
+  AiOutlineClose,
+  AiOutlineInfoCircle,
+  AiOutlineStop,
+} from 'react-icons/ai';
 
 import { useAlerts } from '../hooks';
 import { AlertVariant } from '../types';
@@ -15,9 +14,9 @@ export const AlertsContainer = () => {
   const { alerts, removeAlert } = useAlerts();
 
   const icons: Record<AlertVariant, ReactNode> = {
-    info: <InformationCircleIcon width={28} height={28} className="text-primary" />,
-    success: <CheckCircleIcon width={28} height={28} className="text-primary" />,
-    error: <ExclamationCircleIcon width={28} height={28} className="text-red" />,
+    info: <AiOutlineInfoCircle size={28} className="text-primary" />,
+    success: <AiOutlineCheckCircle size={28} className="text-primary" />,
+    error: <AiOutlineStop size={28} className="text-red" />,
   };
 
   return (
@@ -59,7 +58,7 @@ const AlertItem = ({ text, icon, title, autoClose = 5000, onRemove }: Readonly<A
         <p className="text-body">{text}</p>
       </div>
       <Button variant="text" onClick={onRemove}>
-        <XMarkIcon width={24} height={24} />
+        <AiOutlineClose size={24} />
       </Button>
     </li>
   );

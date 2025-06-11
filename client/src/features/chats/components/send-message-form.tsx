@@ -1,11 +1,11 @@
 import { useAlerts } from '@/shared/hooks';
 import { Button, FilesUploadButton, Loader, TextArea } from '@/shared/ui';
-import { PaperAirplaneIcon } from '@heroicons/react/16/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EmojiClickData } from 'emoji-picker-react';
 
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { AiOutlineSend } from 'react-icons/ai';
 
 import { useSendMessage } from '../hooks';
 import { Chat } from '../types';
@@ -74,11 +74,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
           />
           <ChatEmojiPicker onEmojiClick={handleEmojiClick} />
           <Button type="submit" variant="primary" className="min-w-max px-4">
-            {isPending ? (
-              <Loader variant="secondary" size="sm" />
-            ) : (
-              <PaperAirplaneIcon width={24} height={24} />
-            )}
+            {isPending ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
           </Button>
         </div>
       </form>
