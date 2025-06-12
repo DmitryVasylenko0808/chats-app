@@ -18,3 +18,4 @@ export * from './forward-message-modal';
 export * from './pinned-message';
 export * from './chat-emoji-picker';
 export * from './create-chat-button';
+export * from './start-messaging';

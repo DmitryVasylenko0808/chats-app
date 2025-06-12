@@ -6,3 +6,4 @@ export * from './search-users';
 export * from './user-info';
 export * from './search-users';
 export * from './users-list';
+export * from './user-settings';

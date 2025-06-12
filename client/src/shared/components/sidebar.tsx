@@ -1,7 +1,6 @@
-import { RecentChats } from '@/features/chats/components';
+import { RecentChats, StartMessaging } from '@/features/chats/components';
 
 import { SideBarHeader } from './sidebar-header';
-import { StartMessaging } from './start-messaging';
 
 export const SideBar = () => {
   return (
