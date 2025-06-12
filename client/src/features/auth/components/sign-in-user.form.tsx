@@ -24,7 +24,7 @@ export const SignInUserForm = () => {
   const submitHandler = (fields: SignInFormFields) => {
     mutateAsync(fields)
       .then(() => navigate('/'))
-      .catch((error) => notify({ variant: 'error', text: error.message }));
+      .catch((error) => notify({ variant: 'error', title: 'Error', text: error.message }));
   };
 
   return (

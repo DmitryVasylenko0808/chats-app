@@ -53,7 +53,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
         setEditableMessage(null);
         notify({ variant: 'success', text: 'Message is edited' });
       })
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
   const handleClickReply = (message: Message) => setReplyingMessage(message);
@@ -64,7 +64,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
         setReplyingMessage(null);
         notify({ variant: 'success', text: 'Message is replied' });
       })
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
   const handleClickForward = (message: Message) => setForwardingMessage(message);
@@ -76,31 +76,31 @@ export const Messages = ({ chatId }: MessagesProps) => {
         navigate(`/chats/${targetChatId}`);
         notify({ variant: 'success', text: 'Message is forwarded' });
       })
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
   const handlePinMessage = (message: Message) => {
     pinMessage({ chatId: message.chatId, messageId: message.id })
       .then(() => notify({ variant: 'success', text: 'Successfully pinned!' }))
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
   const handleUnpinMessage = (message: Message) => {
     unpinMessage({ chatId: message.chatId, messageId: message.id })
       .then(() => notify({ variant: 'success', text: 'Successfully unpinned!' }))
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
   const handleDeleteMessage = (message: Message) => {
     deleteMessage({ chatId: message.chatId, messageId: message.id }).catch((err) =>
-      notify({ variant: 'error', text: err.message })
+      notify({ variant: 'error', title: 'Error', text: err.message })
     );
   };
 
   const handleClickCopy = (message: Message) => {
     handleCopy(message.text)
       .then(() => notify({ variant: 'success', text: 'Copied!' }))
-      .catch(() => notify({ variant: 'error', text: 'Cannot copy text message' }));
+      .catch(() => notify({ variant: 'error', title: 'Error', text: 'Cannot copy text message' }));
   };
 
   if (isLoading) {

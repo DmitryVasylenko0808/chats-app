@@ -16,9 +16,9 @@ export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalPr
     mutateAsync(chatId)
       .then(() => {
         navigate('/');
-        notify({ variant: 'success', text: 'Chat is deleted' });
+        notify({ variant: 'success', title: 'Success', text: 'Chat is deleted' });
       })
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 
   return (
     <Modal className="w-lg" {...modalProps}>

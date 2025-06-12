@@ -26,7 +26,7 @@ export const Chat = () => {
   useEffect(() => {
     if (error) {
       navigate('/');
-      notify({ variant: 'error', text: error.message });
+      notify({ variant: 'error', title: 'Error', text: error.message });
     }
   }, [error]);
 

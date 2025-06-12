@@ -41,7 +41,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const submitHandler = (data: SendMessageFormFields) =>
     mutateAsync({ ...data, chatId: chat.id })
       .then(() => reset())
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 
   const files = watch('images');
 

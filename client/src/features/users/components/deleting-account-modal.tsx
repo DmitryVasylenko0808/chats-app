@@ -13,8 +13,10 @@ export const DeletingAccountModal = (modalProps: DeletingUserModalProps) => {
 
   const handleClickDelete = () => {
     mutateAsync(currentUser?.id)
-      .then(() => notify({ variant: 'success', text: 'Account is successfully deleted' }))
-      .catch((error) => notify({ variant: 'error', text: error.message }));
+      .then(() =>
+        notify({ variant: 'success', title: 'Success', text: 'Account is successfully deleted' })
+      )
+      .catch((error) => notify({ variant: 'error', title: 'Error', text: error.message }));
   };
 
   return (

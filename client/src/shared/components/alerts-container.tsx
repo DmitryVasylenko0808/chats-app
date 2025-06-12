@@ -25,6 +25,7 @@ export const AlertsContainer = () => {
         {alerts.map((alert) => (
           <AlertItem
             text={alert.text}
+            title={alert.title}
             icon={icons[alert.variant]}
             onRemove={() => removeAlert(alert)}
             key={alert.id}
@@ -43,7 +44,7 @@ type AlertItemProps = {
   onRemove: () => void;
 };
 
-const AlertItem = ({ text, icon, title, autoClose = 5000, onRemove }: Readonly<AlertItemProps>) => {
+const AlertItem = ({ text, icon, title, autoClose = 3000, onRemove }: Readonly<AlertItemProps>) => {
   useEffect(() => {
     const timer = setTimeout(() => onRemove(), autoClose);
 
@@ -54,7 +55,7 @@ const AlertItem = ({ text, icon, title, autoClose = 5000, onRemove }: Readonly<A
     <li className="inline-flex w-96 gap-3 rounded-2xl bg-white px-4 py-3 shadow-md">
       {icon}
       <div className="flex-1">
-        <h3 className="">{title}</h3>
+        <h3 className="font-semibold">{title}</h3>
         <p className="text-body">{text}</p>
       </div>
       <Button variant="text" onClick={onRemove}>

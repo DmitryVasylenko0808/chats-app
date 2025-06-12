@@ -15,7 +15,7 @@ export const CreateChatButton = ({ user }: Readonly<CreateChatButtonProps>) => {
   const handleClick = () =>
     mutateAsync(Number(user.id))
       .then((data) => navigate(`/chats/${data.id}`))
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 
   return (
     <div className="w-full py-6">

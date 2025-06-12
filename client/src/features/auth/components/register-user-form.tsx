@@ -27,9 +27,9 @@ export const RegisterUserForm = () => {
     mutateAsync(data)
       .then(() => {
         navigate('/auth/sign-in');
-        notify({ variant: 'success', text: 'Success' });
+        notify({ variant: 'success', title: 'Success', text: 'Success' });
       })
-      .catch((error) => notify({ variant: 'error', text: error.message }));
+      .catch((error) => notify({ variant: 'error', title: 'Error', text: error.message }));
   };
 
   return (

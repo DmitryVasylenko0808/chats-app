@@ -22,7 +22,7 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
         modalProps.onClose();
         navigate(`/chats/${data.id}`);
       })
-      .catch((err) => notify({ variant: 'error', text: err.message }));
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 
   const isShowList = search && data;
 

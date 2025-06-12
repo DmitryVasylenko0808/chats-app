@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useEffect } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai';
 
 import { useAlerts } from '../hooks';
@@ -17,9 +17,11 @@ export const FilesUploadButton = ({
 }: Readonly<FilesUploadButtonProps>) => {
   const { notify } = useAlerts();
 
-  if (error) {
-    notify({ variant: 'error', text: error });
-  }
+  useEffect(() => {
+    if (error) {
+      notify({ variant: 'error', title: 'Error', text: error });
+    }
+  }, [error]);
 
   return (
     <label className="text-primary relative cursor-pointer" htmlFor={name}>

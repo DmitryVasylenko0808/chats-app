@@ -38,7 +38,11 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
 
     mutateAsync(editProfileData)
       .then(() => {
-        notify({ variant: 'success', text: 'Profile is successfully edited' });
+        notify({
+          variant: 'success',
+          title: 'Profile is edited',
+          text: 'Profile is successfully edited',
+        });
         navigate(`/profile/${currentUser?.id}`);
       })
       .catch((error) => notify({ variant: 'error', text: error.message }));
