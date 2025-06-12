@@ -1,17 +1,19 @@
 import { useAuth } from '@/features/auth/hooks';
-import { StartMessaging } from '@/features/chats/components';
-import { Loader } from '@/shared/ui';
+import { CreateChatButton } from '@/features/chats/components';
+import { Button, Loader } from '@/shared/ui';
 
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { useGetUser } from '../hooks';
 import { UserInfo } from './user-info';
-import { UserProfileHeader } from './user-profile-header';
 
 export const UserProfile = () => {
   const { id } = useParams();
   const { currentUser } = useAuth();
   const { data, isLoading, isError } = useGetUser(Number(id));
+  const navigate = useNavigate();
+
+  const handleClickEdit = () => navigate('/profile/edit');
 
   const isCurrentUserProfile = currentUser?.id === Number(id);
 
@@ -29,12 +31,15 @@ export const UserProfile = () => {
 
   return (
     data && (
-      <div>
-        {isCurrentUserProfile && <UserProfileHeader user={data} />}
-        <div className="p-6">
-          <UserInfo user={data} />
-          {!isCurrentUserProfile && <StartMessaging user={data} />}
-        </div>
+      <div className="min-w-xs">
+        <UserInfo user={data} />
+        {!isCurrentUserProfile ? (
+          <CreateChatButton user={data} />
+        ) : (
+          <Button variant="secondary" className="mt-3" onClick={handleClickEdit} fullWidth>
+            Edit Profile
+          </Button>
+        )}
       </div>
     )
   );

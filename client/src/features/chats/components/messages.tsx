@@ -2,6 +2,7 @@ import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader } from '@/shared/ui';
 
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import {
   useDeleteMessage,
@@ -34,6 +35,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const { mutateAsync: deleteMessage } = useDeleteMessage();
   const { handleCopy } = useCopy();
   const { notify } = useAlerts();
+  const navigate = useNavigate();
   const [editableMessage, setEditableMessage] = useState<Message | null>(null);
   const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
   const [forwardingMessage, setForwardingMessage] = useState<Message | null>(null);
@@ -71,6 +73,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
     forwardMessage({ chatId: message.chatId, messageId: message.id, targetChatId })
       .then(() => {
         setForwardingMessage(null);
+        navigate(`/chats/${targetChatId}`);
         notify({ variant: 'success', text: 'Message is forwarded' });
       })
       .catch((err) => notify({ variant: 'error', text: err.message }));
@@ -109,7 +112,11 @@ export const Messages = ({ chatId }: MessagesProps) => {
   }
 
   if (error) {
-    notify({ variant: 'error', text: error.message });
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <p className="text-body">{error.message}</p>
+      </div>
+    );
   }
 
   return (

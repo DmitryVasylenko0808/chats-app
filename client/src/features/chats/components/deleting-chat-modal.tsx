@@ -1,6 +1,8 @@
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
 
+import { useNavigate } from 'react-router';
+
 import { useDeleteChat } from '../hooks';
 
 type DeletingChatModalProps = { chatId: number } & ModalProps;
@@ -8,10 +10,14 @@ type DeletingChatModalProps = { chatId: number } & ModalProps;
 export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalProps) => {
   const { mutateAsync, isPending } = useDeleteChat();
   const { notify } = useAlerts();
+  const navigate = useNavigate();
 
   const handleClickDeleteChat = () =>
     mutateAsync(chatId)
-      .then(() => notify({ variant: 'success', text: 'Chat is deleted' }))
+      .then(() => {
+        navigate('/');
+        notify({ variant: 'success', text: 'Chat is deleted' });
+      })
       .catch((err) => notify({ variant: 'error', text: err.message }));
 
   return (

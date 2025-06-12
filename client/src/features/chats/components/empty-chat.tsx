@@ -7,7 +7,7 @@ export const EmptyChat = () => {
   const modal = useModal();
 
   return (
-    <div className="flex h-full flex-col items-center justify-center px-6">
+    <div className="flex flex-col items-center justify-center">
       <h3 className="mb-1.5 text-lg font-semibold">Select a chat</h3>
       <p className="text-body mb-4">Choose a chat from the list or start a new conversation</p>
       <Button variant="primary" onClick={modal.handleClickOpen}>

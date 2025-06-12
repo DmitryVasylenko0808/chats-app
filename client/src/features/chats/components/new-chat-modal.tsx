@@ -4,6 +4,8 @@ import { User } from '@/features/users/types';
 import { useAlerts } from '@/shared/hooks';
 import { Loader, Modal, ModalProps, TextField } from '@/shared/ui';
 
+import { useNavigate } from 'react-router';
+
 import { useCreateChat } from '../hooks';
 
 type NewChatModalProps = ModalProps;
@@ -12,9 +14,15 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
   const { search, data, isFetching, handleChangeSearch } = useSearchUsers();
   const { mutateAsync } = useCreateChat();
   const { notify } = useAlerts();
+  const navigate = useNavigate();
 
   const handleClick = (user: User) =>
-    mutateAsync(user.id).catch((err) => notify({ variant: 'error', text: err.message }));
+    mutateAsync(user.id)
+      .then((data) => {
+        modalProps.onClose();
+        navigate(`/chats/${data.id}`);
+      })
+      .catch((err) => notify({ variant: 'error', text: err.message }));
 
   const isShowList = search && data;
 

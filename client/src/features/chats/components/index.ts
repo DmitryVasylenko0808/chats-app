@@ -17,4 +17,4 @@ export * from './reply-message-modal';
 export * from './forward-message-modal';
 export * from './pinned-message';
 export * from './chat-emoji-picker';
-export * from './start-messaging';
+export * from './create-chat-button';

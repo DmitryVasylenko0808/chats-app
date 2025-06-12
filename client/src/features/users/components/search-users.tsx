@@ -13,7 +13,7 @@ export const SearchUsers = () => {
   const handleClick = (user: User) => navigate(`/profile/${user.id}`);
 
   return (
-    <div className="px-6 py-3">
+    <div className="p-6">
       <div className="relative">
         <TextField placeholder="Search users by name..." onChange={handleChangeSearch} />
         {search && data?.length !== 0 && (

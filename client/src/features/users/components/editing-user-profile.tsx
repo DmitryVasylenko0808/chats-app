@@ -1,8 +1,5 @@
 import { useAuth } from '@/features/auth/hooks';
-import { Button, Loader } from '@/shared/ui';
-
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import { useNavigate } from 'react-router';
+import { Loader } from '@/shared/ui';
 
 import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';
@@ -10,9 +7,6 @@ import { EditingUserProfileForm } from './editing-user-profile-form';
 export const EditingUserProfile = () => {
   const { currentUser } = useAuth();
   const { data, isLoading, isError } = useGetUser(currentUser?.id);
-  const navigate = useNavigate();
-
-  const handleClickBack = () => navigate(-1);
 
   if (isLoading) {
     return (
@@ -27,13 +21,11 @@ export const EditingUserProfile = () => {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between p-6">
-        <Button variant="text" onClick={handleClickBack}>
-          <AiOutlineArrowLeft size={18} />
-        </Button>
+    data && (
+      <div>
+        <h2 className="mb-6 text-xl font-semibold">Editing Profile</h2>
+        <EditingUserProfileForm user={data} />
       </div>
-      <div className="px-6">{data && <EditingUserProfileForm user={data} />}</div>
-    </div>
+    )
   );
 };

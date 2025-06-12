@@ -1,0 +1,16 @@
+import { RecentChats } from '@/features/chats/components';
+
+import { SideBarHeader } from './sidebar-header';
+import { StartMessaging } from './start-messaging';
+
+export const SideBar = () => {
+  return (
+    <aside className="flex">
+      <div className="bg-sidebar-sub border-r-body/5 w-[380px] border-r-2">
+        <SideBarHeader />
+        <StartMessaging />
+        <RecentChats />
+      </div>
+    </aside>
+  );
+};

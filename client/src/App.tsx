@@ -5,8 +5,9 @@ import { Route, Routes } from 'react-router';
 import { AuthChecker, RequireAuth } from './features/auth/components';
 import AuthLayout from './layouts/auth-layout';
 import BaseLayout from './layouts/base-layout';
-import ChatsPage from './pages/chats-page';
+import ChatPage from './pages/chat-page';
 import EditingProfilePage from './pages/editing-profile-page';
+import HomePage from './pages/home-page';
 import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
 import SignInPage from './pages/sign-in-page';
@@ -27,7 +28,8 @@ function App() {
         <Routes>
           <Route element={<RequireAuth />}>
             <Route path="/" element={<BaseLayout />}>
-              <Route index element={<ChatsPage />} />
+              <Route index element={<HomePage />} />
+              <Route path="/chats/:id" element={<ChatPage />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="/profile/edit" element={<EditingProfilePage />} />
             </Route>

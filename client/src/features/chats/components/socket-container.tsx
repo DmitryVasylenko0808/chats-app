@@ -4,20 +4,25 @@ import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
 import { PropsWithChildren, useEffect, useRef } from 'react';
+import { useParams } from 'react-router';
 
-import { useCurrentChatStore } from '../store';
 import { Chat, UpdatedMessages } from '../types';
 
 export const SocketContainer = ({ children }: Readonly<PropsWithChildren>) => {
+  const { id } = useParams();
   const { currentUser } = useAuth();
-  const { chatId } = useCurrentChatStore();
   const queryClient = useQueryClient();
   const socket = useRef<Socket | null>(null);
 
+  const chatId = Number(id);
+
   useEffect(() => {
-    const handleChatsUpdate = (data: Chat[]) => queryClient.setQueryData(['chats'], data);
-    const handleMessagesUpdate = (data: UpdatedMessages) =>
+    const handleChatsUpdate = (data: Chat[]) => {
+      queryClient.setQueryData(['chats'], data);
+    };
+    const handleMessagesUpdate = (data: UpdatedMessages) => {
       queryClient.setQueryData(['messages', data.chatId], data.messages);
+    };
 
     if (currentUser?.id) {
       socket.current = io(socketUrl, {
