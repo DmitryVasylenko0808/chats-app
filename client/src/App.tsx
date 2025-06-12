@@ -10,6 +10,7 @@ import EditingProfilePage from './pages/editing-profile-page';
 import HomePage from './pages/home-page';
 import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
+import SettingsPage from './pages/settings-page';
 import SignInPage from './pages/sign-in-page';
 import { AlertsContainer } from './shared/components';
 
@@ -32,6 +33,7 @@ function App() {
               <Route path="/chats/:id" element={<ChatPage />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="/profile/edit" element={<EditingProfilePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
           <Route path="auth" element={<AuthLayout />}>

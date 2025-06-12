@@ -27,7 +27,7 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
   const isShowList = search && data;
 
   return (
-    <Modal {...modalProps}>
+    <Modal className="w-md" {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">New Chat</h2>
       <TextField
         placeholder="Search users by name..."

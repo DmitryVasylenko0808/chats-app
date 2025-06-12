@@ -26,7 +26,7 @@ export const Button = ({
           'text-body hover:bg-item-menu-hover w-full justify-start gap-2.5 px-3 py-1.5':
             variant === 'menu',
           'text-body': variant === 'text',
-          'bg-red disabled:bg-red-hovered hover:bg-red-hovered h-10 min-w-32 rounded-full px-16 text-white':
+          'bg-red disabled:bg-red-hovered hover:bg-red-hovered h-10 min-w-32 rounded-full px-16 font-semibold text-white':
             variant === 'danger',
           'text-red hover:bg-item-menu-hover w-full justify-start gap-2.5 px-3 py-1.5':
             variant === 'menu-danger',

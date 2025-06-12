@@ -21,7 +21,7 @@ export const DeletingChatModal = ({ chatId, ...modalProps }: DeletingChatModalPr
       .catch((err) => notify({ variant: 'error', text: err.message }));
 
   return (
-    <Modal {...modalProps}>
+    <Modal className="w-lg" {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Deleting Chat</h2>
       <p className="text-body mb-10">
         Are you sure you want to delete this chat? This action cannot be undone. The entire chat and

@@ -1,4 +1,4 @@
-import { Button, Loader, Modal, ModalProps, TextArea } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
@@ -33,10 +33,10 @@ export const EditMessageModal = ({
   const submitHandler = (data: EditMessageFormFields) => onEditSubmit(message, data);
 
   return (
-    <Modal {...modalProps}>
+    <Modal className="w-xl" {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Editing Message</h2>
       <form onSubmit={handleSubmit(submitHandler)} className="flex w-full items-end gap-4">
-        <TextArea
+        <TextField
           placeholder="Enter message..."
           error={errors.text?.message}
           {...register('text')}

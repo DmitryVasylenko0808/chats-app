@@ -1,4 +1,4 @@
-import { Button, Loader, Modal, ModalProps, TextArea } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
@@ -29,11 +29,11 @@ export const ReplyMessageModal = ({
   const submitHandler = (data: ReplyMessageFormFields) => onSubmitReply(message, data);
 
   return (
-    <Modal {...modalProps}>
+    <Modal className="w-xl" {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Replying Message</h2>
       <ReplyingToMessage message={message} />
       <form onSubmit={handleSubmit(submitHandler)} className="flex w-full items-end gap-4">
-        <TextArea
+        <TextField
           placeholder="Enter message..."
           error={errors.text?.message}
           {...register('text')}

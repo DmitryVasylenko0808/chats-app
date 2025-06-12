@@ -1,25 +1,24 @@
+import { useAuth } from '@/features/auth/hooks';
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
 
 import { useDeleteUser } from '../hooks';
-import { User } from '../types';
 
-type DeletingUserModalProps = ModalProps & {
-  user: User;
-};
+type DeletingUserModalProps = ModalProps;
 
-export const DeletingAccountModal = ({ user, ...modalProps }: DeletingUserModalProps) => {
+export const DeletingAccountModal = (modalProps: DeletingUserModalProps) => {
+  const { currentUser } = useAuth();
   const { mutateAsync, isPending } = useDeleteUser();
   const { notify } = useAlerts();
 
   const handleClickDelete = () => {
-    mutateAsync(user.id)
+    mutateAsync(currentUser?.id)
       .then(() => notify({ variant: 'success', text: 'Account is successfully deleted' }))
       .catch((error) => notify({ variant: 'error', text: error.message }));
   };
 
   return (
-    <Modal {...modalProps}>
+    <Modal className="w-xl" {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Deleting Account</h2>
       <p className="text-body mb-10">
         Are you sure you want to delete your account? This action cannot be undone. All your data,

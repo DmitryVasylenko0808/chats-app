@@ -21,7 +21,7 @@ export const Modal = ({ open, className, children, onClose }: ModalProps) => {
       <div className="fixed top-0 left-0 z-50 flex min-h-screen w-full items-center justify-center bg-black/50">
         <div
           className={cn(
-            'max-h-[800px] w-md overflow-auto rounded-2xl bg-white shadow-2xl',
+            'max-h-[800px] min-w-sm overflow-auto rounded-2xl bg-white shadow-2xl',
             className
           )}
         >

@@ -35,7 +35,7 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
           </Link>
         </li>
         <li className="inline-flex">
-          <Link to={''} className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg">
+          <Link to="/settings" className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg">
             <AiOutlineSetting size={24} /> Settings
           </Link>
         </li>
