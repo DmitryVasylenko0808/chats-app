@@ -1,13 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 
 import { AuthChecker, RequireAuth } from './features/auth/components';
 import AuthLayout from './layouts/auth-layout';
 import BaseLayout from './layouts/base-layout';
 import ChatPage from './pages/chat-page';
-import EditingProfilePage from './pages/editing-profile-page';
 import HomePage from './pages/home-page';
+import ProfileModal from './pages/modals/profile-modal';
+import SettingsModal from './pages/modals/settings-modal';
 import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
 import SettingsPage from './pages/settings-page';
@@ -23,16 +24,19 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const location = useLocation();
+
+  const state = location.state as { backgroundLocation?: Location };
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthChecker>
-        <Routes>
+        <Routes location={state?.backgroundLocation || location}>
           <Route element={<RequireAuth />}>
             <Route path="/" element={<BaseLayout />}>
               <Route index element={<HomePage />} />
               <Route path="/chats/:id" element={<ChatPage />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
-              <Route path="/profile/edit" element={<EditingProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
@@ -41,6 +45,12 @@ function App() {
             <Route path="sign-in" element={<SignInPage />} />
           </Route>
         </Routes>
+        {state?.backgroundLocation && (
+          <Routes>
+            <Route path="/profile/:id" element={<ProfileModal />} />
+            <Route path="/settings" element={<SettingsModal />} />
+          </Routes>
+        )}
       </AuthChecker>
       <AlertsContainer />
     </QueryClientProvider>

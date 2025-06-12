@@ -1,15 +1,18 @@
-import { useAuthStore } from '@/features/auth/store';
-import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/features/auth/hooks';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { updateUser } from '../api';
 
 export const useEditProfile = () => {
-  const { updateCurrentUserData } = useAuthStore();
+  const queryClient = useQueryClient();
+  const { updateCurrentUserData } = useAuth();
+
   return useMutation({
     mutationFn: updateUser,
     onSuccess: (updatedData) => {
       const { id, ...updatedUser } = updatedData;
 
+      queryClient.invalidateQueries({ queryKey: ['users', id] });
       updateCurrentUserData(updatedUser);
     },
   });

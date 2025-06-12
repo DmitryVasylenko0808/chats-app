@@ -1,10 +1,12 @@
 import { useAuth } from '@/features/auth/hooks';
-import { Loader } from '@/shared/ui';
+import { Loader, Modal, ModalProps } from '@/shared/ui';
 
 import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';
 
-export const EditingUserProfile = () => {
+type EditingProfileModalProps = ModalProps;
+
+export const EditingUserProfileModal = (modalProps: Readonly<EditingProfileModalProps>) => {
   const { currentUser } = useAuth();
   const { data, isLoading, isError } = useGetUser(currentUser?.id);
 
@@ -22,10 +24,10 @@ export const EditingUserProfile = () => {
 
   return (
     data && (
-      <div>
+      <Modal className="w-md" {...modalProps}>
         <h2 className="mb-6 text-xl font-semibold">Editing Profile</h2>
-        <EditingUserProfileForm user={data} />
-      </div>
+        <EditingUserProfileForm user={data} onSubmit={modalProps.onClose} />
+      </Modal>
     )
   );
 };

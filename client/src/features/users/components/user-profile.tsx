@@ -1,19 +1,19 @@
 import { useAuth } from '@/features/auth/hooks';
 import { CreateChatButton } from '@/features/chats/components';
+import { useModal } from '@/shared/hooks';
 import { Button, Loader } from '@/shared/ui';
 
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { useGetUser } from '../hooks';
+import { EditingUserProfileModal } from './editing-user-profile-modal';
 import { UserInfo } from './user-info';
 
 export const UserProfile = () => {
   const { id } = useParams();
   const { currentUser } = useAuth();
   const { data, isLoading, isError } = useGetUser(Number(id));
-  const navigate = useNavigate();
-
-  const handleClickEdit = () => navigate('/profile/edit');
+  const editModal = useModal();
 
   const isCurrentUserProfile = currentUser?.id === Number(id);
 
@@ -36,10 +36,16 @@ export const UserProfile = () => {
         {!isCurrentUserProfile ? (
           <CreateChatButton user={data} />
         ) : (
-          <Button variant="secondary" className="mt-3" onClick={handleClickEdit} fullWidth>
+          <Button
+            variant="secondary"
+            className="mt-3"
+            onClick={editModal.handleClickOpen}
+            fullWidth
+          >
             Edit Profile
           </Button>
         )}
+        <EditingUserProfileModal open={editModal.open} onClose={editModal.handleClickClose} />
       </div>
     )
   );

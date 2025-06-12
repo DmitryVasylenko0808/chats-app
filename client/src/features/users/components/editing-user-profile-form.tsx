@@ -1,19 +1,19 @@
-import { useAuth } from '@/features/auth/hooks';
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 
 import { useEditProfile } from '../hooks';
 import { User } from '../types';
 import { EditingProfileFormFields, editingProfileSchema } from '../validations';
 
-type EditingUserProfileFormProps = { user: User };
+type EditingUserProfileFormProps = { user: User; onSubmit?: () => void };
 
-export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileFormProps>) => {
-  const { currentUser } = useAuth();
+export const EditingUserProfileForm = ({
+  user,
+  onSubmit,
+}: Readonly<EditingUserProfileFormProps>) => {
   const {
     register,
     handleSubmit,
@@ -29,7 +29,6 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
   });
   const { mutateAsync, isPending } = useEditProfile();
   const { notify } = useAlerts();
-  const navigate = useNavigate();
 
   const submitHandler = (fields: EditingProfileFormFields) => {
     const editProfileData = { id: user.id, ...fields };
@@ -43,7 +42,7 @@ export const EditingUserProfileForm = ({ user }: Readonly<EditingUserProfileForm
           title: 'Profile is edited',
           text: 'Profile is successfully edited',
         });
-        navigate(`/profile/${currentUser?.id}`);
+        onSubmit?.();
       })
       .catch((error) => notify({ variant: 'error', text: error.message }));
   };

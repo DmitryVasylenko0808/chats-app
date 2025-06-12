@@ -1,7 +1,7 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
 
 import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { Drawer, DrawerProps } from '../ui';
 import { Logo } from './logo';
@@ -9,6 +9,7 @@ import { Logo } from './logo';
 type SideBarDrawerProps = DrawerProps;
 
 export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
+  const location = useLocation();
   const logOut = useLogOutUser();
   const { currentUser } = useAuth();
 
@@ -24,13 +25,18 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
         <li className="inline-flex">
           <Link
             to={`/profile/${currentUser?.id}`}
+            state={{ backgroundLocation: location }}
             className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
           >
             <AiOutlineUser size={24} /> My Profile
           </Link>
         </li>
         <li className="inline-flex">
-          <Link to="/settings" className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg">
+          <Link
+            to="/settings"
+            state={{ backgroundLocation: location }}
+            className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
+          >
             <AiOutlineSetting size={24} /> Settings
           </Link>
         </li>

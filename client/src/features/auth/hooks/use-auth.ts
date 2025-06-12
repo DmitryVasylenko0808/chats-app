@@ -4,7 +4,13 @@ import { getMe } from '../api';
 import { useAuthStore } from '../store';
 
 export const useAuth = () => {
-  const { currentUser, accessToken: storedAccessToken, setAuthCredentials, reset } = useAuthStore();
+  const {
+    currentUser,
+    accessToken: storedAccessToken,
+    setAuthCredentials,
+    reset,
+    updateCurrentUserData,
+  } = useAuthStore();
   const { refetch } = useQuery({
     queryKey: ['curr'],
     queryFn: getMe,
@@ -33,5 +39,12 @@ export const useAuth = () => {
     }
   };
 
-  return { accessToken, currentUser, isAuthenticated, isAccessTokenStored, authenticate };
+  return {
+    accessToken,
+    currentUser,
+    isAuthenticated,
+    isAccessTokenStored,
+    authenticate,
+    updateCurrentUserData,
+  };
 };
