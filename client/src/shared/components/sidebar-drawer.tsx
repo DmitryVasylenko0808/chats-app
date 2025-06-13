@@ -22,7 +22,7 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
         <Typograpghy tagVariant="h1">Chats App</Typograpghy>
       </div>
       <ul className="flex flex-col">
-        <li className="inline-flex">
+        <li className="hover:bg-secondary-300 inline-flex">
           <Link
             to={`/profile/${currentUser?.id}`}
             state={{ backgroundLocation: location }}
@@ -31,7 +31,7 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
             <AiOutlineUser size={24} /> My Profile
           </Link>
         </li>
-        <li className="inline-flex">
+        <li className="hover:bg-secondary-300 inline-flex">
           <Link
             to="/settings"
             state={{ backgroundLocation: location }}
@@ -40,11 +40,11 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
             <AiOutlineSetting size={24} /> Settings
           </Link>
         </li>
-        <li className="mx-6 my-2 inline-flex">
-          <span className="block h-[1px] w-full bg-gray-300" />
+        <li className="mx-6 inline-flex">
+          <span className="bg-secondary-300 block h-[1px] w-full" />
         </li>
         <li
-          className="inline-flex w-full cursor-pointer items-center gap-4 px-6 py-2 text-lg"
+          className="hover:bg-secondary-300 inline-flex w-full cursor-pointer items-center gap-4 px-6 py-2 text-lg"
           onClick={handleClickLogOut}
         >
           <AiOutlineLogout size={24} /> Log out
