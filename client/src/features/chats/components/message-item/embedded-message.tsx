@@ -25,7 +25,7 @@ export const EmbeddedMessage = ({
   return (
     <div
       className={cn('mb-1.5 rounded-xl p-2.5', {
-        'bg-secondary-300': !participantMessage,
+        'bg-secondary-300 dark:bg-dark-200': !participantMessage,
         'bg-primary-100 text-secondary-100': participantMessage,
       })}
     >
@@ -34,7 +34,7 @@ export const EmbeddedMessage = ({
       </Typograpghy>
       <Typograpghy
         className={cn({
-          'text-black': !participantMessage,
+          'dark:text-secondary-100 text-black': !participantMessage,
           'text-secondary-100': participantMessage,
         })}
       >

@@ -16,19 +16,19 @@ export const UserInfo = ({ user }: Readonly<UserInfoProps>) => {
       <Typograpghy className="mb-6">{user.description}</Typograpghy>
       <div className="flex flex-col space-y-6">
         <div>
-          <label className="block font-semibold">Username</label>
+          <Typograpghy tagVariant="h4">Username</Typograpghy>
           <Typograpghy>{user.username}</Typograpghy>
         </div>
         <div>
-          <label className="block font-semibold">Name</label>
+          <Typograpghy tagVariant="h4">Name</Typograpghy>
           <Typograpghy>{user.name}</Typograpghy>
         </div>
         <div>
-          <label className="block font-semibold">Email</label>
+          <Typograpghy tagVariant="h4">Email</Typograpghy>
           <Typograpghy>{user.email}</Typograpghy>
         </div>
         <div>
-          <label className="block font-semibold">Joined At</label>
+          <Typograpghy tagVariant="h4">Joined At</Typograpghy>
           <Typograpghy>{new Date(user.createdAt).toLocaleDateString()}</Typograpghy>
         </div>
       </div>

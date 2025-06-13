@@ -18,10 +18,10 @@ export const TextArea = ({
 }: Readonly<TextAreaProps>) => {
   return (
     <div className={cn('relative w-full', className)}>
-      {label && <label className="mb-2 block font-medium">{label}</label>}
+      {label && <label className="dark:text-secondary-100 mb-2 block font-medium">{label}</label>}
       <textarea
         className={cn(
-          'border-secondary-300 focus:border-primary-200 hover:border-primary-200 bg-secondary-100 block w-full resize-none rounded-2xl border-2 px-4 py-2 text-sm outline-0 duration-100 focus:ring-0',
+          'border-secondary-300 dark:bg-dark-200 dark:border-dark-100 focus:border-primary-200 hover:border-primary-200 bg-secondary-100 dark:placeholder:text-typography-100 dark:text-secondary-100 block w-full resize-none rounded-2xl border-2 px-4 py-2 text-sm outline-0 duration-100 focus:ring-0',
           {
             'border-red-400': error,
           }

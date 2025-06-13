@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 
 import { AuthChecker, RequireAuth } from './features/auth/components';
@@ -14,6 +15,7 @@ import RegisterPage from './pages/register-page';
 import SettingsPage from './pages/settings-page';
 import SignInPage from './pages/sign-in-page';
 import { AlertsContainer } from './shared/components';
+import { useTheme } from './shared/hooks';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +26,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { setCurrentTheme } = useTheme();
   const location = useLocation();
+
+  useEffect(() => {
+    setCurrentTheme();
+  }, []);
 
   const state = location.state as { backgroundLocation?: Location };
 

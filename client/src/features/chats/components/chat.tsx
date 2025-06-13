@@ -42,9 +42,9 @@ export const Chat = () => {
     data && (
       <div className="flex">
         <div className="flex min-h-screen flex-1 flex-col">
-          <div className="border-b-secondary-300 flex h-22 items-center border-b px-6">
+          <div className="border-b-secondary-300 dark:border-b-dark-100 flex h-22 items-center border-b px-6">
             <div className="flex w-full items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 <Button variant="text" onClick={handleClickBack}>
                   <AiOutlineArrowLeft size={24} />
                 </Button>

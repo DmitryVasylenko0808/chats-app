@@ -38,7 +38,9 @@ export const Menu = ({
         >
           {header}
           <div
-            className={cn('border-secondary-300 bg-secondary-100 rounded-xl border py-2 shadow-xl')}
+            className={cn(
+              'border-secondary-300 bg-secondary-100 dark:bg-dark-300 dark:border-dark-100 rounded-xl border py-2 shadow-xl'
+            )}
           >
             {content}
           </div>

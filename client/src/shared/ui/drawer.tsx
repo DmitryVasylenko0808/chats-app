@@ -19,7 +19,12 @@ export const Drawer = ({ open, className, children, onClose }: Readonly<DrawerPr
   return (
     <Portal targetId="portals-root">
       <div className="fixed top-0 left-0 z-30 flex min-h-screen w-full bg-black/50">
-        <div className={cn('bg-secondary-100 h-screen w-xs overflow-auto shadow-2xl', className)}>
+        <div
+          className={cn(
+            'bg-secondary-100 dark:bg-dark-300 h-screen w-xs overflow-auto shadow-2xl',
+            className
+          )}
+        >
           <div className="my-6 flex justify-end px-6">
             <Button variant="text" onClick={onClose}>
               <AiOutlineClose size={24} />

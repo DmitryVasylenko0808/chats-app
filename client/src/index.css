@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 body {
     font-size: 15px;
 }
@@ -21,6 +23,10 @@ body {
     --color-red: #f14b4b; 
     --color-red-hovered: #df3c3c; 
     --color-scroll: #d1d5db;
+    --color-dark-100: #3a3a3a; 
+    --color-dark-200: #2d2d2d;  
+    --color-dark-300: #1e1e1e;
+    --color-dark-400: #121212;
 
     --default-font-family: "Public Sans", sans-serif;
 }

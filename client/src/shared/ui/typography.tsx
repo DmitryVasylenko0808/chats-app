@@ -19,7 +19,7 @@ export const Typograpghy = ({
     <Tag
       className={cn(
         {
-          'text-typography-200 font-semibold':
+          'text-typography-200 dark:text-secondary-100 font-semibold':
             tagVariant === 'h1' ||
             tagVariant === 'h2' ||
             tagVariant === 'h3' ||

@@ -997,13 +997,13 @@ type EmojiPickerProps = { onClickEmoji: (emoji: string) => void };
 
 export const EmojiPicker = ({ onClickEmoji }: Readonly<EmojiPickerProps>) => {
   return (
-    <div className="border-secondary-300 scrollbar-custom bg-secondary-100 relative h-96 w-[308px] overflow-y-auto rounded-2xl border px-2 shadow-xl">
+    <div className="border-secondary-300 scrollbar-custom bg-secondary-100 dark:bg-dark-300 dark:border-dark-100 relative h-96 w-[308px] overflow-y-auto rounded-2xl border px-2 shadow-xl">
       <ul className="flex flex-col gap-2">
         {emojiData.map((item) => (
           <li className="" key={item.category}>
             <Typograpghy
               tagVariant="h4"
-              className="bg-secondary-100 sticky top-0 left-0 z-10 mb-0.5 py-2"
+              className="bg-secondary-100 dark:bg-dark-300 sticky top-0 left-0 z-10 mb-0.5 py-2"
             >
               {item.category}
             </Typograpghy>

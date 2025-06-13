@@ -6,7 +6,7 @@ import { Outlet } from 'react-router';
 const BaseLayout = () => {
   return (
     <SocketContainer>
-      <main className="relative flex min-h-screen">
+      <main className="dark:bg-dark-400 relative flex min-h-screen">
         <SideBar />
         <section className="flex-1">
           <Outlet />

@@ -22,7 +22,7 @@ type UserItemProps = { user: User; onClick: () => void };
 
 const UserItem = ({ user, onClick }: Readonly<UserItemProps>) => (
   <li
-    className="hover:bg-secondary-300 flex cursor-pointer rounded-2xl px-3 py-1.5 duration-100"
+    className="hover:bg-secondary-300 dark:hover:bg-dark-200 flex cursor-pointer rounded-2xl px-3 py-1.5 duration-100"
     onClick={onClick}
   >
     <div className="flex items-center gap-3">

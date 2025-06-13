@@ -50,9 +50,12 @@ export const RecentChatsItem = ({ chat, participant }: Readonly<RecentChatsItemP
     <NavLink
       to={`/chats/${chat.id}`}
       className={({ isActive }) =>
-        cn('hover:bg-secondary-300 flex w-full items-center gap-3 px-5 py-4 duration-100', {
-          'bg-secondary-300': isActive,
-        })
+        cn(
+          'hover:bg-secondary-300 dark:hover:bg-dark-200 flex w-full items-center gap-3 px-5 py-4 duration-100',
+          {
+            'bg-secondary-300 dark:bg-dark-200': isActive,
+          }
+        )
       }
     >
       <img src={participant?.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
@@ -62,7 +65,7 @@ export const RecentChatsItem = ({ chat, participant }: Readonly<RecentChatsItemP
             {participant?.name || 'Deleted Account'}
           </Typograpghy>
           {chat.lastMessage && (
-            <Typograpghy className="text-typography-200 text-xs">
+            <Typograpghy className="text-typography-200 dark:text-typography-100 text-xs">
               {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
             </Typograpghy>
           )}
