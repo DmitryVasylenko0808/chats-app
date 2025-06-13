@@ -9,6 +9,7 @@ import {
 import { useAlerts } from '../hooks';
 import { AlertVariant } from '../types';
 import { Button, Typograpghy } from '../ui';
+import Portal from '../ui/portal';
 
 export const AlertsContainer = () => {
   const { alerts, removeAlert } = useAlerts();
@@ -20,19 +21,21 @@ export const AlertsContainer = () => {
   };
 
   return (
-    <div className="fixed top-3 left-[41%] z-40">
-      <ul className="flex flex-col space-y-2">
-        {alerts.map((alert) => (
-          <AlertItem
-            text={alert.text}
-            title={alert.title}
-            icon={icons[alert.variant]}
-            onRemove={() => removeAlert(alert)}
-            key={alert.id}
-          />
-        ))}
-      </ul>
-    </div>
+    <Portal targetId="portals-root">
+      <div className="fixed top-3 left-[41%] z-50">
+        <ul className="flex flex-col space-y-2">
+          {alerts.map((alert) => (
+            <AlertItem
+              text={alert.text}
+              title={alert.title}
+              icon={icons[alert.variant]}
+              onRemove={() => removeAlert(alert)}
+              key={alert.id}
+            />
+          ))}
+        </ul>
+      </div>
+    </Portal>
   );
 };
 
