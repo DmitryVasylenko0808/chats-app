@@ -12,11 +12,7 @@ export const ChatInfo = ({ chat, onShowDetails }: Readonly<ChatInfoProps>) => {
 
   return (
     <div className="flex cursor-pointer items-center gap-4" onClick={onShowDetails}>
-      <img
-        src={participant?.avatar}
-        className="bg-body h-10 w-10 rounded-full"
-        alt="participant-avatar"
-      />
+      <img src={participant?.avatar} className="h-10 w-10 rounded-full" alt="participant-avatar" />
       <Typograpghy tagVariant="h3" className="flex-1">
         {participant?.name || 'Deleted Account'}
       </Typograpghy>

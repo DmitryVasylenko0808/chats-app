@@ -22,7 +22,7 @@ export const PreviewMessageImages = ({
 
   return (
     <div
-      className="border-t-body/10 bg-secondary-100 absolute bottom-24 left-0 z-30 w-full border-t-2 px-6 py-2"
+      className="border-t-secondary-300 bg-secondary-100 absolute bottom-24 left-0 z-30 w-full border-t-2 px-6 py-2"
       {...props}
     >
       <div className="mb-0.5 flex justify-end">

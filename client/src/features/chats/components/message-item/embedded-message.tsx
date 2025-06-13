@@ -29,7 +29,7 @@ export const EmbeddedMessage = ({
         'bg-primary-100 text-secondary-100': participantMessage,
       })}
     >
-      <Typograpghy tagVariant="h6" className="font-semibold">
+      <Typograpghy tagVariant="h6" className={cn({ 'text-secondary-100': participantMessage })}>
         {title}
       </Typograpghy>
       <Typograpghy

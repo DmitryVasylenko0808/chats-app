@@ -62,7 +62,7 @@ export const RecentChatsItem = ({ chat, participant }: Readonly<RecentChatsItemP
             {participant?.name || 'Deleted Account'}
           </Typograpghy>
           {chat.lastMessage && (
-            <Typograpghy className="text-body text-xs">
+            <Typograpghy className="text-typography-200 text-xs">
               {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
             </Typograpghy>
           )}

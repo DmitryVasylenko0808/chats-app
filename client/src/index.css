@@ -19,13 +19,13 @@ body {
     --color-meta-100: #ffffff80;
     --color-meta-200: #7a7f9a;
     
-    --color-body: #7a7f9a; /* typography-100 */
-    --color-heading: #343a40; /* typography-200 */
+    --color-typography-100: #7a7f9a; 
+    --color-typography-200: #343a40;
 
     --color-scroll: #d1d5db;
 
-    --color-red: #f14b4b; /* red-100 */
-    --color-red-hovered: #df3c3c; /* red-200 */
+    --color-red: #f14b4b; 
+    --color-red-hovered: #df3c3c; 
 
     --default-font-family: "Public Sans", sans-serif;
 }
@@ -50,11 +50,3 @@ body {
     scrollbar-color: #d1d5db transparent;
   }
 }
-
-/* h1 - text-2xl font-semibold */
-/* h2 - text-xl font-semibold */
-/* h3 - text-lg font-semibold */
-/* h4 - text-base font-semibold */
-/* h5 - text-base font-semibold */
-/* h6 - text-base font-semibold */
-/* p - text-body */
