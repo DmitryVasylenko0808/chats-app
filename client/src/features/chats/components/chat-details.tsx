@@ -14,7 +14,7 @@ export const ChatDetails = ({ chat, onHideDetails }: ChatDetailsProps) => {
   const participant = chat?.members.find((m) => m.id !== currentUser?.id);
 
   return (
-    <div className="border-l-secondary-300 min-h-screen w-[376px] border-l-2 pt-8">
+    <div className="border-l-secondary-300 min-h-screen w-[376px] border-l pt-8">
       <div className="flex justify-end px-6">
         <Button variant="text" onClick={onHideDetails}>
           <AiOutlineClose size={24} />

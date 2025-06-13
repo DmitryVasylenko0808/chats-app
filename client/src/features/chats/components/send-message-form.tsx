@@ -46,7 +46,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const files = watch('images');
 
   return (
-    <div className="border-t-secondary-300 relative flex h-24 items-center border-t-2 px-6">
+    <div className="border-t-secondary-300 relative flex h-24 items-center border-t px-6">
       <form onSubmit={handleSubmit(submitHandler)} className="flex w-full gap-4">
         <TextArea
           rows={1}

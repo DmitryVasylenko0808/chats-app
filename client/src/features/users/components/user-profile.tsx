@@ -3,7 +3,7 @@ import { CreateChatButton } from '@/features/chats/components';
 import { useModal } from '@/shared/hooks';
 import { Button, Loader } from '@/shared/ui';
 
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { useGetUser } from '../hooks';
 import { EditingUserProfileModal } from './editing-user-profile-modal';

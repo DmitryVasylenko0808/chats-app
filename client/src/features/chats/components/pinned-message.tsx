@@ -14,7 +14,7 @@ export const PinnedMessage = ({ pinnedMessage, onUnpin }: Readonly<PinnedMessage
   const handleClickUnpin = () => onUnpin(pinnedMessage);
 
   return (
-    <div className="border-b-secondary-300 bg-secondary-100 sticky top-0 left-0 z-20 flex max-h-16 items-center border-b-2 px-6 py-2.5">
+    <div className="border-b-secondary-300 bg-secondary-100 sticky top-0 left-0 z-20 flex max-h-16 items-center border-b px-6 py-2.5">
       <div className="flex-1">
         <Typograpghy tagVariant="h5" className="font-medium">
           Pinned Message:

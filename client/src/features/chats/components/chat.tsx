@@ -42,7 +42,7 @@ export const Chat = () => {
     data && (
       <div className="flex">
         <div className="flex min-h-screen flex-1 flex-col">
-          <div className="border-b-secondary-300 flex h-22 items-center border-b-2 px-6">
+          <div className="border-b-secondary-300 flex h-22 items-center border-b px-6">
             <div className="flex w-full items-center justify-between">
               <div className="flex items-center gap-4">
                 <Button variant="text" onClick={handleClickBack}>
