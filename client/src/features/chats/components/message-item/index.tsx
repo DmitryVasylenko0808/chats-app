@@ -54,7 +54,7 @@ export const MessageItem = ({
         'flex-row-reverse': !participantMessage,
       })}
     >
-      <MessageAvatar src={message.sender?.avatar} />
+      <MessageAvatar sender={message.sender} />
       <div className="flex-1">
         <MessageSender sender={message.sender} participantMessage={participantMessage} />
         <div

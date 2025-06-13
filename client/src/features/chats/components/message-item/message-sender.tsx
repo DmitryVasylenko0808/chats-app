@@ -1,11 +1,15 @@
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
+import { Link, useLocation } from 'react-router';
+
 import { Message } from '../../types';
 
 type MessageSenderProps = { participantMessage: boolean; sender?: Message['sender'] };
 
 export const MessageSender = ({ participantMessage, sender }: Readonly<MessageSenderProps>) => {
+  const location = useLocation();
+
   return (
     <Typograpghy
       tagVariant="h5"
@@ -14,7 +18,9 @@ export const MessageSender = ({ participantMessage, sender }: Readonly<MessageSe
         'text-right': !participantMessage,
       })}
     >
-      {sender?.name || 'Deleted Account'}
+      <Link to={`/profile/${sender?.id}`} state={{ backgroundLocation: location }}>
+        {sender?.name || 'Deleted Account'}
+      </Link>
     </Typograpghy>
   );
 };

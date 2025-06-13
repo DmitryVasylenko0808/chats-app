@@ -8,24 +8,19 @@ body {
     --color-primary-100: #8982e9;
     --color-primary-200: #7269ef;
     --color-primary-300: #5d52f0;
-
     --color-secondary-100: #ffffff;
     --color-secondary-150: #f8f9fa;
     --color-secondary-200: #f5f7fb;
     --color-secondary-300: #e6ebf5;
-
     --color-message-participant: #343a40;
     --color-message-own: #343a40;
     --color-meta-100: #ffffff80;
     --color-meta-200: #7a7f9a;
-    
     --color-typography-100: #7a7f9a; 
     --color-typography-200: #343a40;
-
-    --color-scroll: #d1d5db;
-
     --color-red: #f14b4b; 
     --color-red-hovered: #df3c3c; 
+    --color-scroll: #d1d5db;
 
     --default-font-family: "Public Sans", sans-serif;
 }

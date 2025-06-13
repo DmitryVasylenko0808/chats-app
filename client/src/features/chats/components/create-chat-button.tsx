@@ -18,7 +18,7 @@ export const CreateChatButton = ({ user }: Readonly<CreateChatButtonProps>) => {
       .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 
   return (
-    <div className="w-full py-6">
+    <div className="mt-3 w-full">
       <Button variant="primary" onClick={handleClick} fullWidth>
         {isPending ? <Loader variant="secondary" size="sm" /> : 'Create Chat'}
       </Button>
