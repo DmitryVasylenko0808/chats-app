@@ -48,8 +48,8 @@ export const RecentChatsItem = ({ chat, participant }: Readonly<RecentChatsItemP
     <NavLink
       to={`/chats/${chat.id}`}
       className={({ isActive }) =>
-        cn('hover:bg-active-chat flex w-full items-center gap-3 px-5 py-4 duration-100', {
-          'bg-active-chat': isActive,
+        cn('hover:bg-secondary-300 flex w-full items-center gap-3 px-5 py-4 duration-100', {
+          'bg-secondary-300': isActive,
         })
       }
     >

@@ -19,7 +19,10 @@ export const UsersList = ({ users, onClickItem }: Readonly<UsersListProps>) => {
 type UserItemProps = { user: User; onClick: () => void };
 
 const UserItem = ({ user, onClick }: Readonly<UserItemProps>) => (
-  <li className="hover:bg-secondary flex cursor-pointer px-3 py-1.5 duration-100" onClick={onClick}>
+  <li
+    className="hover:bg-secondary-300 flex cursor-pointer rounded-2xl px-3 py-1.5 duration-100"
+    onClick={onClick}
+  >
     <div className="flex items-center gap-3">
       <img src={user.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
       <div className="justify-center-center flex flex-col">

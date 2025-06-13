@@ -37,7 +37,7 @@ export const Menu = ({
           ref={ref}
         >
           {header}
-          <div className={cn('border-body/30 rounded-xl border bg-white py-2 shadow-xl')}>
+          <div className={cn('border-body/30 bg-secondary-100 rounded-xl border py-2 shadow-xl')}>
             {content}
           </div>
         </div>

@@ -19,7 +19,7 @@ export const ReactionPicker = ({
 
   return (
     <div
-      className={cn('border-body/30 rounded-full border bg-white px-2 py-1', className)}
+      className={cn('border-body/30 bg-secondary-100 rounded-full border px-2 py-1', className)}
       {...divProps}
     >
       <ul className="flex">

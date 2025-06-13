@@ -21,7 +21,7 @@ export const ForwardMessageModal = ({
   return (
     <Modal {...modalProps}>
       <h2 className="mb-6 text-xl font-semibold">Forwarding Message</h2>
-      <div className="h-[240px overflow-auto">
+      <div className="h-[240px] overflow-auto">
         <ChatsList chats={data} onClickItem={handleClick} />
       </div>
     </Modal>

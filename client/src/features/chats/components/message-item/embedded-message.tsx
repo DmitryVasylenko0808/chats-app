@@ -24,8 +24,8 @@ export const EmbeddedMessage = ({
   return (
     <div
       className={cn('mb-1.5 rounded-xl p-2.5', {
-        'bg-reply-user-message': !participantMessage,
-        'bg-primary-light text-white': participantMessage,
+        'bg-secondary-300': !participantMessage,
+        'bg-primary-100 text-white': participantMessage,
       })}
     >
       <h6 className="font-semibold">{title}</h6>

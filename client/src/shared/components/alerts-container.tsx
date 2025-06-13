@@ -52,7 +52,7 @@ const AlertItem = ({ text, icon, title, autoClose = 3000, onRemove }: Readonly<A
   }, []);
 
   return (
-    <li className="inline-flex w-96 gap-3 rounded-2xl bg-white px-4 py-3 shadow-md">
+    <li className="bg-secondary-100 inline-flex w-96 gap-3 rounded-2xl px-4 py-3 shadow-md">
       {icon}
       <div className="flex-1">
         <h3 className="font-semibold">{title}</h3>

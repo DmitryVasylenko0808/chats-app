@@ -9,18 +9,10 @@ body {
     --color-primary-200: #7269ef;
     --color-primary-300: #5d52f0;
 
-    /* --color-primary-light: #8982e9; primary-100 */
-    /* --color-primary: #7269ef; primary-200 */
-    /* --color-primary-hovered: #5d52f0; primary-300 */
-
-    --color-sidebar: #ffffff; /* secondary 100 */
-    --color-item-menu-hover: #f8f9fa; /* secondary 150 */
-    --color-secondary: #f5f7fb; /* secondary 200 */
-    --color-sidebar-sub: #f5f7fb;
-    --color-current-user-message: #f5f7fb;
-    --color-active-chat: #e6ebf5; /* secondary 300 */
-    --color-reply-user-message: #e6ebf5;
-    --color-input: #e6ebf5; 
+    --color-secondary-100: #ffffff;
+    --color-secondary-150: #f8f9fa;
+    --color-secondary-200: #f5f7fb;
+    --color-secondary-300: #e6ebf5;
     
     --color-body: #7a7f9a; /* typography-100 */
     --color-heading: #343a40; /* typography-200 */
