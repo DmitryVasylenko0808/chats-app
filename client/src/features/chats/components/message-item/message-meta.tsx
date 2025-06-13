@@ -13,8 +13,8 @@ export const MessageMeta = ({ message, participantMessage }: Readonly<MessageMet
   <div className="mt-1.5 flex justify-end">
     <span
       className={cn('inline-flex items-center gap-1 text-xs', {
-        'text-message-time': participantMessage,
-        'text-body': !participantMessage,
+        'text-meta-100': participantMessage,
+        'text-meta-200': !participantMessage,
       })}
     >
       <AiOutlineClockCircle size={14} /> {new Date(message.createdAt).toLocaleString()}

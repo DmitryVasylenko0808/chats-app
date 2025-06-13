@@ -1,4 +1,5 @@
 import { useAuth } from '@/features/auth/hooks';
+import { Typograpghy } from '@/shared/ui';
 
 import { Chat } from '../types';
 
@@ -16,7 +17,9 @@ export const ChatInfo = ({ chat, onShowDetails }: Readonly<ChatInfoProps>) => {
         className="bg-body h-10 w-10 rounded-full"
         alt="participant-avatar"
       />
-      <h3 className="flex-1 text-base font-semibold">{participant?.name || 'Deleted Account'}</h3>
+      <Typograpghy tagVariant="h3" className="flex-1">
+        {participant?.name || 'Deleted Account'}
+      </Typograpghy>
     </div>
   );
 };

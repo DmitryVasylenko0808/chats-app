@@ -9,3 +9,4 @@ export * from './portal';
 export * from './emoji-picker';
 export * from './reaction-picker';
 export * from './drawer';
+export * from './typography';

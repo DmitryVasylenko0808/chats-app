@@ -1,4 +1,4 @@
-import { Button, Loader, Modal, ModalProps, TextArea, TextField } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, TextArea, TextField, Typograpghy } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,9 @@ export const ReplyMessageModal = ({
 
   return (
     <Modal className="w-xl" {...modalProps}>
-      <h2 className="mb-6 text-xl font-semibold">Replying Message</h2>
+      <Typograpghy tagVariant="h2" className="mb-6">
+        Replying Message
+      </Typograpghy>
       <ReplyingToMessage message={message} />
       <form onSubmit={handleSubmit(submitHandler)} className="flex w-full items-end gap-4">
         <TextField
@@ -52,9 +54,9 @@ const ReplyingToMessage = ({ message }: RepliedMessageProps) => {
     <div className="mb-10">
       <div className="mb-4 flex items-center gap-2">
         <img src={message.sender?.avatar} alt="sender-avatar" className="h-10 w-10 rounded-full" />
-        <h5 className="font-semibold">{message.sender?.name || 'Deleted Account'}</h5>
+        <Typograpghy tagVariant="h5">{message.sender?.name || 'Deleted Account'}</Typograpghy>
       </div>
-      <p className="text-body mb">{message.text}</p>
+      <Typograpghy>{message.text}</Typograpghy>
     </div>
   );
 };

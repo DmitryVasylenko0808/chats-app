@@ -1,6 +1,6 @@
 import { useAuth } from '@/features/auth/hooks';
 import { User } from '@/features/users/types';
-import { Loader } from '@/shared/ui';
+import { Loader, Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
 import { NavLink } from 'react-router';
@@ -22,7 +22,9 @@ export const RecentChats = () => {
 
   return (
     <div className="pt-1.5 pb-3">
-      <h4 className="mb-4 px-6 text-base font-semibold">Recent</h4>
+      <Typograpghy tagVariant="h4" className="mb-4 px-6">
+        Recent
+      </Typograpghy>
       <div className="scrollbar-custom h-[calc(100vh-94px-88px-40px)] overflow-y-auto">
         <ul className="flex flex-col">
           {data?.map((item) => (
@@ -56,16 +58,16 @@ export const RecentChatsItem = ({ chat, participant }: Readonly<RecentChatsItemP
       <img src={participant?.avatar} className="h-10 w-10 rounded-full" alt="user-avatar" />
       <div className="flex w-full min-w-0 flex-col">
         <div className="flex items-center justify-between">
-          <p className="truncate font-medium">{participant?.name || 'Deleted Account'}</p>
+          <Typograpghy tagVariant="h4" className="truncate">
+            {participant?.name || 'Deleted Account'}
+          </Typograpghy>
           {chat.lastMessage && (
-            <span className="text-body text-xs font-normal">
+            <Typograpghy className="text-body text-xs">
               {new Date(chat.lastMessage?.createdAt).toLocaleDateString()}
-            </span>
+            </Typograpghy>
           )}
         </div>
-        <span className="text-body white truncate text-sm font-normal">
-          {chat.lastMessage?.text}
-        </span>
+        <Typograpghy className="truncate text-sm">{chat.lastMessage?.text}</Typograpghy>
       </div>
     </NavLink>
   </li>

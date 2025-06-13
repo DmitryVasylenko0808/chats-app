@@ -1,4 +1,4 @@
-import { Modal, ModalProps } from '@/shared/ui';
+import { Modal, ModalProps, Typograpghy } from '@/shared/ui';
 
 import { useGetChats } from '../hooks';
 import { Chat, Message } from '../types';
@@ -20,7 +20,9 @@ export const ForwardMessageModal = ({
 
   return (
     <Modal {...modalProps}>
-      <h2 className="mb-6 text-xl font-semibold">Forwarding Message</h2>
+      <Typograpghy tagVariant="h2" className="mb-6">
+        Forwarding Message
+      </Typograpghy>
       <div className="h-[240px] overflow-auto">
         <ChatsList chats={data} onClickItem={handleClick} />
       </div>

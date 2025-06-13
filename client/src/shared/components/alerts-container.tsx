@@ -8,7 +8,7 @@ import {
 
 import { useAlerts } from '../hooks';
 import { AlertVariant } from '../types';
-import { Button } from '../ui';
+import { Button, Typograpghy } from '../ui';
 
 export const AlertsContainer = () => {
   const { alerts, removeAlert } = useAlerts();
@@ -55,8 +55,8 @@ const AlertItem = ({ text, icon, title, autoClose = 3000, onRemove }: Readonly<A
     <li className="bg-secondary-100 inline-flex w-96 gap-3 rounded-2xl px-4 py-3 shadow-md">
       {icon}
       <div className="flex-1">
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-body">{text}</p>
+        <Typograpghy tagVariant="h4">{title}</Typograpghy>
+        <Typograpghy>{text}</Typograpghy>
       </div>
       <Button variant="text" onClick={onRemove}>
         <AiOutlineClose size={24} />

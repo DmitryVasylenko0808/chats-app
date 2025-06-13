@@ -1,3 +1,5 @@
+import { Typograpghy } from './typography';
+
 export const emojiData = [
   {
     category: 'Smileys & People',
@@ -999,9 +1001,12 @@ export const EmojiPicker = ({ onClickEmoji }: Readonly<EmojiPickerProps>) => {
       <ul className="flex flex-col gap-2">
         {emojiData.map((item) => (
           <li className="" key={item.category}>
-            <h3 className="text-body bg-secondary-100 sticky top-0 left-0 z-10 mb-0.5 py-2 text-lg font-bold">
+            <Typograpghy
+              tagVariant="h4"
+              className="bg-secondary-100 sticky top-0 left-0 z-10 mb-0.5 py-2"
+            >
               {item.category}
-            </h3>
+            </Typograpghy>
             <ul className="flex flex-wrap">
               {item.emojis.map((emoji, index) => (
                 <li

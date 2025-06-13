@@ -3,7 +3,7 @@ import { useAuth, useLogOutUser } from '@/features/auth/hooks';
 import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import { Link, useLocation } from 'react-router';
 
-import { Drawer, DrawerProps } from '../ui';
+import { Drawer, DrawerProps, Typograpghy } from '../ui';
 import { Logo } from './logo';
 
 type SideBarDrawerProps = DrawerProps;
@@ -19,7 +19,7 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
     <Drawer {...drawerProps}>
       <div className="my-6 flex items-center gap-4 px-6">
         <Logo />
-        <h1 className="text-2xl font-semibold">Chats App</h1>
+        <Typograpghy tagVariant="h1">Chats App</Typograpghy>
       </div>
       <ul className="flex flex-col">
         <li className="inline-flex">

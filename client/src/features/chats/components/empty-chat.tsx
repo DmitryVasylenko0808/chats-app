@@ -1,5 +1,5 @@
 import { useModal } from '@/shared/hooks';
-import { Button } from '@/shared/ui';
+import { Button, Typograpghy } from '@/shared/ui';
 
 import { NewChatModal } from './new-chat-modal';
 
@@ -8,8 +8,12 @@ export const EmptyChat = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h3 className="mb-1.5 text-lg font-semibold">Select a chat</h3>
-      <p className="text-body mb-4">Choose a chat from the list or start a new conversation</p>
+      <Typograpghy tagVariant="h3" className="mb-1.5">
+        Select a chat
+      </Typograpghy>
+      <Typograpghy className="mb-4">
+        Choose a chat from the list or start a new conversation
+      </Typograpghy>
       <Button variant="primary" onClick={modal.handleClickOpen}>
         New Chat
       </Button>

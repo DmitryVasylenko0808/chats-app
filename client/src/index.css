@@ -13,12 +13,14 @@ body {
     --color-secondary-150: #f8f9fa;
     --color-secondary-200: #f5f7fb;
     --color-secondary-300: #e6ebf5;
+
+    --color-message-participant: #343a40;
+    --color-message-own: #343a40;
+    --color-meta-100: #ffffff80;
+    --color-meta-200: #7a7f9a;
     
     --color-body: #7a7f9a; /* typography-100 */
     --color-heading: #343a40; /* typography-200 */
-    --color-message-white: #ffffff; /* message-participant */
-    --color-message-dark: #343a40; /* message-own */
-    --color-message-time: #ffffff80; /* meta */
 
     --color-scroll: #d1d5db;
 
@@ -48,3 +50,11 @@ body {
     scrollbar-color: #d1d5db transparent;
   }
 }
+
+/* h1 - text-2xl font-semibold */
+/* h2 - text-xl font-semibold */
+/* h3 - text-lg font-semibold */
+/* h4 - text-base font-semibold */
+/* h5 - text-base font-semibold */
+/* h6 - text-base font-semibold */
+/* p - text-body */

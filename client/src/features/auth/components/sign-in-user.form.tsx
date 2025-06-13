@@ -1,5 +1,5 @@
 import { useAlerts } from '@/shared/hooks';
-import { Button, Loader, TextField } from '@/shared/ui';
+import { Button, Loader, TextField, Typograpghy } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
@@ -30,8 +30,12 @@ export const SignInUserForm = () => {
   return (
     <form onSubmit={handleSubmit(submitHandler)}>
       <div className="mb-12">
-        <h2 className="mb-3 text-center text-xl font-semibold">Sign In</h2>
-        <p className="text-body text-center font-normal">Sign in to continue to Chats-App.</p>
+        <Typograpghy tagVariant="h2" className="mb-3 text-center">
+          Sign In
+        </Typograpghy>
+        <Typograpghy tagVariant="p" className="text-center font-normal">
+          Sign in to continue to Chats-App.
+        </Typograpghy>
       </div>
       <div className="mb-6">
         <TextField

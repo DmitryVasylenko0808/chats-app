@@ -2,7 +2,7 @@ import { UsersList } from '@/features/users/components';
 import { useSearchUsers } from '@/features/users/hooks';
 import { User } from '@/features/users/types';
 import { useAlerts } from '@/shared/hooks';
-import { Loader, Modal, ModalProps, TextField } from '@/shared/ui';
+import { Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared/ui';
 
 import { useNavigate } from 'react-router';
 
@@ -28,7 +28,9 @@ export const NewChatModal = (modalProps: NewChatModalProps) => {
 
   return (
     <Modal className="w-md" {...modalProps}>
-      <h2 className="mb-6 text-xl font-semibold">New Chat</h2>
+      <Typograpghy tagVariant="h2" className="mb-6">
+        New Chat
+      </Typograpghy>
       <TextField
         placeholder="Search users by name..."
         className="mb-6"

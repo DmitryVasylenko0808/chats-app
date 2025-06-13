@@ -1,5 +1,5 @@
 import { useAlerts, useCopy } from '@/shared/hooks';
-import { Loader } from '@/shared/ui';
+import { Loader, Typograpghy } from '@/shared/ui';
 
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -114,7 +114,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   if (error) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <p className="text-body">{error.message}</p>
+        <Typograpghy>{error.message}</Typograpghy>
       </div>
     );
   }

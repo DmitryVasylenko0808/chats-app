@@ -1,4 +1,6 @@
+import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
+import { text } from 'stream/consumers';
 
 import { Message } from '../../types';
 import { MessageImages } from './message-images';
@@ -25,11 +27,20 @@ export const EmbeddedMessage = ({
     <div
       className={cn('mb-1.5 rounded-xl p-2.5', {
         'bg-secondary-300': !participantMessage,
-        'bg-primary-100 text-white': participantMessage,
+        'bg-primary-100 text-secondary-100': participantMessage,
       })}
     >
-      <h6 className="font-semibold">{title}</h6>
-      <p>{message.text}</p>
+      <Typograpghy tagVariant="h6" className="font-semibold">
+        {title}
+      </Typograpghy>
+      <Typograpghy
+        className={cn({
+          'text-black': !participantMessage,
+          'text-secondary-100': participantMessage,
+        })}
+      >
+        {message.text}
+      </Typograpghy>
       <MessageImages images={message.images} />
     </div>
   );

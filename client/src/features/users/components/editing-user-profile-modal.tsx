@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/auth/hooks';
-import { Loader, Modal, ModalProps } from '@/shared/ui';
+import { Loader, Modal, ModalProps, Typograpghy } from '@/shared/ui';
 
 import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';
@@ -25,7 +25,9 @@ export const EditingUserProfileModal = (modalProps: Readonly<EditingProfileModal
   return (
     data && (
       <Modal className="w-md" {...modalProps}>
-        <h2 className="mb-6 text-xl font-semibold">Editing Profile</h2>
+        <Typograpghy tagVariant="h2" className="mb-6">
+          Editing Profile
+        </Typograpghy>
         <EditingUserProfileForm user={data} onSubmit={modalProps.onClose} />
       </Modal>
     )

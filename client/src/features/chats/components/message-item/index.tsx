@@ -1,4 +1,5 @@
 import { User } from '@/features/users/types';
+import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
 import { useAddReaction, useDeleteReaction } from '../../hooks';
@@ -73,14 +74,14 @@ export const MessageItem = ({
               message={message.forwardedMessage}
               participantMessage={participantMessage}
             />
-            <p
+            <Typograpghy
               className={cn('mb-1.5', {
-                'text-white': participantMessage,
+                'text-secondary-100': participantMessage,
                 'text-black': !participantMessage,
               })}
             >
               {message.text}
-            </p>
+            </Typograpghy>
             <MessageImages images={message.images} />
             <MessageReactions
               reactions={message.reactionsByEmoji}

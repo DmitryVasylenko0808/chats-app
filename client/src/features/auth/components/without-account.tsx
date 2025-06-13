@@ -1,8 +1,10 @@
+import { Typograpghy } from '@/shared/ui';
+
 import { Link } from 'react-router';
 
 export const WithoutAccount = () => {
   return (
-    <p className="text-body text-center font-normal">
+    <Typograpghy tagVariant="p" className="text-center font-normal">
       Don't have an account?{' '}
       <Link
         to="/auth/register"
@@ -10,6 +12,6 @@ export const WithoutAccount = () => {
       >
         Sign Up
       </Link>
-    </p>
+    </Typograpghy>
   );
 };

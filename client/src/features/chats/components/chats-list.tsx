@@ -1,5 +1,6 @@
 import { useAuth } from '@/features/auth/hooks';
 import { User } from '@/features/users/types';
+import { Typograpghy } from '@/shared/ui';
 
 import { Chat } from '../types';
 
@@ -35,6 +36,8 @@ const ChatsListItem = ({ chat, participant, onClick }: Readonly<ChatsListItemPro
     onClick={onClick}
   >
     <img src={participant?.avatar} alt="user-avatar" className="h-10 w-10 rounded-full" />
-    <p className="truncate font-medium">{participant?.name || 'Deleted Account'}</p>
+    <Typograpghy tagVariant="h4" className="truncate">
+      {participant?.name || 'Deleted Account'}
+    </Typograpghy>
   </li>
 );

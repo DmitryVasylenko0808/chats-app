@@ -2,6 +2,8 @@ import { cn } from '@/utils/cn';
 
 import { ComponentProps } from 'react';
 
+import { Typograpghy } from './typography';
+
 type TextAreaProps = ComponentProps<'textarea'> & {
   label?: string;
   error?: string;
@@ -27,7 +29,7 @@ export const TextArea = ({
         ref={ref}
         {...textFieldProps}
       />
-      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+      {error && <Typograpghy className="text-red mt-1 text-sm">{error}</Typograpghy>}
     </div>
   );
 };

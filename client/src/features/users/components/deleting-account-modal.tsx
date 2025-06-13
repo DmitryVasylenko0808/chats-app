@@ -1,6 +1,6 @@
 import { useAuth } from '@/features/auth/hooks';
 import { useAlerts } from '@/shared/hooks';
-import { Button, Loader, Modal, ModalProps } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, Typograpghy } from '@/shared/ui';
 
 import { useDeleteUser } from '../hooks';
 
@@ -21,11 +21,13 @@ export const DeletingAccountModal = (modalProps: DeletingUserModalProps) => {
 
   return (
     <Modal className="w-xl" {...modalProps}>
-      <h2 className="mb-6 text-xl font-semibold">Deleting Account</h2>
-      <p className="text-body mb-10">
+      <Typograpghy tagVariant="h2" className="mb-6">
+        Deleting Account
+      </Typograpghy>
+      <Typograpghy className="mb-10">
         Are you sure you want to delete your account? This action cannot be undone. All your data,
         including chats, messages and settings, will be permanently deleted.
-      </p>
+      </Typograpghy>
       <div className="flex justify-end">
         <Button variant="danger" onClick={handleClickDelete}>
           {isPending ? <Loader variant="secondary" size="sm" /> : 'Delete'}

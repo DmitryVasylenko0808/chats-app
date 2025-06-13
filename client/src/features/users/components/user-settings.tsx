@@ -1,5 +1,5 @@
 import { useModal } from '@/shared/hooks';
-import { Button } from '@/shared/ui';
+import { Button, Typograpghy } from '@/shared/ui';
 
 import { DeletingAccountModal } from './deleting-account-modal';
 
@@ -8,7 +8,9 @@ export const UserSettings = () => {
 
   return (
     <div>
-      <h2 className="mb-6 text-xl font-semibold">Settings</h2>
+      <Typograpghy tagVariant="h2" className="mb-6">
+        Settings
+      </Typograpghy>
       <Button variant="danger" onClick={deleteAccModal.handleClickOpen} fullWidth>
         Delete Account
       </Button>
