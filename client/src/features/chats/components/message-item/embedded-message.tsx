@@ -1,6 +1,5 @@
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
-import { text } from 'stream/consumers';
 
 import { Message } from '../../types';
 import { MessageImages } from './message-images';
