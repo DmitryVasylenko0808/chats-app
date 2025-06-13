@@ -14,8 +14,8 @@ export const AlertsContainer = () => {
   const { alerts, removeAlert } = useAlerts();
 
   const icons: Record<AlertVariant, ReactNode> = {
-    info: <AiOutlineInfoCircle size={28} className="text-primary" />,
-    success: <AiOutlineCheckCircle size={28} className="text-primary" />,
+    info: <AiOutlineInfoCircle size={28} className="text-primary-200" />,
+    success: <AiOutlineCheckCircle size={28} className="text-primary-200" />,
     error: <AiOutlineStop size={28} className="text-red" />,
   };
 

@@ -5,26 +5,33 @@ body {
 }
 
 @theme {
-    --color-primary: #7269ef;
-    --color-primary-hovered: #5d52f0;
-    --color-primary-light: #8982e9;
-    --color-secondary: #f5f7fb;
-    --color-sidebar: #ffffff;
+    --color-primary-100: #8982e9;
+    --color-primary-200: #7269ef;
+    --color-primary-300: #5d52f0;
+
+    /* --color-primary-light: #8982e9; primary-100 */
+    /* --color-primary: #7269ef; primary-200 */
+    /* --color-primary-hovered: #5d52f0; primary-300 */
+
+    --color-sidebar: #ffffff; /* secondary 100 */
+    --color-item-menu-hover: #f8f9fa; /* secondary 150 */
+    --color-secondary: #f5f7fb; /* secondary 200 */
     --color-sidebar-sub: #f5f7fb;
-    --color-sidebar-menu-item-active: #f7f7ff;
-    --color-active-chat: #e6ebf5;
-    --color-input: #e6ebf5;
-    --color-item-menu-hover: #f8f9fa;
-    --color-heading: #343a40;
-    --color-body: #7a7f9a;
-    --color-message-dark: #343a40;
-    --color-message-white: #ffffff;
-    --color-message-time: #ffffff80;
     --color-current-user-message: #f5f7fb;
-    --color-scroll: #d1d5db;
+    --color-active-chat: #e6ebf5; /* secondary 300 */
     --color-reply-user-message: #e6ebf5;
-    --color-red: #f14b4b;
-    --color-red-hovered: #df3c3c;
+    --color-input: #e6ebf5; 
+    
+    --color-body: #7a7f9a; /* typography-100 */
+    --color-heading: #343a40; /* typography-200 */
+    --color-message-white: #ffffff; /* message-participant */
+    --color-message-dark: #343a40; /* message-own */
+    --color-message-time: #ffffff80; /* meta */
+
+    --color-scroll: #d1d5db;
+
+    --color-red: #f14b4b; /* red-100 */
+    --color-red-hovered: #df3c3c; /* red-200 */
 
     --default-font-family: "Public Sans", sans-serif;
 }

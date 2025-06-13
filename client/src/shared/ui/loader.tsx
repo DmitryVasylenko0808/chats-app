@@ -11,7 +11,7 @@ export const Loader = ({ variant, size, className }: Readonly<LoaderProps>) => {
         'animate-spin rounded-full border-2',
         {
           'border-white': variant === 'secondary',
-          'border-primary': variant === 'primary',
+          'border-primary-200': variant === 'primary',
           'h-5 w-5': size === 'sm',
           'h-8 w-8': size === 'lg',
         },

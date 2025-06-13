@@ -8,7 +8,7 @@ export const MessageContent = ({ participantMessage, children }: Readonly<Messag
   return (
     <div
       className={cn('rounded-2xl px-5 py-3', {
-        'bg-primary': participantMessage,
+        'bg-primary-200': participantMessage,
         'bg-current-user-message': !participantMessage,
       })}
     >

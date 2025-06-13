@@ -6,7 +6,7 @@ export const WithoutAccount = () => {
       Don't have an account?{' '}
       <Link
         to="/auth/register"
-        className="text-primary hover:text-primary-hovered font-medium duration-100"
+        className="text-primary-200 hover:text-primary-300 font-medium duration-100"
       >
         Sign Up
       </Link>

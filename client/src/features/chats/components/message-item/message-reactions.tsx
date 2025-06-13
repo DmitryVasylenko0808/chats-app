@@ -67,8 +67,8 @@ const MessageReactionItem = ({
   <li
     className={cn('inline-flex cursor-pointer rounded-2xl px-2 py-0.5 text-sm', {
       'bg-reply-user-message text-black': isOwnMessage,
-      'bg-primary-light text-white': !isOwnMessage,
-      'bg-primary text-white': isOwnMessage && isOwnReaction,
+      'bg-primary-100 text-white': !isOwnMessage,
+      'bg-primary-200 text-white': isOwnMessage && isOwnReaction,
       'bg-current-user-message text-black': !isOwnMessage && isOwnReaction,
     })}
     onClick={onClick}

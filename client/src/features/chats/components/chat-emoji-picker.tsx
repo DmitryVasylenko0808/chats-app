@@ -19,7 +19,7 @@ export const ChatEmojiPicker = ({ onClickEmoji }: Readonly<ChatEmojiPickerProps>
       <Button
         type="button"
         variant="text"
-        className="text-primary"
+        className="text-primary-200"
         onClick={handleClickTogglePicker}
       >
         <AiOutlineSmile size={24} />

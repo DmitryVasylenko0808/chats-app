@@ -24,11 +24,11 @@ export const FilesUploadButton = ({
   }, [error]);
 
   return (
-    <label className="text-primary relative cursor-pointer" htmlFor={name}>
+    <label className="text-primary-200 relative cursor-pointer" htmlFor={name}>
       <AiOutlinePicture size={24} /> {label}
       <input type="file" className="hidden" id={name} {...props} />
       {!!attachedFilesCount && (
-        <span className="bg-primary absolute top-0 right-0 z-20 inline-flex h-4 w-4 items-center justify-center rounded-full text-white">
+        <span className="bg-primary-200 absolute top-0 right-0 z-20 inline-flex h-4 w-4 items-center justify-center rounded-full text-white">
           {attachedFilesCount}
         </span>
       )}
