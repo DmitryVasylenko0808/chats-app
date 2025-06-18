@@ -50,26 +50,34 @@ export const MessageMenu = ({
         header={<ReactionPicker onClickReaction={handleClickReactionPicker} className="mb-1" />}
         content={
           <ul>
-            <li>
-              <Button variant="menu" onClick={onReply}>
-                <TiArrowBackOutline size={20} /> Reply
-              </Button>
-            </li>
-            <li>
-              <Button variant="menu" onClick={onCopy}>
-                <AiOutlineCopy size={20} /> Copy
-              </Button>
-            </li>
-            <li>
-              <Button variant="menu" onClick={onForward}>
-                <TiArrowForwardOutline size={20} /> Forward
-              </Button>
-            </li>
-            <li>
-              <Button variant="menu" onClick={onPin}>
-                <AiOutlinePushpin size={20} /> Pin
-              </Button>
-            </li>
+            {onReply && (
+              <li>
+                <Button variant="menu" onClick={onReply}>
+                  <TiArrowBackOutline size={20} /> Reply
+                </Button>
+              </li>
+            )}
+            {onCopy && (
+              <li>
+                <Button variant="menu" onClick={onCopy}>
+                  <AiOutlineCopy size={20} /> Copy
+                </Button>
+              </li>
+            )}
+            {onForward && (
+              <li>
+                <Button variant="menu" onClick={onForward}>
+                  <TiArrowForwardOutline size={20} /> Forward
+                </Button>
+              </li>
+            )}
+            {onPin && (
+              <li>
+                <Button variant="menu" onClick={onPin}>
+                  <AiOutlinePushpin size={20} /> Pin
+                </Button>
+              </li>
+            )}
             {canEdit && (
               <li>
                 <Button variant="menu" onClick={onEdit}>
