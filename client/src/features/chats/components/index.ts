@@ -19,3 +19,6 @@ export * from './pinned-message';
 export * from './chat-emoji-picker';
 export * from './create-chat-button';
 export * from './start-messaging';
+export * from './sidebar';
+export * from './sidebar-header';
+export * from './sidebar-drawer';

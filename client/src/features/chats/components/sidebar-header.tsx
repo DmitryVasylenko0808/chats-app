@@ -1,9 +1,10 @@
+import { Logo } from '@/shared/components';
+import { useDrawer } from '@/shared/hooks';
+import { Button, Typograpghy } from '@/shared/ui';
+
 import { AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router';
 
-import { useDrawer } from '../hooks';
-import { Button, Typograpghy } from '../ui';
-import { Logo } from './logo';
 import { SideBarDrawer } from './sidebar-drawer';
 
 export const SideBarHeader = () => {

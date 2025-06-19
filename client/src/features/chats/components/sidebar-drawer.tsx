@@ -1,11 +1,10 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
+import { Logo } from '@/shared/components';
+import { Drawer, DrawerProps, Typograpghy } from '@/shared/ui';
 
 import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import { FiBookmark } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router';
-
-import { Drawer, DrawerProps, Typograpghy } from '../ui';
-import { Logo } from './logo';
 
 type SideBarDrawerProps = DrawerProps;
 

@@ -1,7 +1,5 @@
 // Fix: Circular dependency from @/features/chats/*
-import { RecentChats, StartMessaging } from '@/features/chats/components';
-
-import { SideBarHeader } from './sidebar-header';
+import { RecentChats, SideBarHeader, StartMessaging } from '@/features/chats/components';
 
 export const SideBar = () => {
   return (
