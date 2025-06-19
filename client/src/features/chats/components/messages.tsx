@@ -1,4 +1,4 @@
-import { useAddBookmark } from '@/features/bookmarks/hooks/useAddBookmark';
+import { useAddBookmark } from '@/features/bookmarks/hooks';
 import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
 

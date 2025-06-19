@@ -1,5 +1,4 @@
-import { SocketContainer } from '@/features/chats/components';
-import { SideBar } from '@/shared/components';
+import { SideBar, SocketContainer } from '@/features/chats/components';
 
 import { Outlet } from 'react-router';
 
