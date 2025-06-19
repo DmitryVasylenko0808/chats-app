@@ -3,8 +3,6 @@ import { User } from '@/features/users/types';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
-import { ReactNode } from 'react';
-
 import { useAddReaction, useDeleteReaction } from '../../hooks';
 import { Message } from '../../types';
 import { EmbeddedMessage } from './embedded-message';
@@ -20,7 +18,7 @@ type MessageItemProps = {
   message: Message;
   participantMessage: boolean;
   currentUser?: User | null;
-  menu?: ReactNode;
+  reactionsEnabled?: boolean;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
@@ -34,7 +32,7 @@ export const MessageItem = ({
   message,
   participantMessage,
   currentUser,
-  menu,
+  reactionsEnabled = true,
   onReply,
   onForward,
   onPin,
@@ -99,21 +97,18 @@ export const MessageItem = ({
             />
             <MessageMeta message={message} participantMessage={participantMessage} />
           </MessageContent>
-          {menu ? (
-            menu
-          ) : (
-            <MessageMenu
-              participantMessage={participantMessage}
-              onReply={onReply}
-              onForward={onForward}
-              onPin={onPin}
-              onCopy={onCopy}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onAddBookmark={onBookmark}
-              onAddReaction={handleAddReaction}
-            />
-          )}
+          <MessageMenu
+            participantMessage={participantMessage}
+            reactionsEnabled={reactionsEnabled}
+            onReply={onReply}
+            onForward={onForward}
+            onPin={onPin}
+            onCopy={onCopy}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onAddBookmark={onBookmark}
+            onAddReaction={handleAddReaction}
+          />
         </div>
       </div>
     </div>

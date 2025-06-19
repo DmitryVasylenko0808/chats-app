@@ -38,8 +38,8 @@ export const MessagesList = ({
             onForward={() => onForwardItem?.(m)}
             onPin={() => onPinItem?.(m)}
             onCopy={() => onCopyItem?.(m)}
-            onEdit={() => onEditItem?.(m)}
-            onDelete={() => onDeleteItem?.(m)}
+            onEdit={m.senderId === currentUser?.id ? () => onEditItem?.(m) : undefined}
+            onDelete={m.senderId === currentUser?.id ? () => onDeleteItem?.(m) : undefined}
             onBookmark={() => onAddBookmarkItem?.(m)}
           />
         </li>

@@ -1,7 +1,6 @@
 import { MessageItem } from '@/features/chats/components';
 
 import { Bookmark } from '../types';
-import { BookmarkMenu } from './bookmark-menu';
 
 type BookmarkItemProps = {
   bookmark: Bookmark;
@@ -21,7 +20,9 @@ export const BookmarkItem = ({
       <MessageItem
         message={bookmark.message}
         participantMessage={!isOwnMessage}
-        menu={<BookmarkMenu isOwnMessage={isOwnMessage} onCopy={onCopy} onDelete={onDelete} />}
+        reactionsEnabled={false}
+        onCopy={onCopy}
+        onDelete={onDelete}
       />
     </li>
   );

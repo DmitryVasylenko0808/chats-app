@@ -14,6 +14,7 @@ import { TiArrowBackOutline, TiArrowForwardOutline } from 'react-icons/ti';
 
 type MessageMenuProps = {
   participantMessage: boolean;
+  reactionsEnabled: boolean;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
@@ -26,6 +27,7 @@ type MessageMenuProps = {
 
 export const MessageMenu = ({
   participantMessage,
+  reactionsEnabled,
   onReply,
   onForward,
   onPin,
@@ -39,9 +41,6 @@ export const MessageMenu = ({
 
   const handleClickReactionPicker = (reaction: string) => onAddReaction?.(reaction);
 
-  const canEdit = !participantMessage && onEdit;
-  const canDelete = !participantMessage && onDelete;
-
   return (
     <div className="relative">
       <Menu
@@ -50,7 +49,11 @@ export const MessageMenu = ({
             <AiOutlineMore size={24} />
           </Button>
         }
-        header={<ReactionPicker onClickReaction={handleClickReactionPicker} className="mb-1" />}
+        header={
+          reactionsEnabled && (
+            <ReactionPicker onClickReaction={handleClickReactionPicker} className="mb-1" />
+          )
+        }
         content={
           <ul>
             {onReply && (
@@ -88,14 +91,14 @@ export const MessageMenu = ({
                 </Button>
               </li>
             )}
-            {canEdit && (
+            {onEdit && (
               <li>
                 <Button variant="menu" onClick={onEdit}>
                   <AiOutlineEdit size={20} /> Edit
                 </Button>
               </li>
             )}
-            {canDelete && (
+            {onDelete && (
               <li>
                 <Button variant="menu-danger" onClick={onDelete}>
                   <AiOutlineDelete size={20} /> Delete
