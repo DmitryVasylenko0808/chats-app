@@ -1,5 +1,5 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
-import { Logo } from '@/shared/components';
+import { Logo, ThemeSwitcher } from '@/shared/components';
 import { Drawer, DrawerProps, Typograpghy } from '@/shared/ui';
 
 import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
@@ -47,6 +47,12 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
           >
             <AiOutlineSetting size={24} /> Settings
           </Link>
+        </li>
+        <li className="mx-6 inline-flex">
+          <span className="bg-secondary-300 dark:bg-dark-100 block h-[1px] w-full" />
+        </li>
+        <li className="inline-flex w-full items-center gap-4 px-6 py-2 text-lg">
+          <ThemeSwitcher />
         </li>
         <li className="mx-6 inline-flex">
           <span className="bg-secondary-300 dark:bg-dark-100 block h-[1px] w-full" />
