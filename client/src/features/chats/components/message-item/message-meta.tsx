@@ -10,7 +10,17 @@ type MessageMetaProps = {
 };
 
 export const MessageMeta = ({ message, participantMessage }: Readonly<MessageMetaProps>) => (
-  <div className="mt-1.5 flex justify-end">
+  <div className="mt-1.5 flex justify-end gap-2">
+    {message.createdAt !== message.updatedAt && (
+      <span
+        className={cn('inline-flex items-center gap-1 text-xs', {
+          'text-meta-100': participantMessage,
+          'text-meta-200': !participantMessage,
+        })}
+      >
+        edited
+      </span>
+    )}
     <span
       className={cn('inline-flex items-center gap-1 text-xs', {
         'text-meta-100': participantMessage,
