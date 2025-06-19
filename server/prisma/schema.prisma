@@ -90,6 +90,5 @@ model Bookmark {
 
   createdAt DateTime @default(now())
 
-  @@unique([userId, messageId])
   @@map("bookmarks")
 }

@@ -1,6 +1,7 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
 
 import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
+import { FiBookmark } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router';
 
 import { Drawer, DrawerProps, Typograpghy } from '../ui';
@@ -29,6 +30,14 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
             className="dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
           >
             <AiOutlineUser size={24} /> My Profile
+          </Link>
+        </li>
+        <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
+          <Link
+            to={`/bookmarks`}
+            className="dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
+          >
+            <FiBookmark size={24} /> Bookmarks
           </Link>
         </li>
         <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">

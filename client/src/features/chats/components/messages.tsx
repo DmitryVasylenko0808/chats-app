@@ -1,3 +1,4 @@
+import { useAddBookmark } from '@/features/bookmarks/hooks/useAddBookmark';
 import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
 
@@ -33,6 +34,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const { mutateAsync: pinMessage } = usePinMessage();
   const { mutateAsync: unpinMessage } = useUnpinMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
+  const { mutateAsync: addBookmark } = useAddBookmark();
   const { handleCopy } = useCopy();
   const { notify } = useAlerts();
   const navigate = useNavigate();
@@ -97,6 +99,14 @@ export const Messages = ({ chatId }: MessagesProps) => {
     );
   };
 
+  const handleClickBookmark = (message: Message) => {
+    addBookmark({ messageId: message.id })
+      .then(() =>
+        notify({ variant: 'success', title: 'Success', text: 'Message is added to bookmarks' })
+      )
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
+  };
+
   const handleClickCopy = (message: Message) => {
     handleCopy(message.text)
       .then(() => notify({ variant: 'success', text: 'Copied!' }))
@@ -131,6 +141,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
           onCopyItem={handleClickCopy}
           onEditItem={handleClickEdit}
           onDeleteItem={handleDeleteMessage}
+          onAddBookmarkItem={handleClickBookmark}
         />
         <div ref={bottomRef} />
       </div>

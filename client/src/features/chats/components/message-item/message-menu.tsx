@@ -9,6 +9,7 @@ import {
   AiOutlineMore,
   AiOutlinePushpin,
 } from 'react-icons/ai';
+import { FiBookmark } from 'react-icons/fi';
 import { TiArrowBackOutline, TiArrowForwardOutline } from 'react-icons/ti';
 
 type MessageMenuProps = {
@@ -19,6 +20,7 @@ type MessageMenuProps = {
   onCopy?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onAddBookmark?: () => void;
   onAddReaction?: (emoji: string) => void;
 };
 
@@ -30,6 +32,7 @@ export const MessageMenu = ({
   onCopy,
   onEdit,
   onDelete,
+  onAddBookmark,
   onAddReaction,
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
@@ -75,6 +78,13 @@ export const MessageMenu = ({
               <li>
                 <Button variant="menu" onClick={onPin}>
                   <AiOutlinePushpin size={20} /> Pin
+                </Button>
+              </li>
+            )}
+            {onAddBookmark && (
+              <li>
+                <Button variant="menu" onClick={onAddBookmark}>
+                  <FiBookmark size={20} /> Bookmark
                 </Button>
               </li>
             )}

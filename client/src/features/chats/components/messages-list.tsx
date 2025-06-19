@@ -11,6 +11,7 @@ type MessagesListProps = {
   onCopyItem?: (message: Message) => void;
   onEditItem?: (message: Message) => void;
   onDeleteItem?: (message: Message) => void;
+  onAddBookmarkItem?: (message: Message) => void;
 };
 
 export const MessagesList = ({
@@ -21,24 +22,27 @@ export const MessagesList = ({
   onCopyItem,
   onEditItem,
   onDeleteItem,
+  onAddBookmarkItem,
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
 
   return (
     <ul className="flex flex-col space-y-4">
       {messages.map((m) => (
-        <MessageItem
-          message={m}
-          participantMessage={m.senderId !== currentUser?.id}
-          currentUser={currentUser}
-          key={m.id}
-          onReply={() => onReplyItem?.(m)}
-          onForward={() => onForwardItem?.(m)}
-          onPin={() => onPinItem?.(m)}
-          onCopy={() => onCopyItem?.(m)}
-          onEdit={() => onEditItem?.(m)}
-          onDelete={() => onDeleteItem?.(m)}
-        />
+        <li className="block" key={m.id}>
+          <MessageItem
+            message={m}
+            participantMessage={m.senderId !== currentUser?.id}
+            currentUser={currentUser}
+            onReply={() => onReplyItem?.(m)}
+            onForward={() => onForwardItem?.(m)}
+            onPin={() => onPinItem?.(m)}
+            onCopy={() => onCopyItem?.(m)}
+            onEdit={() => onEditItem?.(m)}
+            onDelete={() => onDeleteItem?.(m)}
+            onBookmark={() => onAddBookmarkItem?.(m)}
+          />
+        </li>
       ))}
     </ul>
   );

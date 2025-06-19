@@ -1,6 +1,9 @@
+// Fix: Circular dependency from @/features/users/*
 import { User } from '@/features/users/types';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
+
+import { ReactNode } from 'react';
 
 import { useAddReaction, useDeleteReaction } from '../../hooks';
 import { Message } from '../../types';
@@ -17,24 +20,28 @@ type MessageItemProps = {
   message: Message;
   participantMessage: boolean;
   currentUser?: User | null;
+  menu?: ReactNode;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
   onCopy?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onBookmark?: () => void;
 };
 
 export const MessageItem = ({
   message,
   participantMessage,
   currentUser,
+  menu,
   onReply,
   onForward,
   onPin,
   onCopy,
   onEdit,
   onDelete,
+  onBookmark,
 }: Readonly<MessageItemProps>) => {
   const { mutateAsync: addReaction } = useAddReaction();
   const { mutateAsync: deleteReaction } = useDeleteReaction();
@@ -48,7 +55,7 @@ export const MessageItem = ({
   };
 
   return (
-    <li
+    <div
       className={cn('flex', {
         'flex-row': participantMessage,
         'flex-row-reverse': !participantMessage,
@@ -92,18 +99,23 @@ export const MessageItem = ({
             />
             <MessageMeta message={message} participantMessage={participantMessage} />
           </MessageContent>
-          <MessageMenu
-            participantMessage={participantMessage}
-            onReply={onReply}
-            onForward={onForward}
-            onPin={onPin}
-            onCopy={onCopy}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onAddReaction={handleAddReaction}
-          />
+          {menu ? (
+            menu
+          ) : (
+            <MessageMenu
+              participantMessage={participantMessage}
+              onReply={onReply}
+              onForward={onForward}
+              onPin={onPin}
+              onCopy={onCopy}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onAddBookmark={onBookmark}
+              onAddReaction={handleAddReaction}
+            />
+          )}
         </div>
       </div>
-    </li>
+    </div>
   );
 };

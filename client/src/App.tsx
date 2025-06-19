@@ -6,6 +6,7 @@ import { Route, Routes, useLocation } from 'react-router';
 import { AuthChecker, RequireAuth } from './features/auth/components';
 import AuthLayout from './layouts/auth-layout';
 import BaseLayout from './layouts/base-layout';
+import BookmarksPage from './pages/bookmarks-page';
 import ChatPage from './pages/chat-page';
 import HomePage from './pages/home-page';
 import ProfileModal from './pages/modals/profile-modal';
@@ -44,6 +45,7 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="/chats/:id" element={<ChatPage />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
+              <Route path="/bookmarks" element={<BookmarksPage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
