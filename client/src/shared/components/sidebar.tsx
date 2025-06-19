@@ -1,3 +1,4 @@
+// Fix: Circular dependency from @/features/chats/*
 import { RecentChats, StartMessaging } from '@/features/chats/components';
 
 import { SideBarHeader } from './sidebar-header';

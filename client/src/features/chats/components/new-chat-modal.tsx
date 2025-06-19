@@ -1,3 +1,4 @@
+// Fix: Circular dependency from @/features/users/*
 import { UsersList } from '@/features/users/components';
 import { useSearchUsers } from '@/features/users/hooks';
 import { User } from '@/features/users/types';

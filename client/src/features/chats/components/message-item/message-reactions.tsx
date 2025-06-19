@@ -1,3 +1,4 @@
+// Fix: Circular dependency from @/features/users/*
 import { User } from '@/features/users/types';
 import { cn } from '@/utils/cn';
 

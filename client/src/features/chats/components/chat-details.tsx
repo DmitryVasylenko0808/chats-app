@@ -20,6 +20,7 @@ export const ChatDetails = ({ chat, onHideDetails }: ChatDetailsProps) => {
           <AiOutlineClose size={24} />
         </Button>
       </div>
+      {/* Fix: Circular dependency <UserInfo /> */}
       <div className="px-6">{participant && <UserInfo user={participant} />}</div>
     </div>
   );
