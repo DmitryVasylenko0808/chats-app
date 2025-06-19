@@ -1,6 +1,6 @@
+import { Bookmark } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
 
-import { Bookmark } from '../types';
 import { BookmarkItem } from './bookmark-item';
 
 type BookmarksListProps = {

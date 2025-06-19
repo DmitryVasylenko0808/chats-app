@@ -1,5 +1,5 @@
+import { User } from '@/entities';
 import { useSearchUsers } from '@/features/users/hooks';
-import { User } from '@/features/users/types';
 import { UsersList } from '@/shared/components';
 import { useAlerts } from '@/shared/hooks';
 import { Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared/ui';

@@ -1,4 +1,4 @@
-import { Bookmark } from '../types';
+import { Bookmark } from '@/entities';
 
 export type GetBookmarksDto = Bookmark[];
 export type AddBookmarkDto = Bookmark;

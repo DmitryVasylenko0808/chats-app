@@ -1,4 +1,4 @@
-import { User } from '../users/types';
+import { User } from '@/entities';
 
 export type Reaction = {
   id: number;

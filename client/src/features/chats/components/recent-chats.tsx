@@ -1,6 +1,5 @@
+import { User } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
-// Fix: Circular dependency from @/features/users/*
-import { User } from '@/features/users/types';
 import { Loader, Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 

@@ -1,6 +1,5 @@
+import { User } from '@/entities';
 import { Typograpghy } from '@/shared/ui';
-
-import { User } from '../types';
 
 type UserInfoProps = { user: User };
 

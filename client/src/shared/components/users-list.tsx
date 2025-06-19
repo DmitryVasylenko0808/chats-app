@@ -1,4 +1,4 @@
-import { User } from '@/features/users/types';
+import { User } from '@/entities';
 import { Typograpghy } from '@/shared/ui';
 
 type UsersListProps = { users?: User[]; onClickItem: (user: User) => void };

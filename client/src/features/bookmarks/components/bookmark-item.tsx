@@ -1,6 +1,5 @@
+import { Bookmark } from '@/entities';
 import { MessageItem } from '@/features/chats/components';
-
-import { Bookmark } from '../types';
 
 type BookmarkItemProps = {
   bookmark: Bookmark;

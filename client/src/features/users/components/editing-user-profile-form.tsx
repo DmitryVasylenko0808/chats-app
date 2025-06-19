@@ -1,3 +1,4 @@
+import { User } from '@/entities';
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader, TextArea, TextField } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { useEditProfile } from '../hooks';
-import { User } from '../types';
 import { EditingProfileFormFields, editingProfileSchema } from '../validations';
 
 type EditingUserProfileFormProps = { user: User; onSubmit?: () => void };

@@ -1,10 +1,10 @@
+import { Bookmark } from '@/entities';
 import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
 
 import { useEffect, useRef } from 'react';
 
 import { useDeleteBookmark, useGetBookmarks } from '../hooks';
-import { Bookmark } from '../types';
 import { BookmarksHeader } from './bookmarks-header';
 import { BookmarksList } from './bookmarks-list';
 

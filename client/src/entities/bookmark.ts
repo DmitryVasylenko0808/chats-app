@@ -1,6 +1,6 @@
-import { Message } from '../chats/types';
-// Fix: Circular dependency from ../users/*
-import { User } from '../users/types';
+import { User } from '@/entities';
+
+import { Message } from '../features/chats/types';
 
 export type Bookmark = {
   id: number;

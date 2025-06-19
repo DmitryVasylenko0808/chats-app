@@ -1,6 +1,5 @@
+import { User } from '@/entities';
 import { create } from 'zustand';
-
-import { User } from '../users/types';
 
 type AuthState = {
   accessToken: string | null;

@@ -1,6 +1,5 @@
+import { User } from '@/entities';
 import { useCreateChat } from '@/features/chats/hooks';
-// Fix: Circular denpdency User
-import { User } from '@/features/users/types';
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader } from '@/shared/ui';
 

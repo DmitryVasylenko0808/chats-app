@@ -1,5 +1,4 @@
-// Fix: Circular dependency from @/features/users/*
-import { User } from '@/features/users/types';
+import { User } from '@/entities';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
