@@ -67,10 +67,11 @@ const MessageReactionItem = ({
 }: Readonly<MessageReactionItemProps>) => (
   <li
     className={cn('inline-flex cursor-pointer rounded-2xl px-2 py-0.5 text-sm', {
-      'bg-secondary-300 text-black': isOwnMessage,
-      'bg-primary-100 text-secondary-100': !isOwnMessage,
       'bg-primary-200 text-secondary-100': isOwnMessage && isOwnReaction,
+      'bg-secondary-300 dark:bg-dark-200 dark:text-secondary-100 text-black':
+        isOwnMessage && !isOwnReaction,
       'bg-secondary-200 text-black': !isOwnMessage && isOwnReaction,
+      'bg-primary-100 text-secondary-100': !isOwnMessage && !isOwnReaction,
     })}
     onClick={onClick}
   >{`${emoji} ${reactions.length}`}</li>
