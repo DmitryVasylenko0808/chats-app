@@ -1,8 +1,5 @@
-// Fix: Circular dependency from @/features/users/*
-import { User } from '@/entities';
+import { Message, Reaction, User } from '@/entities';
 import { cn } from '@/utils/cn';
-
-import { Message, Reaction } from '../../types';
 
 type MessageReactionsProps = {
   participantMessage: boolean;

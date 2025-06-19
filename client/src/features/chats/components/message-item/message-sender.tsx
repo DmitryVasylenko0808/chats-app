@@ -1,9 +1,8 @@
+import { Message } from '@/entities';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
 import { Link, useLocation } from 'react-router';
-
-import { Message } from '../../types';
 
 type MessageSenderProps = { participantMessage: boolean; sender?: Message['sender'] };
 

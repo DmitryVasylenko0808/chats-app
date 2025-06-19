@@ -1,3 +1,4 @@
+import { Message } from '@/entities';
 import { useAddBookmark } from '@/features/bookmarks/hooks';
 import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
@@ -14,7 +15,6 @@ import {
   useReplyMessage,
   useUnpinMessage,
 } from '../hooks';
-import { Message } from '../types';
 import { EditMessageFormFields, ReplyMessageFormFields } from '../validations';
 import { EditMessageModal } from './edit-message-modal';
 import { ForwardMessageModal } from './forward-message-modal';

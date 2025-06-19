@@ -1,7 +1,7 @@
+import { Message } from '@/entities';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
-import { Message } from '../../types';
 import { MessageImages } from './message-images';
 
 type EmbeddedMessageProps = {

@@ -1,8 +1,7 @@
+import { Message } from '@/entities';
 import { cn } from '@/utils/cn';
 
 import { AiOutlineClockCircle } from 'react-icons/ai';
-
-import { Message } from '../../types';
 
 type MessageMetaProps = {
   message: Message;

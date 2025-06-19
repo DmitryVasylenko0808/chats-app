@@ -1,6 +1,6 @@
+import { Message } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
 
-import { Message } from '../types';
 import { MessageItem } from './message-item';
 
 type MessagesListProps = {

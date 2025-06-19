@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { Chat, User } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
@@ -6,7 +6,6 @@ import { cn } from '@/utils/cn';
 import { NavLink } from 'react-router';
 
 import { useGetChats } from '../hooks';
-import { Chat } from '../types';
 
 export const RecentChats = () => {
   const { currentUser } = useAuth();

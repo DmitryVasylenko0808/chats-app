@@ -1,4 +1,4 @@
-import { Chat, Message } from '../types';
+import { Chat, Message } from '@/entities';
 
 export type GetChatDto = Chat;
 export type GetChatsDto = Chat[];

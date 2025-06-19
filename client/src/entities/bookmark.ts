@@ -1,6 +1,6 @@
 import { User } from '@/entities';
 
-import { Message } from '../features/chats/types';
+import { Message } from './message';
 
 export type Bookmark = {
   id: number;

@@ -1,10 +1,10 @@
+import { Message } from '@/entities';
 import { Button, Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
-import { Message } from '../types';
 import { ReplyMessageFormFields, replyMessageSchema } from '../validations';
 
 type ReplyMessageModalProps = ModalProps & {

@@ -1,4 +1,5 @@
 import { socketUrl } from '@/config/contants';
+import { Chat } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
@@ -6,7 +7,7 @@ import { io, Socket } from 'socket.io-client';
 import { PropsWithChildren, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 
-import { Chat, UpdatedMessages } from '../types';
+import { UpdatedMessages } from '../types';
 
 export const SocketContainer = ({ children }: Readonly<PropsWithChildren>) => {
   const { id } = useParams();

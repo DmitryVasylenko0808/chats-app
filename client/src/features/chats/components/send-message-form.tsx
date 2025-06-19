@@ -1,3 +1,4 @@
+import { Chat } from '@/entities';
 import { useAlerts } from '@/shared/hooks';
 import { Button, FilesUploadButton, Loader, TextArea } from '@/shared/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,7 +8,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
 import { useSendMessage } from '../hooks';
-import { Chat } from '../types';
 import { SendMessageFormFields, sendMessageSchema } from '../validations';
 import { ChatEmojiPicker } from './chat-emoji-picker';
 import { PreviewMessageImages } from './preview-message-images';

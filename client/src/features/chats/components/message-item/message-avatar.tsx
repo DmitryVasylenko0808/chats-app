@@ -1,6 +1,6 @@
-import { Link, useLocation } from 'react-router';
+import { Message } from '@/entities';
 
-import { Message } from '../../types';
+import { Link, useLocation } from 'react-router';
 
 type MessageAvatarProps = { sender: Message['sender'] };
 

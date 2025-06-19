@@ -1,8 +1,7 @@
+import { Message } from '@/entities';
 import { Button, Typograpghy } from '@/shared/ui';
 
 import { AiOutlineClose } from 'react-icons/ai';
-
-import { Message } from '../types';
 
 type PinnedMessageProps = { pinnedMessage?: Message; onUnpin: (message: Message) => void };
 
