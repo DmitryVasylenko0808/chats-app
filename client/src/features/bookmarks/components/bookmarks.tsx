@@ -1,6 +1,8 @@
 import { useAlerts, useCopy } from '@/shared/hooks';
 import { Loader, Typograpghy } from '@/shared/ui';
 
+import { useEffect, useRef } from 'react';
+
 import { useDeleteBookmark, useGetBookmarks } from '../hooks';
 import { Bookmark } from '../types';
 import { BookmarksHeader } from './bookmarks-header';
@@ -11,6 +13,11 @@ export const Bookmarks = () => {
   const { mutateAsync: deleteBookmarkMutate } = useDeleteBookmark();
   const { handleCopy } = useCopy();
   const { notify } = useAlerts();
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   const handleClickDelete = (bookmark: Bookmark) => {
     deleteBookmarkMutate({ id: bookmark.id }).catch((err) =>
@@ -36,11 +43,14 @@ export const Bookmarks = () => {
           <Typograpghy>Error</Typograpghy>
         </div>
       ) : (
-        <BookmarksList
-          bookmarks={data}
-          onCopyItem={handleClickCopy}
-          onDeleteItem={handleClickDelete}
-        />
+        <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto p-6">
+          <BookmarksList
+            bookmarks={data}
+            onCopyItem={handleClickCopy}
+            onDeleteItem={handleClickDelete}
+          />
+          <div ref={bottomRef} />
+        </div>
       )}
     </div>
   );

@@ -17,7 +17,7 @@ export const BookmarksList = ({
   const { currentUser } = useAuth();
 
   return (
-    <ul className="scrollbar-custom h-[calc(100vh-88px)] space-y-4 p-6">
+    <ul className="space-y-4">
       {bookmarks.map((b) => (
         <BookmarkItem
           bookmark={b}
