@@ -1,12 +1,11 @@
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader } from '@/shared/ui';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router';
 
 import { useGetChatById } from '../hooks';
-import { ChatDetails } from './chat-details';
 import { ChatInfo } from './chat-info';
 import { ChatMenu } from './chat-menu';
 import { Messages } from './messages';
@@ -17,11 +16,8 @@ export const Chat = () => {
   const { data, isLoading, error } = useGetChatById(Number(id));
   const { notify } = useAlerts();
   const navigate = useNavigate();
-  const [showDetails, setShowDetails] = useState(false);
 
   const handleClickBack = () => navigate(-1);
-  const handleClickShowDetails = () => setShowDetails(true);
-  const handleClickHideDetails = () => setShowDetails(false);
 
   useEffect(() => {
     if (error) {
@@ -48,7 +44,7 @@ export const Chat = () => {
                 <Button variant="text" onClick={handleClickBack}>
                   <AiOutlineArrowLeft size={24} />
                 </Button>
-                <ChatInfo chat={data} onShowDetails={handleClickShowDetails} />
+                <ChatInfo chat={data} />
               </div>
               <ChatMenu chatId={Number(id)} />
             </div>
@@ -56,7 +52,6 @@ export const Chat = () => {
           <Messages chatId={Number(id)} />
           <SendMessageForm chat={data} />
         </div>
-        {showDetails && <ChatDetails chat={data} onHideDetails={handleClickHideDetails} />}
       </div>
     )
   );
