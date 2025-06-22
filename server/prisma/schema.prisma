@@ -20,10 +20,12 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  chats     Chat[]
-  messages  Message[]
-  reactions Reaction[]
-  bookmarks Bookmark[]
+  chats             Chat[]
+  messages          Message[]
+  reactions         Reaction[]
+  bookmarks         Bookmark[]
+  notifications     Notification[] @relation("UserNotifications")
+  sentNotifications Notification[] @relation("SenderNotifications")
 
   @@map("users")
 }
@@ -91,4 +93,31 @@ model Bookmark {
   createdAt DateTime @default(now())
 
   @@map("bookmarks")
+}
+
+model Notification {
+  id         Int              @id @default(autoincrement())
+  type       NotificationType
+  isRead     Boolean          @default(false)
+  entityId   Int?
+  entityType EntityType?
+  createdAt  DateTime         @default(now())
+
+  userId Int  @map("user_id")
+  user   User @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  senderId Int?  @map("sender_id")
+  sender   User? @relation("SenderNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  NEW_MESSAGE
+  NEW_CHAT
+}
+
+enum EntityType {
+  MESSAGE
+  CHAT
 }
