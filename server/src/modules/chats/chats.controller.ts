@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { ChatsService } from './chats.service';
@@ -27,8 +28,8 @@ export class ChatsController {
   }
 
   @Post()
-  async createChat(@Body() dto: CreateChatDto) {
-    const chat = await this.chatsService.createChat(dto);
+  async createChat(@CurrentUser('id') userId: number, @Body() dto: CreateChatDto) {
+    const chat = await this.chatsService.createChat(userId, dto);
     return new ChatEntity(chat);
   }
 

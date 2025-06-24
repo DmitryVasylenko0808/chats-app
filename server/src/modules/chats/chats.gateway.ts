@@ -64,4 +64,10 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     this.socket.to(chatId.toString()).emit('messages:update', data);
   }
+
+  isUserInChat(userId: number, chatId: number) {
+    const client = this.userSocketsMap.get(userId.toString());
+
+    return client ? client.rooms.has(chatId.toString()) : false;
+  }
 }

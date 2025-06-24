@@ -98,9 +98,10 @@ model Bookmark {
 model Notification {
   id         Int              @id @default(autoincrement())
   type       NotificationType
-  isRead     Boolean          @default(false)
+  isRead     Boolean          @default(false) @map("is_read")
   entityId   Int?
   entityType EntityType?
+  data       Json?
   createdAt  DateTime         @default(now())
 
   userId Int  @map("user_id")

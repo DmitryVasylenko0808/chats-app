@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
+import { NotificationsService } from '../notifications/notifications.service';
 import { ChatsGateway } from './chats.gateway';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { ChatPreview } from './types/chat-preview';
@@ -12,6 +13,7 @@ import { RefreshChatMember, RefreshMembersChatParams } from './types/refresh-mem
 export class ChatsService {
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly notificationsService: NotificationsService,
     private readonly chatsGateway: ChatsGateway
   ) {}
 
@@ -47,7 +49,7 @@ export class ChatsService {
     return chat;
   }
 
-  async createChat(dto: CreateChatDto) {
+  async createChat(creatorId: number, dto: CreateChatDto) {
     if (dto.membersIds.length !== 2) {
       throw new BadRequestException('Chat must contain only 2 members');
     }
@@ -69,6 +71,10 @@ export class ChatsService {
 
     await this.refreshMembersChats({ chatId: createdChat.id });
 
+    const creator = createdChat.members.find((m) => m.id === creatorId);
+    const participants = createdChat.members.filter((m) => m.id !== creatorId);
+    await this.notificationsService.notifyNewChat(participants, creator, createdChat);
+
     return createdChat;
   }
 
@@ -85,23 +91,10 @@ export class ChatsService {
     return deletedChat;
   }
 
-  async refreshMembersChats(params: RefreshMembersChatParams) {
-    let members: RefreshChatMember[];
+  async findAbsentChatMembers(chatId: number) {
+    const chat = await this.findOneChatOrThrow(chatId);
 
-    if ('chatId' in params) {
-      const chat = await this.findOneChatOrThrow(params.chatId);
-      members = chat.members;
-    } else {
-      members = params.members;
-    }
-
-    const membersIds = members.map((m) => m.id);
-
-    const chats = await this.findChatsByMembers(membersIds);
-    const sortedChats = this.sortChatsByLastMessage(chats);
-    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
-
-    this.chatsGateway.emitUpdateChats(chatsByMemberId);
+    return chat.members.filter((m) => !this.chatsGateway.isUserInChat(m.id, chatId));
   }
 
   private async findChatsByMembers(membersIds: number[]) {
@@ -157,5 +150,24 @@ export class ChatsService {
 
       return { ...acc, [currId]: memberChats };
     }, {});
+  }
+
+  async refreshMembersChats(params: RefreshMembersChatParams) {
+    let members: RefreshChatMember[];
+
+    if ('chatId' in params) {
+      const chat = await this.findOneChatOrThrow(params.chatId);
+      members = chat.members;
+    } else {
+      members = params.members;
+    }
+
+    const membersIds = members.map((m) => m.id);
+
+    const chats = await this.findChatsByMembers(membersIds);
+    const sortedChats = this.sortChatsByLastMessage(chats);
+    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
+
+    this.chatsGateway.emitUpdateChats(chatsByMemberId);
   }
 }

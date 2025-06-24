@@ -4,6 +4,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from '../chats/chats.gateway';
 import { ChatsService } from '../chats/chats.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { EditMessageDto } from './dto/edit-message.dto';
 import { ForwardMessageDto } from './dto/forward-message.dto';
 import { ReplyMessageParams } from './types/reply-message-params';
@@ -14,6 +15,7 @@ export class MessagesService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly chatsService: ChatsService,
+    private readonly notificationService: NotificationsService,
     private readonly chatsGateway: ChatsGateway
   ) {}
 
@@ -43,6 +45,9 @@ export class MessagesService {
 
     await this.refreshChatMessages(message.chatId);
     await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+
+    const absentChatMembers = await this.chatsService.findAbsentChatMembers(chatId);
+    await this.notificationService.notifyNewMessage(absentChatMembers, message);
 
     return message;
   }
@@ -86,6 +91,9 @@ export class MessagesService {
     await this.refreshChatMessages(message.chatId);
     await this.chatsService.refreshMembersChats({ chatId: message.chatId });
 
+    const absentChatMembers = await this.chatsService.findAbsentChatMembers(chatId);
+    await this.notificationService.notifyNewMessage(absentChatMembers, message);
+
     return message;
   }
 
@@ -104,6 +112,9 @@ export class MessagesService {
 
     await this.refreshChatMessages(message.chatId);
     await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+
+    const absentChatMembers = await this.chatsService.findAbsentChatMembers(message.chatId);
+    await this.notificationService.notifyNewMessage(absentChatMembers, message);
 
     return message;
   }

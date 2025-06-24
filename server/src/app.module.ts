@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { BookmarksModule } from './modules/bookmarks/bookmarks.module';
 import { ChatsModule } from './modules/chats/chats.module';
 import { MessagesModule } from './modules/messages/messages.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { ReactionsModule } from './modules/reactions/reactions.module';
 import { UsersModule } from './modules/users/users.module';
@@ -21,6 +22,7 @@ import { UsersModule } from './modules/users/users.module';
     MessagesModule,
     ReactionsModule,
     BookmarksModule,
+    NotificationsModule,
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: LoggingInterceptor }],
 })
