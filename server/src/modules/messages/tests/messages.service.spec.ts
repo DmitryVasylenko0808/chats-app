@@ -10,6 +10,7 @@ import { createMockUser } from '@/common/test-utils/factories/user.factory';
 import { ChatsGateway } from '@/modules/chats/chats.gateway';
 import { ChatsService } from '@/modules/chats/chats.service';
 import { ReplyMessageParams } from '@/modules/messages/types/reply-message-params';
+import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { MessagesService } from '../../messages/messages.service';
@@ -21,6 +22,7 @@ describe('MessagesService', () => {
   let messagesService: MessagesService;
   let prismaService: DeepMockProxy<PrismaService>;
   let chatsService: DeepMockProxy<ChatsService>;
+  let notificationsService: DeepMockProxy<NotificationsService>;
   let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
@@ -29,6 +31,7 @@ describe('MessagesService', () => {
         MessagesService,
         { provide: PrismaService, useValue: mockDeep<PrismaService>() },
         { provide: ChatsService, useValue: mockDeep<ChatsService>() },
+        { provide: NotificationsService, useValue: mockDeep<NotificationsService>() },
         { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
       ],
     }).compile();
@@ -36,6 +39,7 @@ describe('MessagesService', () => {
     messagesService = module.get<MessagesService>(MessagesService);
     prismaService = module.get(PrismaService);
     chatsService = module.get(ChatsService);
+    notificationsService = module.get(NotificationsService);
     chatsGateway = module.get(ChatsGateway);
   });
 
@@ -85,12 +89,16 @@ describe('MessagesService', () => {
         .mockResolvedValueOnce(null);
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
       chatsService.refreshMembersChats.mockResolvedValueOnce(null);
+      chatsService.findAbsentChatMembers.mockResolvedValueOnce([]);
+      notificationsService.notifyNewMessage.mockResolvedValueOnce();
 
       const result = await messagesService.sendMessage({ chatId, senderId, dto, imageFiles });
 
       expect(prismaService.message.create).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).toHaveBeenCalled();
       expect(result).toEqual(mockCreatedMessage);
     });
   });
@@ -196,6 +204,8 @@ describe('MessagesService', () => {
       const refreshChatMessagesSpy = jest
         .spyOn(messagesService, 'refreshChatMessages')
         .mockResolvedValueOnce(null);
+      chatsService.findAbsentChatMembers.mockResolvedValueOnce([]);
+      notificationsService.notifyNewMessage.mockResolvedValueOnce();
 
       const result = await messagesService.replyMessage(params);
 
@@ -203,6 +213,8 @@ describe('MessagesService', () => {
       expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalled();
     });
 
@@ -225,6 +237,8 @@ describe('MessagesService', () => {
       expect(prismaService.message.findUnique).toHaveBeenCalled();
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).not.toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
     });
   });
@@ -247,6 +261,8 @@ describe('MessagesService', () => {
       chatsService.findOneChatOrThrow.mockResolvedValueOnce(mockFoundedChat);
       prismaService.message.findUnique.mockResolvedValueOnce(mockFoundedMessage);
       prismaService.message.create.mockResolvedValueOnce(mockCreatedMessage);
+      chatsService.findAbsentChatMembers.mockResolvedValueOnce([]);
+      notificationsService.notifyNewMessage.mockResolvedValueOnce();
 
       const result = await messagesService.forwardMessage(messageId, senderId, forwardMessageDto);
 
@@ -254,6 +270,8 @@ describe('MessagesService', () => {
       expect(chatsService.findOneChatOrThrow).toHaveBeenCalled();
       expect(prismaService.message.create).toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).toHaveBeenCalled();
       expect(refreshChatMessagesSpy).toHaveBeenCalled();
     });
 
@@ -277,6 +295,8 @@ describe('MessagesService', () => {
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).not.toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).not.toHaveBeenCalled();
     });
 
     it('should throw error forward message (Message is not found)', async () => {
@@ -302,6 +322,8 @@ describe('MessagesService', () => {
       expect(prismaService.message.create).not.toHaveBeenCalled();
       expect(refreshChatMessagesSpy).not.toHaveBeenCalled();
       expect(chatsService.refreshMembersChats).not.toHaveBeenCalled();
+      expect(chatsService.findAbsentChatMembers).not.toHaveBeenCalled();
+      expect(notificationsService.notifyNewMessage).not.toHaveBeenCalled();
     });
   });
 
