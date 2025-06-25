@@ -35,15 +35,17 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     }
   }
 
-  notify(notifications: Notification[]) {
-    notifications.forEach((n) => {
-      const client = this.userSocketsMap.get(n.userId.toString());
+  sendNotification(notification: Notification) {
+    const client = this.userSocketsMap.get(notification.userId.toString());
 
-      if (client) {
-        this.socket
-          .to(client.id)
-          .emit('notification:get', instanceToPlain(new NotificationEntity(n)));
-      }
-    });
+    if (client) {
+      this.socket
+        .to(client.id)
+        .emit('notification:get', instanceToPlain(new NotificationEntity(notification)));
+    }
+  }
+
+  sendNotifications(notifications: Notification[]) {
+    notifications.forEach((n) => this.sendNotification(n));
   }
 }

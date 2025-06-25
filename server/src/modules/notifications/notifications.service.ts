@@ -54,7 +54,7 @@ export class NotificationsService {
       },
     });
 
-    this.notificationGateway.notify(notifications);
+    this.notificationGateway.sendNotifications(notifications);
   }
 
   async notifyNewMessage(users: User[], message: Message) {
@@ -72,7 +72,7 @@ export class NotificationsService {
       },
     });
 
-    this.notificationGateway.notify(notifications);
+    this.notificationGateway.sendNotifications(notifications);
   }
 
   async markAsReadNotification(id: number) {
