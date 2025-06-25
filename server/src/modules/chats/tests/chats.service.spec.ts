@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { createMockChat } from '@/common/test-utils/factories/chat.factory';
 
+import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from '../chats.gateway';
@@ -14,6 +15,7 @@ import { CreateChatDto } from '../dto/create-chat.dto';
 describe('ChatsService', () => {
   let chatsService: ChatsService;
   let prismaService: DeepMockProxy<PrismaService>;
+  let notificationsService: DeepMockProxy<NotificationsService>;
   let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
@@ -21,12 +23,14 @@ describe('ChatsService', () => {
       providers: [
         ChatsService,
         { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: NotificationsService, useValue: mockDeep<NotificationsService>() },
         { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
       ],
     }).compile();
 
     chatsService = module.get<ChatsService>(ChatsService);
     prismaService = module.get(PrismaService);
+    notificationsService = module.get(NotificationsService);
     chatsGateway = module.get(ChatsGateway);
   });
 
@@ -94,8 +98,10 @@ describe('ChatsService', () => {
   });
 
   describe('createChat', () => {
+    const userId = 1;
+
     it('should create chat', async () => {
-      const dto: CreateChatDto = { membersIds: [1, 2] };
+      const dto: CreateChatDto = { membersIds: [userId, 2] };
       const mockCreatedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockCreatedChat;
       const refreshMembersChatsSpy = jest
@@ -104,33 +110,36 @@ describe('ChatsService', () => {
 
       prismaService.chat.findFirst.mockResolvedValueOnce(null);
       prismaService.chat.create.mockResolvedValueOnce(mockCreatedChat);
+      notificationsService.notifyNewChat.mockResolvedValueOnce();
 
-      const result = await chatsService.createChat(dto);
+      const result = await chatsService.createChat(userId, dto);
 
       expect(prismaService.chat.findFirst).toHaveBeenCalled();
       expect(prismaService.chat.create).toHaveBeenCalled();
       expect(refreshMembersChatsSpy).toHaveBeenCalled();
+      expect(notificationsService.notifyNewChat).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
     it('should return existed chat', async () => {
-      const dto: CreateChatDto = { membersIds: [1, 2] };
+      const dto: CreateChatDto = { membersIds: [userId, 2] };
       const mockExistedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockExistedChat;
 
       prismaService.chat.findFirst.mockResolvedValueOnce(mockExistedChat);
 
-      const result = await chatsService.createChat(dto);
+      const result = await chatsService.createChat(userId, dto);
 
       expect(prismaService.chat.findFirst).toHaveBeenCalled();
       expect(prismaService.chat.create).not.toHaveBeenCalled();
+      expect(notificationsService.notifyNewChat).not.toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
     it('should throw error create chat (members length !== 2)', async () => {
-      const dto: CreateChatDto = { membersIds: [1] };
+      const dto: CreateChatDto = { membersIds: [userId] };
 
-      const createChat = chatsService.createChat(dto);
+      const createChat = chatsService.createChat(userId, dto);
 
       expect(createChat).rejects.toThrow(BadRequestException);
     });
