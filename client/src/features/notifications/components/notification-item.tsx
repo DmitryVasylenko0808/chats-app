@@ -30,6 +30,11 @@ export const NotificationItem = ({
     onClick?.(notification, path);
   };
 
+  const handleClickDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDelete?.();
+  };
+
   return (
     <li
       className={cn('hover:bg-secondary-200 block cursor-pointer px-6 py-4 duration-100', {
@@ -52,7 +57,7 @@ export const NotificationItem = ({
           </div>
           <Typograpghy>{typeContent[notification.type]}</Typograpghy>
         </div>
-        <Button variant="text" onClick={onDelete}>
+        <Button variant="text" onClick={handleClickDelete}>
           <AiOutlineClose size={18} />
         </Button>
       </div>

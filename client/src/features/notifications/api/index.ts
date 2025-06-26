@@ -35,3 +35,9 @@ export const markAsReadNotification = async (id?: number) => {
 
   return response.data;
 };
+
+export const deleteNotificationById = async (id?: number) => {
+  const response = await axiosInstance.delete(`${apiUrl}/notifications/${id}`);
+
+  return response.data;
+};
