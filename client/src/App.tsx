@@ -11,6 +11,7 @@ import ChatPage from './pages/chat-page';
 import HomePage from './pages/home-page';
 import ProfileModal from './pages/modals/profile-modal';
 import SettingsModal from './pages/modals/settings-modal';
+import NotificationsPage from './pages/notifications-page';
 import ProfilePage from './pages/profile-page';
 import RegisterPage from './pages/register-page';
 import SettingsPage from './pages/settings-page';
@@ -47,6 +48,7 @@ function App() {
               <Route path="/profile/:id" element={<ProfilePage />} />
               <Route path="/bookmarks" element={<BookmarksPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
             </Route>
           </Route>
           <Route path="auth" element={<AuthLayout />}>

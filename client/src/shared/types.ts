@@ -5,3 +5,10 @@ export type Alert = {
   variant: AlertVariant;
   title?: string;
 };
+
+export type PaginatinedDto<T> = {
+  data: T[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+};
