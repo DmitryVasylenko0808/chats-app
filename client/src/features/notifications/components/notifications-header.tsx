@@ -1,10 +1,16 @@
-import { Button, Typograpghy } from '@/shared/ui';
+import { useToogleMenu } from '@/shared/hooks';
+import { Button, Menu, Typograpghy } from '@/shared/ui';
 
-import { AiOutlineArrowLeft, AiOutlineBell } from 'react-icons/ai';
+import { AiOutlineArrowLeft, AiOutlineBell, AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
-export const NotificationsHeader = () => {
+type NotificationsHeaderProps = {
+  onDeleteAll: () => void;
+};
+
+export const NotificationsHeader = ({ onDeleteAll }: Readonly<NotificationsHeaderProps>) => {
   const navigate = useNavigate();
+  const { open, ref, handleToggle } = useToogleMenu();
 
   const handleClickBack = () => navigate(-1);
 
@@ -20,6 +26,22 @@ export const NotificationsHeader = () => {
             <Typograpghy tagVariant="h3">Notifications</Typograpghy>
           </div>
         </div>
+        <Menu
+          trigger={
+            <Button variant="text" onClick={handleToggle}>
+              <AiOutlineMore size={24} />
+            </Button>
+          }
+          content={
+            <>
+              <Button variant="menu-danger" onClick={onDeleteAll}>
+                <AiOutlineDelete size={18} /> Delete All
+              </Button>
+            </>
+          }
+          open={open}
+          ref={ref}
+        />
       </div>
     </div>
   );
