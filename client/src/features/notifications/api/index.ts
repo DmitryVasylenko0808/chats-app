@@ -29,3 +29,9 @@ export const getNotifications = async (params: GetNotificationsParams) => {
 
   return response.data;
 };
+
+export const markAsReadNotification = async (id?: number) => {
+  const response = await axiosInstance.patch(`${apiUrl}/notifications/${id}`);
+
+  return response.data;
+};

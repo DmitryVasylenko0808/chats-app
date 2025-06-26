@@ -2,7 +2,7 @@ import { useAuth, useLogOutUser } from '@/features/auth/hooks';
 import { Logo, ThemeSwitcher } from '@/shared/components';
 import { Drawer, DrawerProps, Typograpghy } from '@/shared/ui';
 
-import { AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineBell, AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import { FiBookmark } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router';
 
@@ -29,6 +29,20 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
             className="dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
           >
             <AiOutlineUser size={24} /> My Profile
+          </Link>
+        </li>
+        <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
+          <Link
+            to={`/notifications`}
+            className="dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
+          >
+            <span className="relative inline-flex items-center">
+              <AiOutlineBell size={24} />
+              {/* <span className="bg-primary-200 text-secondary-100 absolute top-0 right-0 inline-flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs">
+                1
+              </span> */}
+            </span>
+            <span>Notifications</span>
           </Link>
         </li>
         <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">

@@ -1,6 +1,8 @@
+import { Notification } from '@/entities';
+
 import { useNavigate } from 'react-router';
 
-import { useGetNotifications } from '../hooks';
+import { useGetNotifications, useMarkNotification } from '../hooks';
 import { NotificationsHeader } from './notifications-header';
 import { NotificationsList } from './notifications-list';
 
@@ -10,11 +12,13 @@ export const Notifications = () => {
     limit: 10,
     sortDate: 'desc',
   });
+  const { mutateAsync } = useMarkNotification();
   const navigate = useNavigate();
 
-  const handleClickNotification = (entityPath?: string) => {
+  const handleClickNotification = (notification: Notification, entityPath?: string) => {
     if (entityPath) {
       navigate(entityPath);
+      mutateAsync(notification.id);
     }
   };
 

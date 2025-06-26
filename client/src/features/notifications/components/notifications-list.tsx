@@ -4,7 +4,7 @@ import { NotificationItem } from './notification-item';
 
 type NotificationsListProps = {
   notifications?: Notification[];
-  onClickItem?: (entityPath?: string) => void;
+  onClickItem?: (notification: Notification, entityPath?: string) => void;
   onDeleteItem?: (notification: Notification) => void;
 };
 export const NotificationsList = ({

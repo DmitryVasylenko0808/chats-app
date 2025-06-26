@@ -6,7 +6,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 
 type NotificationItemProps = {
   notification: Notification;
-  onClick?: (entityPath?: string) => void;
+  onClick?: (notification: Notification, entityPath?: string) => void;
   onDelete?: () => void;
 };
 
@@ -24,12 +24,18 @@ export const NotificationItem = ({
     MESSAGE: `/chats/${notification.data?.chatId}`,
   };
 
+  const handleClick = () => {
+    const path = notification.entityType ? entityPath[notification.entityType] : undefined;
+
+    onClick?.(notification, path);
+  };
+
   return (
     <li
       className={cn('hover:bg-secondary-200 block cursor-pointer px-6 py-4 duration-100', {
         'opacity-30': notification.isRead,
       })}
-      onClick={() => onClick?.(notification.entityType && entityPath[notification.entityType])}
+      onClick={handleClick}
     >
       <div className="flex items-start gap-4">
         <img
