@@ -1,5 +1,5 @@
-import { EntityType, Notification } from '@/entities';
-import { Option, Selector, TabItem, Tabs, Typograpghy } from '@/shared/ui';
+import { Notification } from '@/entities';
+import { Option, TabItem, Tabs } from '@/shared/ui';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -10,24 +10,23 @@ import {
   useGetNotifications,
   useMarkNotification,
 } from '../hooks';
+import { NotificationTabValue, ReadOptionValue, SortDateOptionValue } from '../types';
+import { NotificationsFilters } from './notifications-filters';
 import { NotificationsHeader } from './notifications-header';
 import { NotificationsList } from './notifications-list';
 
-type NotificationTabValue = EntityType | undefined;
 const tabs: TabItem<NotificationTabValue>[] = [
   { value: undefined, title: 'All' },
   { value: 'CHAT', title: 'Chats' },
   { value: 'MESSAGE', title: 'Messages' },
 ];
 
-type ReadOptionValue = -1 | 0 | 1;
 const readOptions: Option<ReadOptionValue>[] = [
   { value: -1, label: 'All' },
   { value: 0, label: 'Unread' },
   { value: 1, label: 'Read' },
 ];
 
-type SortDateOptionValue = 'asc' | 'desc';
 const sortOptins: Option<SortDateOptionValue>[] = [
   { value: 'asc', label: 'Oldest' },
   { value: 'desc', label: 'Newest' },
@@ -73,24 +72,14 @@ export const Notifications = () => {
   return (
     <div>
       <NotificationsHeader onDeleteAll={handleDeleteAllNotifications} />
-      <div className="my-2 flex justify-end gap-4 px-4">
-        <div className="inline-flex items-center gap-2">
-          <Typograpghy>Filter:</Typograpghy>
-          <Selector
-            options={readOptions}
-            value={activeReadOption}
-            onChange={handleChangeReadOption}
-          />
-        </div>
-        <div className="inline-flex items-center gap-2">
-          <Typograpghy>Sort:</Typograpghy>
-          <Selector
-            options={sortOptins}
-            value={activeSortOption}
-            onChange={handleChangeSortOption}
-          />
-        </div>
-      </div>
+      <NotificationsFilters
+        readOptions={readOptions}
+        activeReadOption={activeReadOption}
+        sortOptions={sortOptins}
+        activeSortOption={activeSortOption}
+        onChangeReadOption={handleChangeReadOption}
+        onChangeSortOption={handleChangeSortOption}
+      />
       <Tabs tabs={tabs} activeValue={activeEntityType} onClickTab={handleClickTab} />
       <div className="scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto">
         <NotificationsList
