@@ -27,7 +27,7 @@ const readOptions: Option<ReadOptionValue>[] = [
   { value: 1, label: 'Read' },
 ];
 
-const sortOptins: Option<SortDateOptionValue>[] = [
+const sortOptions: Option<SortDateOptionValue>[] = [
   { value: 'asc', label: 'Oldest' },
   { value: 'desc', label: 'Newest' },
 ];
@@ -72,7 +72,7 @@ export const Notifications = () => {
       <NotificationsFilters
         readOptions={readOptions}
         activeReadOption={readOption}
-        sortOptions={sortOptins}
+        sortOptions={sortOptions}
         activeSortOption={sortOption}
         onChangeReadOption={handleChangeReadOption}
         onChangeSortOption={handleChangeSortOption}
