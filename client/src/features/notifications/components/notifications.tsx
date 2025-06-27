@@ -1,7 +1,6 @@
 import { Notification } from '@/entities';
 import { Option, TabItem, Tabs } from '@/shared/ui';
 
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import {
@@ -9,6 +8,7 @@ import {
   useDeleteNotificationById,
   useGetNotifications,
   useMarkNotification,
+  useNotificationsFilter,
 } from '../hooks';
 import { NotificationTabValue, ReadOptionValue, SortDateOptionValue } from '../types';
 import { NotificationsFilters } from './notifications-filters';
@@ -33,20 +33,25 @@ const sortOptins: Option<SortDateOptionValue>[] = [
 ];
 
 export const Notifications = () => {
-  const [activeEntityType, setActiveEntityType] = useState<NotificationTabValue>();
-  const [activeReadOption, setActiveReadOption] = useState<number>(-1);
-  const [activeSortOption, setActiveSortOption] = useState<SortDateOptionValue>('desc');
+  const { entityType, readOption, sortOption, setEntityType, setReadOption, setSortOption } =
+    useNotificationsFilter();
   const { data: notifications } = useGetNotifications({
     page: 1,
     limit: 10,
-    sortDate: activeSortOption,
-    isRead: activeReadOption === -1 ? undefined : !!activeReadOption,
-    entityType: activeEntityType,
+    sortDate: sortOption,
+    isRead: readOption === -1 ? undefined : !!readOption,
+    entityType,
   });
   const { mutateAsync: markNotification } = useMarkNotification();
   const { mutateAsync: deleteNotifications } = useDeleteAllNotifications();
   const { mutateAsync: deleteNotification } = useDeleteNotificationById();
   const navigate = useNavigate();
+
+  const handleClickTab = (entityType: NotificationTabValue) => setEntityType(entityType);
+  const handleChangeReadOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setReadOption(Number(e.target.value) as ReadOptionValue);
+  const handleChangeSortOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setSortOption(e.target.value as SortDateOptionValue);
 
   const handleClickNotification = (notification: Notification, entityPath?: string) => {
     if (entityPath) {
@@ -54,33 +59,25 @@ export const Notifications = () => {
       markNotification(notification.id);
     }
   };
-
   const handleDeleteAllNotifications = () => {
     deleteNotifications();
   };
-
   const handleDeleteNotification = (notification: Notification) => {
     deleteNotification(notification.id);
   };
-
-  const handleClickTab = (entityType: NotificationTabValue) => setActiveEntityType(entityType);
-  const handleChangeReadOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setActiveReadOption(Number(e.target.value));
-  const handleChangeSortOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setActiveSortOption(e.target.value as SortDateOptionValue);
 
   return (
     <div>
       <NotificationsHeader onDeleteAll={handleDeleteAllNotifications} />
       <NotificationsFilters
         readOptions={readOptions}
-        activeReadOption={activeReadOption}
+        activeReadOption={readOption}
         sortOptions={sortOptins}
-        activeSortOption={activeSortOption}
+        activeSortOption={sortOption}
         onChangeReadOption={handleChangeReadOption}
         onChangeSortOption={handleChangeSortOption}
       />
-      <Tabs tabs={tabs} activeValue={activeEntityType} onClickTab={handleClickTab} />
+      <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
       <div className="scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto">
         <NotificationsList
           notifications={notifications?.data}
