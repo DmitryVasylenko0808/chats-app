@@ -7,3 +7,4 @@ export * from './use-preview-images';
 export * from './use-alerts';
 export * from './use-drawer';
 export * from './use-theme';
+export * from './use-pagination';

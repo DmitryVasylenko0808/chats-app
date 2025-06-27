@@ -1,5 +1,7 @@
 import { Notification } from '@/entities';
-import { Option, TabItem, Tabs } from '@/shared/ui';
+import { usePagination } from '@/shared/hooks';
+import { Option, Pagination, TabItem, Tabs } from '@/shared/ui';
+import { cn } from '@/utils/cn';
 
 import { useNavigate } from 'react-router';
 
@@ -20,13 +22,11 @@ const tabs: TabItem<NotificationTabValue>[] = [
   { value: 'CHAT', title: 'Chats' },
   { value: 'MESSAGE', title: 'Messages' },
 ];
-
 const readOptions: Option<ReadOptionValue>[] = [
   { value: -1, label: 'All' },
   { value: 0, label: 'Unread' },
   { value: 1, label: 'Read' },
 ];
-
 const sortOptions: Option<SortDateOptionValue>[] = [
   { value: 'asc', label: 'Oldest' },
   { value: 'desc', label: 'Newest' },
@@ -35,12 +35,13 @@ const sortOptions: Option<SortDateOptionValue>[] = [
 export const Notifications = () => {
   const { entityType, readOption, sortOption, setEntityType, setReadOption, setSortOption } =
     useNotificationsFilter();
+  const { page, limit, onPageChange } = usePagination([entityType, readOption, sortOption]);
   const { data: notifications } = useGetNotifications({
-    page: 1,
-    limit: 10,
     sortDate: sortOption,
     isRead: readOption === -1 ? undefined : !!readOption,
     entityType,
+    page,
+    limit,
   });
   const { mutateAsync: markNotification } = useMarkNotification();
   const { mutateAsync: deleteNotifications } = useDeleteAllNotifications();
@@ -78,13 +79,24 @@ export const Notifications = () => {
         onChangeSortOption={handleChangeSortOption}
       />
       <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
-      <div className="scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto">
+      <div
+        className={cn('scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto', {
+          'h-[calc(100vh-88px-40px-54px-72px)]':
+            notifications?.totalPages || notifications?.totalPages === 1,
+        })}
+      >
         <NotificationsList
           notifications={notifications?.data}
           onClickItem={handleClickNotification}
           onDeleteItem={handleDeleteNotification}
         />
       </div>
+      <Pagination
+        totalPages={notifications?.totalPages}
+        currentPage={notifications?.currentPage}
+        className="flex px-6 py-4"
+        onPageChange={onPageChange}
+      />
     </div>
   );
 };

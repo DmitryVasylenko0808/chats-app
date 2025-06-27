@@ -13,3 +13,4 @@ export * from './typography';
 export * from './switcher';
 export * from './tabs';
 export * from './selector';
+export * from './pagination';
