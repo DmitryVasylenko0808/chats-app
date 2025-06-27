@@ -12,3 +12,4 @@ export * from './drawer';
 export * from './typography';
 export * from './switcher';
 export * from './tabs';
+export * from './selector';
