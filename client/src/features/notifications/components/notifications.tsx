@@ -35,7 +35,11 @@ const sortOptions: Option<SortDateOptionValue>[] = [
 export const Notifications = () => {
   const { entityType, readOption, sortOption, setEntityType, setReadOption, setSortOption } =
     useNotificationsFilter();
-  const { page, limit, onPageChange } = usePagination([entityType, readOption, sortOption]);
+  const {
+    page,
+    limit = 1,
+    onPageChange,
+  } = usePagination(1, 1, [entityType, readOption, sortOption]);
   const { data: notifications } = useGetNotifications({
     sortDate: sortOption,
     isRead: readOption === -1 ? undefined : !!readOption,
@@ -79,18 +83,14 @@ export const Notifications = () => {
         onChangeSortOption={handleChangeSortOption}
       />
       <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
-      <div
+      <NotificationsList
+        notifications={notifications?.data}
+        onClickItem={handleClickNotification}
+        onDeleteItem={handleDeleteNotification}
         className={cn('scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto', {
-          'h-[calc(100vh-88px-40px-54px-72px)]':
-            notifications?.totalPages || notifications?.totalPages === 1,
+          'h-[calc(100vh-88px-40px-54px-72px)]': notifications?.totalPages !== 1,
         })}
-      >
-        <NotificationsList
-          notifications={notifications?.data}
-          onClickItem={handleClickNotification}
-          onDeleteItem={handleDeleteNotification}
-        />
-      </div>
+      />
       <Pagination
         totalPages={notifications?.totalPages}
         currentPage={notifications?.currentPage}

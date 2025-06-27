@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 
-export const usePagination = (resetPageDependecies: any[] = []) => {
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(1);
+export const usePagination = (
+  initialPage: number = 1,
+  initialLimit: number = 10,
+  resetPageDependecies: unknown[] = []
+) => {
+  const [page, setPage] = useState<number>(initialPage);
+  const [limit, setLimit] = useState<number>(initialLimit);
 
   useEffect(() => {
-    setPage(1);
+    setPage(initialPage);
   }, [limit, ...resetPageDependecies]);
 
   const onPageChange = (page: number) => setPage(page);
