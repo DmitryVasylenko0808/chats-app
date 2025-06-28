@@ -39,7 +39,7 @@ export const Notifications = () => {
     page,
     limit = 1,
     onPageChange,
-  } = usePagination(1, 1, [entityType, readOption, sortOption]);
+  } = usePagination(1, 9, [entityType, readOption, sortOption]);
   const { data: notifications } = useGetNotifications({
     sortDate: sortOption,
     isRead: readOption === -1 ? undefined : !!readOption,
