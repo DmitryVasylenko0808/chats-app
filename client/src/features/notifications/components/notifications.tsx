@@ -31,15 +31,17 @@ const sortOptions: Option<SortDateOptionValue>[] = [
   { value: 'asc', label: 'Oldest' },
   { value: 'desc', label: 'Newest' },
 ];
+const initialPage = 1;
+const initialLimit = 9;
 
 export const Notifications = () => {
   const { entityType, readOption, sortOption, setEntityType, setReadOption, setSortOption } =
     useNotificationsFilter();
-  const {
-    page,
-    limit = 1,
-    onPageChange,
-  } = usePagination(1, 9, [entityType, readOption, sortOption]);
+  const { page, limit, onPageChange } = usePagination(initialPage, initialLimit, [
+    entityType,
+    readOption,
+    sortOption,
+  ]);
   const {
     data: notifications,
     isFetching,
