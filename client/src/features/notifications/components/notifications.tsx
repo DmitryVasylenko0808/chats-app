@@ -1,6 +1,6 @@
 import { Notification } from '@/entities';
 import { usePagination } from '@/shared/hooks';
-import { Option, Pagination, TabItem, Tabs } from '@/shared/ui';
+import { Loader, Option, Pagination, TabItem, Tabs, Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
 import { useNavigate } from 'react-router';
@@ -40,7 +40,12 @@ export const Notifications = () => {
     limit = 1,
     onPageChange,
   } = usePagination(1, 9, [entityType, readOption, sortOption]);
-  const { data: notifications } = useGetNotifications({
+  const {
+    data: notifications,
+    isFetching,
+    isPending,
+    error,
+  } = useGetNotifications({
     sortDate: sortOption,
     isRead: readOption === -1 ? undefined : !!readOption,
     entityType,
@@ -83,14 +88,28 @@ export const Notifications = () => {
         onChangeSortOption={handleChangeSortOption}
       />
       <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
-      <NotificationsList
-        notifications={notifications?.data}
-        onClickItem={handleClickNotification}
-        onDeleteItem={handleDeleteNotification}
+      <div
         className={cn('scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto', {
           'h-[calc(100vh-88px-40px-54px-72px)]': notifications?.totalPages !== 1,
+          'opacity-50': isFetching && !isPending,
         })}
-      />
+      >
+        {isPending ? (
+          <div className="flex h-full items-center justify-center">
+            <Loader size="lg" variant="primary" />
+          </div>
+        ) : error ? (
+          <div className="flex h-full items-center justify-center">
+            <Typograpghy>Error</Typograpghy>
+          </div>
+        ) : (
+          <NotificationsList
+            notifications={notifications?.data}
+            onClickItem={handleClickNotification}
+            onDeleteItem={handleDeleteNotification}
+          />
+        )}
+      </div>
       <Pagination
         totalPages={notifications?.totalPages}
         currentPage={notifications?.currentPage}
