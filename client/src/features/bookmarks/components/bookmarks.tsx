@@ -42,6 +42,10 @@ export const Bookmarks = () => {
         <div className="flex h-full items-center justify-center">
           <Typograpghy>Error</Typograpghy>
         </div>
+      ) : !data?.length ? (
+        <div className="flex h-full items-center justify-center">
+          <Typograpghy>No bookmarks</Typograpghy>
+        </div>
       ) : (
         <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto p-6">
           <BookmarksList

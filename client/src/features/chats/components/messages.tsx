@@ -129,6 +129,14 @@ export const Messages = ({ chatId }: MessagesProps) => {
     );
   }
 
+  if (!data?.length) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Typograpghy>No messages</Typograpghy>
+      </div>
+    );
+  }
+
   return (
     <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto">
       <PinnedMessage pinnedMessage={data?.find((m) => m.isPinned)} onUnpin={handleUnpinMessage} />

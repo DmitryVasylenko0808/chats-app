@@ -104,6 +104,10 @@ export const Notifications = () => {
           <div className="flex h-full items-center justify-center">
             <Typograpghy>Error</Typograpghy>
           </div>
+        ) : !notifications?.data?.length ? (
+          <div className="flex h-full items-center justify-center">
+            <Typograpghy>No notifications</Typograpghy>
+          </div>
         ) : (
           <NotificationsList
             notifications={notifications?.data}
