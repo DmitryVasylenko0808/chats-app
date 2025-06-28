@@ -37,9 +37,12 @@ export const NotificationItem = ({
 
   return (
     <li
-      className={cn('hover:bg-secondary-200 block cursor-pointer px-6 py-4 duration-100', {
-        'opacity-30': notification.isRead,
-      })}
+      className={cn(
+        'hover:bg-secondary-200 dark:hover:bg-dark-300 block cursor-pointer px-6 py-4 duration-100',
+        {
+          'opacity-30': notification.isRead,
+        }
+      )}
       onClick={handleClick}
     >
       <div className="flex items-start gap-4">
