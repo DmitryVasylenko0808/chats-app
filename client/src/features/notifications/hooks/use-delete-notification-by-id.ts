@@ -9,6 +9,7 @@ export const useDeleteNotificationById = () => {
     mutationFn: deleteNotificationById,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications-unread-count'] });
     },
   });
 };
