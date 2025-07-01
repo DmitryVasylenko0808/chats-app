@@ -28,6 +28,11 @@ export class NotificationsController {
     return new NotificationPaginationDto(notifications);
   }
 
+  @Get('unread-count')
+  async getUnreadCountNotifications(@CurrentUser('id') userId: number) {
+    return await this.notificationsService.getUnreadCountNotifications(userId);
+  }
+
   @Patch(':id')
   async markAsReadNotification(@Param('id', ParseIntPipe) id: number) {
     const notification = await this.notificationsService.markAsReadNotification(id);

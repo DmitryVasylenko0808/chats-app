@@ -82,6 +82,19 @@ describe('NotificationsService', () => {
     });
   });
 
+  describe('getUnreadCountNotifications', () => {
+    it('should return count unread notifications', async () => {
+      const userId = 1;
+      const mockCount = 1;
+      prismaService.notification.count.mockResolvedValueOnce(mockCount);
+
+      await expect(notificationsService.getUnreadCountNotifications(userId)).resolves.toEqual({
+        count: mockCount,
+      });
+      expect(prismaService.notification.count).toHaveBeenCalled();
+    });
+  });
+
   describe('notifyNewChat', () => {
     it('should send notification about new chat', async () => {
       const mockedUsers = [createMockUser(2)];

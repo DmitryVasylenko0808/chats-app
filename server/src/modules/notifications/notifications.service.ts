@@ -40,6 +40,14 @@ export class NotificationsService {
     };
   }
 
+  async getUnreadCountNotifications(userId: number) {
+    const count = await this.prismaService.notification.count({
+      where: { userId, isRead: false },
+    });
+
+    return { count };
+  }
+
   async notifyNewChat(users: User[], creator: User, chat: Chat) {
     const notifications = await this.prismaService.notification.createManyAndReturn({
       data: users.map((u) => ({
