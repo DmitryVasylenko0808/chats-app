@@ -1,3 +1,4 @@
+import { webStorage } from '@/config/web-storage';
 import { useAuthStore } from '@/features/auth/store';
 import { useMutation } from '@tanstack/react-query';
 
@@ -9,7 +10,7 @@ export const useDeleteUser = () => {
   return useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      localStorage.removeItem('access_token');
+      webStorage.removeItem('access_token');
       reset();
     },
   });

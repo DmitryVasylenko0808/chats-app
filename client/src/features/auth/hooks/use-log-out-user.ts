@@ -1,10 +1,12 @@
+import { webStorage } from '@/config/web-storage';
+
 import { useAuthStore } from '../store';
 
 export const useLogOutUser = () => {
   const { reset: resetAuth } = useAuthStore();
 
   const logOut = () => {
-    localStorage.removeItem('access_token');
+    webStorage.removeItem('access_token');
     resetAuth();
   };
 

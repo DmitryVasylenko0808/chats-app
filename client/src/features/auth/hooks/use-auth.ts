@@ -1,3 +1,4 @@
+import { webStorage } from '@/config/web-storage';
 import { useQuery } from '@tanstack/react-query';
 
 import { getMe } from '../api';
@@ -18,13 +19,13 @@ export const useAuth = () => {
     retry: false,
   });
 
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = webStorage.getItem('access_token');
   const isAuthenticated = !!accessToken;
   const isAccessTokenStored = !!storedAccessToken;
 
   const authenticate = async (accessToken: string) => {
     try {
-      localStorage.setItem('access_token', accessToken);
+      webStorage.setItem('access_token', accessToken);
 
       const { data } = await refetch();
 
@@ -35,7 +36,7 @@ export const useAuth = () => {
       setAuthCredentials(accessToken, data);
     } catch {
       reset();
-      localStorage.removeItem('access_token');
+      webStorage.removeItem('access_token');
     }
   };
 

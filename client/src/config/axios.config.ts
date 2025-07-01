@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+import { webStorage } from './web-storage';
+
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use((cfg) => {
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = webStorage.getItem('access_token');
 
   cfg.headers.Authorization = `Bearer ${accessToken}`;
 

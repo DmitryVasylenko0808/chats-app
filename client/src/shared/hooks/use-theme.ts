@@ -1,10 +1,12 @@
+import { webStorage } from '@/config/web-storage';
+
 import { useThemeStore } from '../theme-store';
 
 export const useTheme = () => {
   const { isDarkTheme, setIsDarkTheme } = useThemeStore();
 
   const setCurrentTheme = () => {
-    if (localStorage.getItem('darkTheme')) {
+    if (webStorage.getItem('darkTheme')) {
       setIsDarkTheme(true);
       document.documentElement.classList.add('dark');
     }
@@ -12,9 +14,9 @@ export const useTheme = () => {
 
   const onToggleTheme = (value: boolean) => {
     if (isDarkTheme) {
-      localStorage.removeItem('darkTheme');
+      webStorage.removeItem('darkTheme');
     } else {
-      localStorage.setItem('darkTheme', 'true');
+      webStorage.setItem('darkTheme', 'true');
     }
 
     setIsDarkTheme(value);
