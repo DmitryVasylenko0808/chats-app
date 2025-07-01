@@ -6,6 +6,7 @@ import {
   DeleteAllNotificationsDto,
   DeleteNotificationByIdDto,
   GetNotificationsDto,
+  GetUnreadCountNotificationsDto,
   MarkAsReadNotificationDto,
 } from './dto';
 
@@ -31,6 +32,14 @@ export const getNotifications = async (params: GetNotificationsParams) => {
       entity_type: entityType,
     },
   });
+
+  return response.data;
+};
+
+export const getUnreadCountNotificationsDto = async () => {
+  const response = await axiosInstance.get<GetUnreadCountNotificationsDto>(
+    `${apiUrl}/notifications/unread-count`
+  );
 
   return response.data;
 };

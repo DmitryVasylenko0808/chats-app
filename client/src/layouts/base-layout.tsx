@@ -1,4 +1,5 @@
 import { SideBar, SocketContainer } from '@/features/chats/components';
+import { UnreadNotificationsNotifier } from '@/features/notifications/components';
 
 import { Outlet } from 'react-router';
 
@@ -11,6 +12,7 @@ const BaseLayout = () => {
           <Outlet />
         </section>
       </main>
+      <UnreadNotificationsNotifier />
     </SocketContainer>
   );
 };

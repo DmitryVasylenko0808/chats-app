@@ -6,9 +6,12 @@ import { AiOutlineBell, AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 
 import { FiBookmark } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router';
 
-type SideBarDrawerProps = DrawerProps;
+type SideBarDrawerProps = { unreadCountNotifications?: number } & DrawerProps;
 
-export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
+export const SideBarDrawer = ({
+  unreadCountNotifications,
+  ...drawerProps
+}: Readonly<SideBarDrawerProps>) => {
   const location = useLocation();
   const logOut = useLogOutUser();
   const { currentUser } = useAuth();
@@ -34,15 +37,17 @@ export const SideBarDrawer = (drawerProps: Readonly<SideBarDrawerProps>) => {
         <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
           <Link
             to={`/notifications`}
-            className="dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg"
+            className="dark:text-secondary-100 inline-flex w-full items-center justify-between px-6 py-2 text-lg"
           >
-            <span className="relative inline-flex items-center">
+            <div className="inline-flex items-center gap-4">
               <AiOutlineBell size={24} />
-              {/* <span className="bg-primary-200 text-secondary-100 absolute top-0 right-0 inline-flex h-3.5 w-3.5 items-center justify-center rounded-full text-xs">
-                1
-              </span> */}
-            </span>
-            <span>Notifications</span>
+              <span>Notifications</span>
+            </div>
+            {!!unreadCountNotifications && (
+              <span className="bg-primary-200 text-secondary-100 inline-flex h-5 items-center justify-center rounded-full px-2 text-xs">
+                {unreadCountNotifications}
+              </span>
+            )}
           </Link>
         </li>
         <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
