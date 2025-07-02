@@ -1,46 +1,28 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '@/modules/prisma/prisma.service';
+import { NotificationsService } from '@/modules/notifications/notifications.service';
 
-import { NotificationsService } from '../notifications/notifications.service';
+import { ChatsRepository } from './chats-repository';
 import { ChatsGateway } from './chats.gateway';
 import { CreateChatRequestDto } from './dto/requests';
-import { ChatPreview } from './types/chat-preview';
-import { UserChatRooms } from './types/chat-room';
-import { RefreshChatMember, RefreshMembersChatParams } from './types/refresh-members-chats-params';
+import { ChatPreview, RefreshChatMember, RefreshMembersChatParams, UserChatRooms } from './types';
 
 @Injectable()
 export class ChatsService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly chatsRepository: ChatsRepository,
     private readonly notificationsService: NotificationsService,
     private readonly chatsGateway: ChatsGateway
   ) {}
 
   async findChats(userId: number) {
-    const chats = await this.prismaService.chat.findMany({
-      where: {
-        members: {
-          some: { id: userId },
-        },
-      },
-      include: {
-        members: true,
-        messages: {
-          orderBy: { createdAt: 'desc' },
-          take: 1,
-        },
-      },
-    });
+    const chats = await this.chatsRepository.findManyByUserId(userId);
 
     return this.sortChatsByLastMessage(chats);
   }
 
   async findOneChatOrThrow(id: number) {
-    const chat = await this.prismaService.chat.findUnique({
-      where: { id },
-      include: { members: true },
-    });
+    const chat = await this.chatsRepository.findOneById(id);
 
     if (!chat) {
       throw new NotFoundException('Chat is not found');
@@ -60,14 +42,7 @@ export class ChatsService {
       return chat;
     }
 
-    const createdChat = await this.prismaService.chat.create({
-      data: {
-        members: {
-          connect: dto.membersIds.map((m) => ({ id: m })),
-        },
-      },
-      include: { members: true },
-    });
+    const createdChat = await this.chatsRepository.create(dto);
 
     await this.refreshMembersChats({ chatId: createdChat.id });
 
@@ -81,10 +56,7 @@ export class ChatsService {
   async deleteChat(id: number) {
     await this.findOneChatOrThrow(id);
 
-    const deletedChat = await this.prismaService.chat.delete({
-      where: { id },
-      include: { members: true },
-    });
+    const deletedChat = await this.chatsRepository.delete(id);
 
     await this.refreshMembersChats({ members: deletedChat.members });
 
@@ -98,44 +70,11 @@ export class ChatsService {
   }
 
   private async findChatsByMembers(membersIds: number[]) {
-    return await this.prismaService.chat.findMany({
-      where: {
-        members: {
-          some: {
-            id: { in: membersIds },
-          },
-        },
-      },
-      include: {
-        members: true,
-        messages: {
-          orderBy: { createdAt: 'desc' },
-          take: 1,
-        },
-      },
-    });
+    return await this.chatsRepository.findChatsByMemberIds(membersIds);
   }
 
   private async findExistingChatBetweenUsers(membersIds: number[]) {
-    const [firstUserId, secondUserId] = membersIds;
-
-    return await this.prismaService.chat.findFirst({
-      where: {
-        AND: [
-          {
-            members: {
-              some: { id: firstUserId },
-            },
-          },
-          {
-            members: {
-              some: { id: secondUserId },
-            },
-          },
-        ],
-      },
-      include: { members: true },
-    });
+    return await this.chatsRepository.findExistingChatBetweenUsers(membersIds);
   }
 
   private sortChatsByLastMessage(chats: ChatPreview[]) {

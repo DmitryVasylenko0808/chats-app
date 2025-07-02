@@ -13,7 +13,7 @@ import { instanceToPlain } from 'class-transformer';
 
 import { MessageEntity } from '../messages/entities/message.entity';
 import { ChatResponseDto } from './dto/responses';
-import { UserChatRooms } from './types/chat-room';
+import { UserChatRooms } from './types';
 
 @WebSocketGateway({ cors: '*' })
 export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
