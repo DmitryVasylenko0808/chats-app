@@ -36,7 +36,7 @@ export class ChatsService {
       throw new BadRequestException('Chat must contain only 2 members');
     }
 
-    const chat = await this.findExistingChatBetweenUsers(dto.membersIds);
+    const chat = await this.chatsRepository.findExistingChatBetweenUsers(dto.membersIds);
 
     if (chat) {
       return chat;
@@ -69,12 +69,23 @@ export class ChatsService {
     return chat.members.filter((m) => !this.chatsGateway.isUserInChat(m.id, chatId));
   }
 
-  private async findChatsByMembers(membersIds: number[]) {
-    return await this.chatsRepository.findChatsByMemberIds(membersIds);
-  }
+  async refreshMembersChats(params: RefreshMembersChatParams) {
+    let members: RefreshChatMember[];
 
-  private async findExistingChatBetweenUsers(membersIds: number[]) {
-    return await this.chatsRepository.findExistingChatBetweenUsers(membersIds);
+    if ('chatId' in params) {
+      const chat = await this.findOneChatOrThrow(params.chatId);
+      members = chat.members;
+    } else {
+      members = params.members;
+    }
+
+    const membersIds = members.map((m) => m.id);
+
+    const chats = await this.chatsRepository.findChatsByMemberIds(membersIds);
+    const sortedChats = this.sortChatsByLastMessage(chats);
+    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
+
+    this.chatsGateway.emitUpdateChats(chatsByMemberId);
   }
 
   private sortChatsByLastMessage(chats: ChatPreview[]) {
@@ -89,24 +100,5 @@ export class ChatsService {
 
       return { ...acc, [currId]: memberChats };
     }, {});
-  }
-
-  async refreshMembersChats(params: RefreshMembersChatParams) {
-    let members: RefreshChatMember[];
-
-    if ('chatId' in params) {
-      const chat = await this.findOneChatOrThrow(params.chatId);
-      members = chat.members;
-    } else {
-      members = params.members;
-    }
-
-    const membersIds = members.map((m) => m.id);
-
-    const chats = await this.findChatsByMembers(membersIds);
-    const sortedChats = this.sortChatsByLastMessage(chats);
-    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
-
-    this.chatsGateway.emitUpdateChats(chatsByMemberId);
   }
 }
