@@ -4,7 +4,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { NotificationsService } from '../notifications/notifications.service';
 import { ChatsGateway } from './chats.gateway';
-import { CreateChatDto } from './dto/create-chat.dto';
+import { CreateChatRequestDto } from './dto/requests';
 import { ChatPreview } from './types/chat-preview';
 import { UserChatRooms } from './types/chat-room';
 import { RefreshChatMember, RefreshMembersChatParams } from './types/refresh-members-chats-params';
@@ -49,7 +49,7 @@ export class ChatsService {
     return chat;
   }
 
-  async createChat(creatorId: number, dto: CreateChatDto) {
+  async createChat(creatorId: number, dto: CreateChatRequestDto) {
     if (dto.membersIds.length !== 2) {
       throw new BadRequestException('Chat must contain only 2 members');
     }

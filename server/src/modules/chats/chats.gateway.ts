@@ -12,7 +12,7 @@ import {
 import { instanceToPlain } from 'class-transformer';
 
 import { MessageEntity } from '../messages/entities/message.entity';
-import { ChatEntity } from './entities/chat.entity';
+import { ChatResponseDto } from './dto/responses';
 import { UserChatRooms } from './types/chat-room';
 
 @WebSocketGateway({ cors: '*' })
@@ -54,7 +54,7 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       client?.emit(
         'chats:update',
-        chats.map((c) => instanceToPlain(new ChatEntity(c)))
+        chats.map((c) => instanceToPlain(new ChatResponseDto(c)))
       );
     });
   }

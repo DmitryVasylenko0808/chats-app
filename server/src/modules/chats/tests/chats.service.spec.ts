@@ -10,7 +10,7 @@ import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ChatsGateway } from '../chats.gateway';
 import { ChatsService } from '../chats.service';
-import { CreateChatDto } from '../dto/create-chat.dto';
+import { CreateChatRequestDto } from '../dto/requests';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;
@@ -101,7 +101,7 @@ describe('ChatsService', () => {
     const userId = 1;
 
     it('should create chat', async () => {
-      const dto: CreateChatDto = { membersIds: [userId, 2] };
+      const dto: CreateChatRequestDto = { membersIds: [userId, 2] };
       const mockCreatedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockCreatedChat;
       const refreshMembersChatsSpy = jest
@@ -122,7 +122,7 @@ describe('ChatsService', () => {
     });
 
     it('should return existed chat', async () => {
-      const dto: CreateChatDto = { membersIds: [userId, 2] };
+      const dto: CreateChatRequestDto = { membersIds: [userId, 2] };
       const mockExistedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockExistedChat;
 
@@ -137,7 +137,7 @@ describe('ChatsService', () => {
     });
 
     it('should throw error create chat (members length !== 2)', async () => {
-      const dto: CreateChatDto = { membersIds: [userId] };
+      const dto: CreateChatRequestDto = { membersIds: [userId] };
 
       const createChat = chatsService.createChat(userId, dto);
 

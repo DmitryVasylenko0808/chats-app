@@ -13,8 +13,8 @@ import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { ChatsService } from './chats.service';
-import { CreateChatDto } from './dto/create-chat.dto';
-import { ChatEntity } from './entities/chat.entity';
+import { CreateChatRequestDto } from './dto/requests';
+import { ChatResponseDto } from './dto/responses';
 
 @Controller('chats')
 @UseGuards(PrivateAuthGuard)
@@ -24,18 +24,18 @@ export class ChatsController {
   @Get(':id')
   async findOneChat(@Param('id', ParseIntPipe) id: number) {
     const chat = await this.chatsService.findOneChatOrThrow(id);
-    return new ChatEntity(chat);
+    return new ChatResponseDto(chat);
   }
 
   @Post()
-  async createChat(@CurrentUser('id') userId: number, @Body() dto: CreateChatDto) {
+  async createChat(@CurrentUser('id') userId: number, @Body() dto: CreateChatRequestDto) {
     const chat = await this.chatsService.createChat(userId, dto);
-    return new ChatEntity(chat);
+    return new ChatResponseDto(chat);
   }
 
   @Delete(':id')
   async deleteChat(@Param('id', ParseIntPipe) id: number) {
     const chat = await this.chatsService.deleteChat(id);
-    return new ChatEntity(chat);
+    return new ChatResponseDto(chat);
   }
 }

@@ -1,11 +1,9 @@
-import { Chat } from '@prisma/client';
-
 import { Type } from 'class-transformer';
 
 import { MessageEntity } from '@/modules/messages/entities/message.entity';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
-export class ChatEntity implements Chat {
+export class GetChatsResponseDto {
   id: number;
 
   @Type(() => UserResponseDto)
@@ -13,7 +11,7 @@ export class ChatEntity implements Chat {
 
   lastMessage?: MessageEntity;
 
-  constructor({ lastMessage, ...data }: Partial<ChatEntity>) {
+  constructor({ lastMessage, ...data }: Partial<GetChatsResponseDto>) {
     Object.assign(this, data);
 
     if (lastMessage) {

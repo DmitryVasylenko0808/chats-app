@@ -18,7 +18,7 @@ import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { multerOptions } from '@/common/storage/multer.config';
 
 import { ChatsService } from '../chats/chats.service';
-import { ChatEntity } from '../chats/entities/chat.entity';
+import { GetChatsResponseDto } from '../chats/dto/responses';
 import { UpdateUserRequestDto } from './dto/requests';
 import { UserGroup, UserResponseDto } from './dto/responses/user.response.dto';
 import { UsersService } from './users.service';
@@ -65,6 +65,6 @@ export class UsersController {
   @Get(':id/chats')
   async findUserChats(@Param('id', ParseIntPipe) id: number) {
     const chats = await this.chatsService.findChats(id);
-    return chats.map((c) => new ChatEntity(c));
+    return chats.map((c) => new GetChatsResponseDto(c));
   }
 }
