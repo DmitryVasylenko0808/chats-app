@@ -14,12 +14,18 @@ import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
 import { ChatsService } from './chats.service';
 import { CreateChatRequestDto } from './dto/requests';
-import { ChatResponseDto } from './dto/responses';
+import { ChatResponseDto, GetChatsResponseDto } from './dto/responses';
 
 @Controller('chats')
 @UseGuards(PrivateAuthGuard)
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
+
+  @Get()
+  async findUserChats(@CurrentUser('id') userId: number) {
+    const chats = await this.chatsService.findChats(userId);
+    return chats.map((c) => new GetChatsResponseDto(c));
+  }
 
   @Get(':id')
   async findOneChat(@Param('id', ParseIntPipe) id: number) {
