@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional, IsString, Length, MinLength } from 'class-validator';
 
-export class UpdateUserDto {
+export class UpdateUserRequestDto {
   @IsOptional()
   @IsString({ message: 'Invalid username' })
   @Length(3, 30, {

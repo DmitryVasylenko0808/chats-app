@@ -8,8 +8,7 @@ import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { CreateUserDto } from '../dto/create.user.dto';
-import { UpdateUserDto } from '../dto/update.user.dto';
+import { CreateUserRequestDto, UpdateUserRequestDto } from '../dto/requests';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {
@@ -112,7 +111,7 @@ describe('UsersService', () => {
 
   describe('createUser', () => {
     it('should create user', async () => {
-      const dto: CreateUserDto = {
+      const dto: CreateUserRequestDto = {
         username: 'test-username',
         name: 'test-name',
         email: 'test-email@mail.com',
@@ -130,7 +129,7 @@ describe('UsersService', () => {
 
   describe('updateUser', () => {
     const id = 1;
-    const dto: UpdateUserDto = {
+    const dto: UpdateUserRequestDto = {
       name: 'test-name',
       username: 'test-username',
       description: 'test-description',

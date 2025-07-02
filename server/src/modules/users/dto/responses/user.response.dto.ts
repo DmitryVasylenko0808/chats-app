@@ -6,7 +6,7 @@ export enum UserGroup {
   USER_DETAILS = 'user_details',
 }
 
-export class UserEntity implements User {
+export class UserResponseDto implements User {
   id: number;
 
   name: string;
@@ -28,7 +28,7 @@ export class UserEntity implements User {
 
   updatedAt: Date;
 
-  constructor(partial: Partial<UserEntity>) {
+  constructor(partial: Partial<UserResponseDto>) {
     Object.assign(this, partial);
   }
 }

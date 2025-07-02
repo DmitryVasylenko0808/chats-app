@@ -1,6 +1,8 @@
 import { $Enums, Notification } from '@prisma/client';
 
-import { UserEntity } from '@/modules/users/entities/user.entity';
+import { Type } from 'class-transformer';
+
+import { UserResponseDto } from '@/modules/users/dto/responses';
 
 import { JsonValue } from '.prisma/client/runtime/library';
 
@@ -14,15 +16,11 @@ export class NotificationEntity implements Notification {
   createdAt: Date;
   userId: number;
   senderId: number;
-  sender?: UserEntity;
+
+  @Type(() => UserResponseDto)
+  sender?: UserResponseDto;
 
   constructor(partial: Partial<NotificationEntity>) {
-    const { sender, ...data } = partial;
-
-    Object.assign(this, data);
-
-    if (sender) {
-      this.sender = new UserEntity(sender);
-    }
+    Object.assign(this, partial);
   }
 }

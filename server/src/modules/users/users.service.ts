@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserDto } from './dto/create.user.dto';
-import { UpdateUserDto } from './dto/update.user.dto';
+import { CreateUserRequestDto, UpdateUserRequestDto } from './dto/requests';
 
 @Injectable()
 export class UsersService {
@@ -45,7 +44,7 @@ export class UsersService {
     return user;
   }
 
-  async createUser(dto: CreateUserDto) {
+  async createUser(dto: CreateUserRequestDto) {
     const user = await this.prismaService.user.create({
       data: {
         avatar: 'placeholder.jpg',
@@ -56,7 +55,7 @@ export class UsersService {
     return user;
   }
 
-  async updateUser(id: number, dto: UpdateUserDto, avatar?: string) {
+  async updateUser(id: number, dto: UpdateUserRequestDto, avatar?: string) {
     await this.findUserOrThrow(id);
     await this.verifyUsernameNotTaken(dto.username, id);
     await this.verifyEmailNotTaken(dto.email, id);

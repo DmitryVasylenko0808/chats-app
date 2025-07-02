@@ -3,7 +3,7 @@ import { Message } from '@prisma/client';
 import { Exclude, Transform, Type } from 'class-transformer';
 
 import { ReactionEntity } from '@/modules/reactions/entities/reaction.entity';
-import { UserEntity } from '@/modules/users/entities/user.entity';
+import { UserResponseDto } from '@/modules/users/dto/responses';
 
 export class MessageEntity implements Message {
   id: number;
@@ -20,7 +20,8 @@ export class MessageEntity implements Message {
   createdAt: Date;
   updatedAt: Date;
 
-  sender?: UserEntity;
+  @Type(() => UserResponseDto)
+  sender?: UserResponseDto;
   replyToMessage?: MessageEntity;
   forwardedMessage?: MessageEntity;
 
@@ -31,13 +32,9 @@ export class MessageEntity implements Message {
   reactionsCountByEmoji?: Record<string, number>;
 
   constructor(partial: Partial<MessageEntity>) {
-    const { sender, replyToMessage, forwardedMessage, reactions, ...data } = partial;
+    const { replyToMessage, forwardedMessage, reactions, ...data } = partial;
 
     Object.assign(this, data);
-
-    if (sender) {
-      this.sender = new UserEntity(sender);
-    }
 
     if (replyToMessage) {
       this.replyToMessage = new MessageEntity(replyToMessage);

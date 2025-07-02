@@ -1,6 +1,6 @@
 import { IsEmail, IsString, Length, MinLength } from 'class-validator';
 
-export class CreateUserDto {
+export class CreateUserRequestDto {
   @IsString({ message: 'Invalid username' })
   @Length(3, 30, {
     message:

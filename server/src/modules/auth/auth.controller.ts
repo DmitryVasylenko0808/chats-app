@@ -12,7 +12,7 @@ import {
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
-import { UserEntity, UserGroup } from '../users/entities/user.entity';
+import { UserGroup, UserResponseDto } from '../users/dto/responses';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -29,7 +29,7 @@ export class AuthController {
   @Post('register')
   async registerUser(@Body() dto: RegisterUserDto) {
     const user = await this.authService.registerUser(dto);
-    return new UserEntity(user);
+    return new UserResponseDto(user);
   }
 
   @Post('sign-in')
@@ -42,6 +42,6 @@ export class AuthController {
   @UseGuards(PrivateAuthGuard)
   async getMe(@CurrentUser('id') id: number) {
     const user = await this.userService.findUserOrThrow(id);
-    return new UserEntity(user);
+    return new UserResponseDto(user);
   }
 }
