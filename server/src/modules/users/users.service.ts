@@ -1,33 +1,22 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserRequestDto, UpdateUserRequestDto } from './dto/requests';
+import { UsersRepository } from './users-repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async findUsers(search?: string) {
     if (!search) {
       return [];
     }
 
-    const users = await this.prismaService.user.findMany({
-      where: {
-        username: {
-          startsWith: search,
-          mode: 'insensitive',
-        },
-      },
-    });
-
-    return users;
+    return await this.usersRepository.findManyBySearch(search);
   }
 
   async findUserOrThrow(id: number) {
-    const user = await this.prismaService.user.findUnique({
-      where: { id },
-    });
+    const user = await this.usersRepository.findOneById(id);
 
     if (!user) {
       throw new NotFoundException('User is not found');
@@ -37,22 +26,11 @@ export class UsersService {
   }
 
   async findUserByUsername(username: string) {
-    const user = await this.prismaService.user.findUnique({
-      where: { username },
-    });
-
-    return user;
+    return await this.usersRepository.findOneByUsername(username);
   }
 
   async createUser(dto: CreateUserRequestDto) {
-    const user = await this.prismaService.user.create({
-      data: {
-        avatar: 'placeholder.jpg',
-        ...dto,
-      },
-    });
-
-    return user;
+    return await this.usersRepository.create(dto);
   }
 
   async updateUser(id: number, dto: UpdateUserRequestDto, avatar?: string) {
@@ -60,34 +38,20 @@ export class UsersService {
     await this.verifyUsernameNotTaken(dto.username, id);
     await this.verifyEmailNotTaken(dto.email, id);
 
-    const updatedUser = await this.prismaService.user.update({
-      where: { id },
-      data: {
-        ...dto,
-        avatar,
-      },
-    });
-
-    return updatedUser;
+    return await this.usersRepository.update(id, dto, avatar);
   }
 
   async deleteUser(id: number) {
     await this.findUserOrThrow(id);
 
-    const deletedUser = await this.prismaService.user.delete({
-      where: { id },
-    });
-
-    return deletedUser;
+    return await this.usersRepository.delete(id);
   }
 
   async verifyUsernameNotTaken(username: string, exceptUserId?: number) {
-    const userWithUsername = await this.prismaService.user.findFirst({
-      where: {
-        id: { not: exceptUserId },
-        username,
-      },
-    });
+    const userWithUsername = await this.usersRepository.findOneByUsernameExcludingId(
+      username,
+      exceptUserId
+    );
 
     if (userWithUsername) {
       throw new BadRequestException('User with this username is already exists');
@@ -95,12 +59,7 @@ export class UsersService {
   }
 
   async verifyEmailNotTaken(email: string, exceptUserId?: number) {
-    const userWithEmail = await this.prismaService.user.findFirst({
-      where: {
-        id: { not: exceptUserId },
-        email,
-      },
-    });
+    const userWithEmail = await this.usersRepository.findOneByEmalExcludingId(email, exceptUserId);
 
     if (userWithEmail) {
       throw new BadRequestException('User with this email is already exists');
