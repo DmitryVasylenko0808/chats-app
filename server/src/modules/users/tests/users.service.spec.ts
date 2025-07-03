@@ -9,19 +9,23 @@ import { createMockUser } from '@/common/test-utils/factories/user.factory';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { CreateUserRequestDto, UpdateUserRequestDto } from '../dto/requests';
+import { UsersRepository } from '../users-repository';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {
   let usersService: UsersService;
-  let prismaService: DeepMockProxy<PrismaService>;
+  let usersRepository: DeepMockProxy<UsersRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService, { provide: PrismaService, useValue: mockDeep<PrismaService>() }],
+      providers: [
+        UsersService,
+        { provide: UsersRepository, useValue: mockDeep<UsersRepository>() },
+      ],
     }).compile();
 
     usersService = module.get<UsersService>(UsersService);
-    prismaService = module.get(PrismaService);
+    usersRepository = module.get(UsersRepository);
   });
 
   it('should be defined', () => {
@@ -32,7 +36,7 @@ describe('UsersService', () => {
     it('should find users by search value', async () => {
       const expectedResult = [createMockUser(1), createMockUser(2)];
       const search = 'lbroe';
-      prismaService.user.findMany.mockResolvedValueOnce(expectedResult);
+      usersRepository.findManyBySearch.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUsers(search);
 
@@ -42,7 +46,7 @@ describe('UsersService', () => {
 
     it('should not find users by search value', async () => {
       const expectedResult = [];
-      prismaService.user.findMany.mockResolvedValueOnce(expectedResult);
+      usersRepository.findManyBySearch.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUsers('abc');
 
@@ -52,7 +56,7 @@ describe('UsersService', () => {
 
     it('should not find users by empty search value', async () => {
       const expectedResult = [];
-      prismaService.user.findMany.mockResolvedValueOnce(expectedResult);
+      usersRepository.findManyBySearch.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUsers('');
 
@@ -65,7 +69,7 @@ describe('UsersService', () => {
     it('should find user by id', async () => {
       const id = 1;
       const expectedResult = createMockUser(1);
-      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+      usersRepository.findOneById.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUserOrThrow(id);
 
@@ -75,7 +79,7 @@ describe('UsersService', () => {
 
     it('should throw error find user by id', async () => {
       const id = 99999;
-      prismaService.user.findUnique.mockResolvedValueOnce(null);
+      usersRepository.findOneById.mockResolvedValueOnce(null);
 
       const findUserOrThrow = usersService.findUserOrThrow(id);
 
@@ -88,22 +92,22 @@ describe('UsersService', () => {
 
     it('should find user by username', async () => {
       const expectedResult = createMockUser(1);
-      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+      usersRepository.findOneByUsername.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUserByUsername(mockUsername);
 
-      expect(prismaService.user.findUnique).toHaveBeenCalled();
+      expect(usersRepository.findOneByUsername).toHaveBeenCalled();
       expect(result).toBeTruthy();
       expect(result).toEqual(expectedResult);
     });
 
     it('should not find user by username', async () => {
       const expectedResult = null;
-      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
+      usersRepository.findOneByUsername.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.findUserByUsername(mockUsername);
 
-      expect(prismaService.user.findUnique).toHaveBeenCalled();
+      expect(usersRepository.findOneByUsername).toHaveBeenCalled();
       expect(result).toBeFalsy();
       expect(result).toBe(expectedResult);
     });
@@ -118,7 +122,7 @@ describe('UsersService', () => {
         password: 'test-password',
       };
       const expectedResult = createMockUser(4);
-      prismaService.user.create.mockResolvedValueOnce(expectedResult);
+      usersRepository.create.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.createUser(dto);
 
@@ -138,9 +142,10 @@ describe('UsersService', () => {
 
     it('should update user', async () => {
       const expectedResult = createMockUser(1, dto);
-      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
-      prismaService.user.findFirst.mockResolvedValue(null);
-      prismaService.user.update.mockResolvedValueOnce(expectedResult);
+      usersRepository.findOneById.mockResolvedValueOnce(expectedResult);
+      usersRepository.findOneByUsernameExcludingId.mockResolvedValueOnce(null);
+      usersRepository.findOneByEmalExcludingId.mockResolvedValueOnce(null);
+      usersRepository.update.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.updateUser(id, dto);
 
@@ -150,7 +155,7 @@ describe('UsersService', () => {
 
     it('should throw error update user (not found)', async () => {
       const id = 9999;
-      prismaService.user.findUnique.mockResolvedValueOnce(null);
+      usersRepository.findOneById.mockResolvedValueOnce(null);
 
       const updateUser = usersService.updateUser(id, dto);
 
@@ -158,8 +163,8 @@ describe('UsersService', () => {
     });
 
     it('should throw error update user (username is already exists)', async () => {
-      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
-      prismaService.user.findFirst.mockResolvedValueOnce({ id: 10 } as User);
+      usersRepository.findOneById.mockResolvedValueOnce({ id: 1 } as User);
+      usersRepository.findOneByUsernameExcludingId.mockResolvedValueOnce({ id: 10 } as User);
 
       const updateUser = usersService.updateUser(id, dto);
 
@@ -167,9 +172,9 @@ describe('UsersService', () => {
     });
 
     it('should throw error update user (email is already exists)', async () => {
-      prismaService.user.findUnique.mockResolvedValueOnce({ id: 1 } as User);
-      prismaService.user.findFirst.mockResolvedValueOnce(null);
-      prismaService.user.findFirst.mockResolvedValueOnce({ id: 10 } as User);
+      usersRepository.findOneById.mockResolvedValueOnce({ id: 1 } as User);
+      usersRepository.findOneByUsernameExcludingId.mockResolvedValueOnce(null);
+      usersRepository.findOneByEmalExcludingId.mockResolvedValueOnce({ id: 10 } as User);
 
       const updateUser = usersService.updateUser(id, dto);
 
@@ -181,8 +186,8 @@ describe('UsersService', () => {
     it('should delete user by id', async () => {
       const id = 1;
       const expectedResult = createMockUser(id);
-      prismaService.user.findUnique.mockResolvedValueOnce(expectedResult);
-      prismaService.user.delete.mockResolvedValue(expectedResult);
+      usersRepository.findOneById.mockResolvedValueOnce(expectedResult);
+      usersRepository.delete.mockResolvedValueOnce(expectedResult);
 
       const result = await usersService.deleteUser(id);
 
@@ -192,7 +197,7 @@ describe('UsersService', () => {
 
     it('should throw error delete user by id (user not found)', async () => {
       const id = 9999;
-      prismaService.user.findUnique.mockResolvedValueOnce(null);
+      usersRepository.findOneById.mockResolvedValueOnce(null);
 
       const deleteUser = usersService.deleteUser(id);
 
