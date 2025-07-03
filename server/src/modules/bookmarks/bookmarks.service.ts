@@ -1,56 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
+import { BookmarksRepository } from './bookmarks-repository';
 import { AddBookmarkRequestDto } from './dto/requests';
 
 @Injectable()
 export class BookmarksService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly bookmarksRepository: BookmarksRepository) {}
 
   async getBookmarks(userId: number) {
-    return await this.prismaService.bookmark.findMany({
-      where: { userId },
-      include: {
-        message: {
-          include: { sender: true },
-        },
-      },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+    return await this.bookmarksRepository.findManyByUserId(userId);
   }
 
   async addBookmark(userId: number, dto: AddBookmarkRequestDto) {
-    return await this.prismaService.bookmark.create({
-      data: { userId, ...dto },
-      include: {
-        message: {
-          include: { sender: true },
-        },
-      },
-    });
+    return await this.bookmarksRepository.create({ userId, ...dto });
   }
 
   async deleteBookmark(userId: number, id: number) {
     const bookmark = await this.findBookmarkOrThrow(userId, id);
 
-    await this.prismaService.bookmark.delete({
-      where: { id },
-    });
+    await this.bookmarksRepository.delete(id);
 
     return bookmark;
   }
 
   private async findBookmarkOrThrow(userId: number, id: number) {
-    const bookmark = await this.prismaService.bookmark.findFirst({
-      where: { userId, id },
-      include: {
-        message: {
-          include: { sender: true },
-        },
-      },
-    });
+    const bookmark = await this.bookmarksRepository.findOne(userId, id);
 
     if (!bookmark) {
       throw new NotFoundException('Bookmark is not found');
