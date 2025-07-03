@@ -8,27 +8,26 @@ import { createMockMessage } from '@/common/test-utils/factories/message.factory
 import { createMockNotification } from '@/common/test-utils/factories/notification.factory';
 import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
-import { PrismaService } from '@/modules/prisma/prisma.service';
-
+import { NotificationsRepository } from '../notifications-repository';
 import { NotificationsGateway } from '../notifications.gateway';
 import { NotificationsService } from '../notifications.service';
 
 describe('NotificationsService', () => {
   let notificationsService: NotificationsService;
-  let prismaService: DeepMockProxy<PrismaService>;
+  let notificationsRepository: DeepMockProxy<NotificationsRepository>;
   let notificationGateway: DeepMockProxy<NotificationsGateway>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         NotificationsService,
-        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: NotificationsRepository, useValue: mockDeep<NotificationsRepository>() },
         { provide: NotificationsGateway, useValue: mockDeep<NotificationsGateway>() },
       ],
     }).compile();
 
     notificationsService = module.get<NotificationsService>(NotificationsService);
-    prismaService = module.get(PrismaService);
+    notificationsRepository = module.get(NotificationsRepository);
     notificationGateway = module.get(NotificationsGateway);
   });
 
@@ -42,8 +41,8 @@ describe('NotificationsService', () => {
         { ...createMockNotification(1, 'NEW_MESSAGE'), sender: createMockUser(1) },
         { ...createMockNotification(1, 'NEW_MESSAGE'), sender: createMockUser(1) },
       ];
-      prismaService.notification.findMany.mockResolvedValueOnce(mockedNotifications);
-      prismaService.notification.count.mockResolvedValueOnce(mockedNotifications.length);
+      notificationsRepository.findManyByUserId.mockResolvedValueOnce(mockedNotifications);
+      notificationsRepository.count.mockResolvedValueOnce(mockedNotifications.length);
 
       const result = await notificationsService.findNotifications(1, {
         isRead: false,
@@ -62,8 +61,8 @@ describe('NotificationsService', () => {
     });
 
     it('should return empty array of notifications', async () => {
-      prismaService.notification.findMany.mockResolvedValueOnce([]);
-      prismaService.notification.count.mockResolvedValueOnce(0);
+      notificationsRepository.findManyByUserId.mockResolvedValueOnce([]);
+      notificationsRepository.count.mockResolvedValueOnce(0);
 
       const result = await notificationsService.findNotifications(1, {
         isRead: false,
@@ -86,12 +85,12 @@ describe('NotificationsService', () => {
     it('should return count unread notifications', async () => {
       const userId = 1;
       const mockCount = 1;
-      prismaService.notification.count.mockResolvedValueOnce(mockCount);
+      notificationsRepository.count.mockResolvedValueOnce(mockCount);
 
       await expect(notificationsService.getUnreadCountNotifications(userId)).resolves.toEqual({
         count: mockCount,
       });
-      expect(prismaService.notification.count).toHaveBeenCalled();
+      expect(notificationsRepository.count).toHaveBeenCalled();
     });
   });
 
@@ -103,13 +102,13 @@ describe('NotificationsService', () => {
       const mockedNotifications = [
         { ...createMockNotification(1, 'NEW_CHAT', { entityType: 'CHAT' }), sender: mockedCreator },
       ];
-      prismaService.notification.createManyAndReturn.mockResolvedValueOnce(mockedNotifications);
+      notificationsRepository.createManyAndReturn.mockResolvedValueOnce(mockedNotifications);
       notificationGateway.sendNotifications.mockReturnValueOnce();
 
       await expect(
         notificationsService.notifyNewChat(mockedUsers, mockedCreator, mockedChat)
       ).resolves.toBeUndefined();
-      expect(prismaService.notification.createManyAndReturn).toHaveBeenCalled();
+      expect(notificationsRepository.createManyAndReturn).toHaveBeenCalled();
       expect(notificationGateway.sendNotifications).toHaveBeenCalled();
     });
   });
@@ -127,13 +126,13 @@ describe('NotificationsService', () => {
           sender: createMockUser(1),
         },
       ];
-      prismaService.notification.createManyAndReturn.mockResolvedValueOnce(mockedNotifications);
+      notificationsRepository.createManyAndReturn.mockResolvedValueOnce(mockedNotifications);
       notificationGateway.sendNotifications.mockReturnValueOnce();
 
       await expect(
         notificationsService.notifyNewMessage(mockedUsers, mockedMessage)
       ).resolves.toBeUndefined();
-      expect(prismaService.notification.createManyAndReturn).toHaveBeenCalled();
+      expect(notificationsRepository.createManyAndReturn).toHaveBeenCalled();
       expect(notificationGateway.sendNotifications).toHaveBeenCalled();
     });
   });
@@ -142,19 +141,19 @@ describe('NotificationsService', () => {
     it('should mark notification as read', async () => {
       const id = 1;
       const mockedNotification = createMockNotification(id, 'NEW_MESSAGE');
-      prismaService.notification.update.mockResolvedValueOnce(mockedNotification);
+      notificationsRepository.updateOneById.mockResolvedValueOnce(mockedNotification);
 
       await expect(notificationsService.markAsReadNotification(id)).resolves.toEqual(
         mockedNotification
       );
-      expect(prismaService.notification.update).toHaveBeenCalled();
+      expect(notificationsRepository.updateOneById).toHaveBeenCalled();
     });
   });
 
   describe('deleteAllNotifications', () => {
     it('should delete all notification', async () => {
       const userId = 1;
-      prismaService.notification.deleteMany.mockResolvedValueOnce({ count: 2 });
+      notificationsRepository.deleteManyByUserId.mockResolvedValueOnce({ count: 2 });
 
       await expect(notificationsService.deleteAllNotifications(userId)).resolves.toEqual({
         count: 2,
@@ -167,7 +166,7 @@ describe('NotificationsService', () => {
       const id = 1;
       const mockedNotification = createMockNotification(id, 'NEW_MESSAGE');
 
-      prismaService.notification.delete.mockResolvedValueOnce(mockedNotification);
+      notificationsRepository.deleteById.mockResolvedValueOnce(mockedNotification);
 
       await expect(notificationsService.deleteNotificationById(id)).resolves.toEqual(
         mockedNotification
