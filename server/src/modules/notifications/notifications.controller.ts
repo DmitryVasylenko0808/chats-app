@@ -12,9 +12,12 @@ import {
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
-import { NotificationPaginationDto } from './dto/notification-pagination.dto';
-import { NotificationQueryDto } from './dto/notification-query.dto';
-import { NotificationEntity } from './entities/notification.entity';
+import { NotificationQueryRequestDto } from './dto/requests';
+import {
+  NotificationPaginationRequestDto,
+  NotificationResponseDto,
+  NotificationsCountResponseDto,
+} from './dto/responses';
 import { NotificationsService } from './notifications.service';
 
 @Controller('notifications')
@@ -23,9 +26,12 @@ export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @Get()
-  async findNotifications(@CurrentUser('id') userId: number, @Query() query: NotificationQueryDto) {
+  async findNotifications(
+    @CurrentUser('id') userId: number,
+    @Query() query: NotificationQueryRequestDto
+  ) {
     const notifications = await this.notificationsService.findNotifications(userId, query);
-    return new NotificationPaginationDto(notifications);
+    return new NotificationPaginationRequestDto(notifications);
   }
 
   @Get('unread-count')
@@ -36,17 +42,18 @@ export class NotificationsController {
   @Patch(':id')
   async markAsReadNotification(@Param('id', ParseIntPipe) id: number) {
     const notification = await this.notificationsService.markAsReadNotification(id);
-    return new NotificationEntity(notification);
+    return new NotificationResponseDto(notification);
   }
 
   @Delete()
   async deleteAllNotifications(@CurrentUser('id') userId: number) {
-    return await this.notificationsService.deleteAllNotifications(userId);
+    const data = await this.notificationsService.deleteAllNotifications(userId);
+    return new NotificationsCountResponseDto(data);
   }
 
   @Delete(':id')
   async deleteNotificationById(@Param('id', ParseIntPipe) id: number) {
     const notification = await this.notificationsService.deleteNotificationById(id);
-    return new NotificationEntity(notification);
+    return new NotificationResponseDto(notification);
   }
 }

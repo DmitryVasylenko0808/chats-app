@@ -4,7 +4,7 @@ import { IsBoolean, IsEnum, IsNumber, IsOptional } from 'class-validator';
 
 import { Expose, Transform, Type } from 'class-transformer';
 
-export class NotificationQueryDto {
+export class NotificationQueryRequestDto {
   @IsOptional()
   @IsBoolean()
   @Expose({ name: 'is_read' })

@@ -10,7 +10,7 @@ import {
 
 import { instanceToPlain } from 'class-transformer';
 
-import { NotificationEntity } from './entities/notification.entity';
+import { NotificationResponseDto } from './dto/responses';
 
 @WebSocketGateway({ namespace: '/notifications' })
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -41,7 +41,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     if (client) {
       this.socket
         .to(client.id)
-        .emit('notification:get', instanceToPlain(new NotificationEntity(notification)));
+        .emit('notification:get', instanceToPlain(new NotificationResponseDto(notification)));
     }
   }
 

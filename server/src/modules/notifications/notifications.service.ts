@@ -3,7 +3,7 @@ import { Chat, EntityType, Message, NotificationType, User } from '@prisma/clien
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { NotificationQueryDto } from './dto/notification-query.dto';
+import { NotificationQueryRequestDto } from './dto/requests';
 import { NotificationsGateway } from './notifications.gateway';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class NotificationsService {
     private readonly notificationGateway: NotificationsGateway
   ) {}
 
-  async findNotifications(userId: number, queryOptions?: NotificationQueryDto) {
+  async findNotifications(userId: number, queryOptions?: NotificationQueryRequestDto) {
     const { isRead, entityType, sortDate, page, limit } = queryOptions;
 
     const [notifications, totalCount] = await Promise.all([

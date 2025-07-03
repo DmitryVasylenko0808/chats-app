@@ -6,7 +6,7 @@ import { UserResponseDto } from '@/modules/users/dto/responses';
 
 import { JsonValue } from '.prisma/client/runtime/library';
 
-export class NotificationEntity implements Notification {
+export class NotificationResponseDto implements Notification {
   id: number;
   type: $Enums.NotificationType;
   isRead: boolean;
@@ -20,7 +20,7 @@ export class NotificationEntity implements Notification {
   @Type(() => UserResponseDto)
   sender?: UserResponseDto;
 
-  constructor(partial: Partial<NotificationEntity>) {
+  constructor(partial: Partial<NotificationResponseDto>) {
     Object.assign(this, partial);
   }
 }
