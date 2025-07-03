@@ -6,24 +6,23 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createMockBookmark } from '@/common/test-utils/factories/bookmark.factory';
 import { createMockMessage } from '@/common/test-utils/factories/message.factory';
 
-import { PrismaService } from '@/modules/prisma/prisma.service';
-
+import { BookmarksRepository } from '../bookmarks-repository';
 import { BookmarksService } from '../bookmarks.service';
 
 describe('BookmarksService', () => {
   let bookmarksService: BookmarksService;
-  let prismaService: DeepMockProxy<PrismaService>;
+  let bookmarksRepository: DeepMockProxy<BookmarksRepository>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         BookmarksService,
-        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: BookmarksRepository, useValue: mockDeep<BookmarksRepository>() },
       ],
     }).compile();
 
     bookmarksService = module.get<BookmarksService>(BookmarksService);
-    prismaService = module.get(PrismaService);
+    bookmarksRepository = module.get(BookmarksRepository);
   });
 
   it('should be defined', () => {
@@ -45,11 +44,11 @@ describe('BookmarksService', () => {
         },
       ];
 
-      prismaService.bookmark.findMany.mockResolvedValueOnce(mockedBookmarks);
+      bookmarksRepository.findManyByUserId.mockResolvedValueOnce(mockedBookmarks);
 
       const result = await bookmarksService.getBookmarks(userId);
 
-      expect(prismaService.bookmark.findMany).toHaveBeenCalled();
+      expect(bookmarksRepository.findManyByUserId).toHaveBeenCalled();
       expect(result).toEqual(mockedBookmarks);
     });
   });
@@ -63,11 +62,11 @@ describe('BookmarksService', () => {
         message: createMockMessage(messageId, 1, 1),
       };
 
-      prismaService.bookmark.create.mockResolvedValueOnce(mockedBookmark);
+      bookmarksRepository.create.mockResolvedValueOnce(mockedBookmark);
 
       const result = await bookmarksService.addBookmark(userId, { messageId });
 
-      expect(prismaService.bookmark.create).toHaveBeenCalled();
+      expect(bookmarksRepository.create).toHaveBeenCalled();
       expect(result).toEqual(mockedBookmark);
     });
   });
@@ -83,24 +82,24 @@ describe('BookmarksService', () => {
         message: createMockMessage(messageId, 1, 1),
       };
 
-      prismaService.bookmark.findFirst.mockResolvedValueOnce(mockedBookmark);
-      prismaService.bookmark.delete.mockResolvedValueOnce(undefined);
+      bookmarksRepository.findOne.mockResolvedValueOnce(mockedBookmark);
+      bookmarksRepository.delete.mockResolvedValueOnce(undefined);
 
       const result = await bookmarksService.deleteBookmark(userId, id);
 
       expect(result).toEqual(mockedBookmark);
-      expect(prismaService.bookmark.findFirst).toHaveBeenCalled();
-      expect(prismaService.bookmark.delete).toHaveBeenCalled();
+      expect(bookmarksRepository.findOne).toHaveBeenCalled();
+      expect(bookmarksRepository.delete).toHaveBeenCalled();
     });
 
     it('should throw NotFoundException if bookmark not found', async () => {
-      prismaService.bookmark.findFirst.mockResolvedValueOnce(null);
+      bookmarksRepository.findOne.mockResolvedValueOnce(null);
 
       await expect(bookmarksService.deleteBookmark(userId, 9999)).rejects.toThrow(
         NotFoundException
       );
-      expect(prismaService.bookmark.findFirst).toHaveBeenCalled();
-      expect(prismaService.bookmark.delete).not.toHaveBeenCalled();
+      expect(bookmarksRepository.findOne).toHaveBeenCalled();
+      expect(bookmarksRepository.delete).not.toHaveBeenCalled();
     });
   });
 });
