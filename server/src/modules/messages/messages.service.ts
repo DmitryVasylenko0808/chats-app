@@ -3,43 +3,43 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ChatsGateway } from '@/modules/chats/chats.gateway';
 import { ChatsService } from '@/modules/chats/chats.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
-import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
+import { MessagesRepository } from './messages-repository';
 import { ReplyMessageParams } from './types/reply-message-params';
 import { SendMessageParams } from './types/send-message-params';
 
 @Injectable()
 export class MessagesService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly messagesRepository: MessagesRepository,
     private readonly chatsService: ChatsService,
     private readonly notificationService: NotificationsService,
     private readonly chatsGateway: ChatsGateway
   ) {}
 
   async findMessagesByChatId(chatId: number) {
-    return await this.prismaService.message.findMany({
-      where: { chatId },
-      include: {
-        sender: true,
-        replyToMessage: {
-          include: { sender: true },
-        },
-        forwardedMessage: {
-          include: { sender: true },
-        },
-        reactions: true,
-      },
-      orderBy: { createdAt: 'asc' },
-    });
+    return await this.messagesRepository.findManyByChatId(chatId);
+  }
+
+  async findMessageByIdOrThrow(id: number) {
+    const existedMessage = await this.messagesRepository.findOneById(id);
+
+    if (!existedMessage) {
+      throw new NotFoundException('Message is not found');
+    }
+
+    return existedMessage;
   }
 
   async sendMessage(params: SendMessageParams) {
     const { chatId, senderId, dto, imageFiles } = params;
 
-    const message = await this.prismaService.message.create({
-      data: { chatId, senderId, ...dto, images: imageFiles.map((img) => img.filename) },
+    const message = await this.messagesRepository.create({
+      chatId,
+      senderId,
+      ...dto,
+      images: imageFiles.map((img) => img.filename),
     });
 
     await this.refreshChatMessages(message.chatId);
@@ -54,10 +54,7 @@ export class MessagesService {
   async editMessage(chatId: number, messageId: number, dto: EditMessageRequestDto) {
     await this.findMessageByIdOrThrow(messageId);
 
-    const message = await this.prismaService.message.update({
-      where: { id: messageId, chatId },
-      data: dto,
-    });
+    const message = await this.messagesRepository.updateOne(dto, messageId, chatId);
 
     await this.refreshChatMessages(message.chatId);
     await this.chatsService.refreshMembersChats({ chatId: message.chatId });
@@ -68,9 +65,7 @@ export class MessagesService {
   async deleteMessage(id: number) {
     await this.findMessageByIdOrThrow(id);
 
-    const deletedMessage = await this.prismaService.message.delete({
-      where: { id },
-    });
+    const deletedMessage = await this.messagesRepository.delete(id);
 
     await this.refreshChatMessages(deletedMessage.chatId);
     await this.chatsService.refreshMembersChats({ chatId: deletedMessage.chatId });
@@ -83,9 +78,7 @@ export class MessagesService {
 
     await this.findMessageByIdOrThrow(replyToId);
 
-    const message = await this.prismaService.message.create({
-      data: { replyToId, chatId, senderId, ...dto },
-    });
+    const message = await this.messagesRepository.create({ replyToId, chatId, senderId, ...dto });
 
     await this.refreshChatMessages(message.chatId);
     await this.chatsService.refreshMembersChats({ chatId: message.chatId });
@@ -100,13 +93,11 @@ export class MessagesService {
     await this.chatsService.findOneChatOrThrow(dto.targetChatId);
     await this.findMessageByIdOrThrow(messageId);
 
-    const message = await this.prismaService.message.create({
-      data: {
-        senderId,
-        chatId: dto.targetChatId,
-        text: dto.text,
-        forwardedMessageId: messageId,
-      },
+    const message = await this.messagesRepository.create({
+      senderId,
+      chatId: dto.targetChatId,
+      text: dto.text,
+      forwardedMessageId: messageId,
     });
 
     await this.refreshChatMessages(message.chatId);
@@ -121,15 +112,8 @@ export class MessagesService {
   async pinMessage(chatId: number, messageId: number) {
     await this.findMessageByIdOrThrow(messageId);
 
-    await this.prismaService.message.updateMany({
-      where: { chatId },
-      data: { isPinned: false },
-    });
-
-    const pinnedMessage = await this.prismaService.message.update({
-      where: { id: messageId },
-      data: { isPinned: true },
-    });
+    await this.messagesRepository.updateManyByChatId(chatId, { isPinned: false });
+    const pinnedMessage = await this.messagesRepository.updateOne({ isPinned: true }, messageId);
 
     await this.refreshChatMessages(pinnedMessage.chatId);
 
@@ -139,12 +123,9 @@ export class MessagesService {
   async unpinMessage(chatId: number, messageId: number) {
     await this.findMessageByIdOrThrow(messageId);
 
-    const unpinnedMessage = await this.prismaService.message.update({
-      where: { id: messageId },
-      data: { isPinned: false },
-    });
+    const unpinnedMessage = await this.messagesRepository.updateOne({ isPinned: false }, messageId);
 
-    await this.refreshChatMessages(unpinnedMessage.chatId);
+    await this.refreshChatMessages(chatId);
 
     return unpinnedMessage;
   }
@@ -153,17 +134,5 @@ export class MessagesService {
     const messages = await this.findMessagesByChatId(chatId);
 
     this.chatsGateway.emitUpdateMessages(chatId, messages);
-  }
-
-  async findMessageByIdOrThrow(id: number) {
-    const existedMessage = await this.prismaService.message.findUnique({
-      where: { id },
-    });
-
-    if (!existedMessage) {
-      throw new NotFoundException('Message is not found');
-    }
-
-    return existedMessage;
   }
 }
