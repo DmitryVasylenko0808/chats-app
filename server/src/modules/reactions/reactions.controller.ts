@@ -3,8 +3,7 @@ import { Body, Controller, Delete, Param, ParseIntPipe, Post, UseGuards } from '
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
-import { AddReactionDto } from './dto/add-reaction.dto';
-import { DeleteReactionDto } from './dto/delete-reaction.dto';
+import { AddReactionRequestDto, DeleteReactionRequestDto } from './dto/requests';
 import { ReactionsService } from './reactions.service';
 
 @Controller('messages/:messageId/reactions')
@@ -16,7 +15,7 @@ export class ReactionsController {
   async addReaction(
     @Param('messageId', ParseIntPipe) messageId: number,
     @CurrentUser('id', ParseIntPipe) userId: number,
-    @Body() dto: AddReactionDto
+    @Body() dto: AddReactionRequestDto
   ) {
     return await this.reactionsService.addReaction(messageId, userId, dto.emoji);
   }
@@ -25,7 +24,7 @@ export class ReactionsController {
   async deleteReaction(
     @Param('messageId', ParseIntPipe) messageId: number,
     @CurrentUser('id', ParseIntPipe) userId: number,
-    @Body() dto: DeleteReactionDto
+    @Body() dto: DeleteReactionRequestDto
   ) {
     return await this.reactionsService.deleteReaction(messageId, userId, dto.emoji);
   }

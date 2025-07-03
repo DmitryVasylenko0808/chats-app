@@ -2,7 +2,7 @@ import { Message } from '@prisma/client';
 
 import { Exclude, Transform, Type } from 'class-transformer';
 
-import { ReactionEntity } from '@/modules/reactions/entities/reaction.entity';
+import { ReactionResponseDto } from '@/modules/reactions/dto/responses';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
 export class MessageWithDetailsResponseDto implements Message {
@@ -30,9 +30,10 @@ export class MessageWithDetailsResponseDto implements Message {
   forwardedMessage?: MessageWithDetailsResponseDto;
 
   @Exclude()
-  reactions?: ReactionEntity[];
+  @Type(() => ReactionResponseDto)
+  reactions?: ReactionResponseDto[];
 
-  reactionsByEmoji?: Record<string, ReactionEntity[]>;
+  reactionsByEmoji?: Record<string, ReactionResponseDto[]>;
   reactionsCountByEmoji?: Record<string, number>;
 
   constructor(partial: Partial<MessageWithDetailsResponseDto>) {
@@ -41,7 +42,7 @@ export class MessageWithDetailsResponseDto implements Message {
     Object.assign(this, data);
 
     if (reactions) {
-      this.reactions = reactions.map((r) => new ReactionEntity(r));
+      this.reactions = reactions.map((r) => new ReactionResponseDto(r));
       this.reactionsByEmoji = reactions.reduce(
         (acc, curr) => ({
           ...acc,

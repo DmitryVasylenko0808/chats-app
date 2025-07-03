@@ -1,13 +1,13 @@
 import { Reaction } from '@prisma/client';
 
-export class ReactionEntity implements Reaction {
+export class ReactionResponseDto implements Reaction {
   id: number;
   createdAt: Date;
   emoji: string;
   userId: number;
   messageId: number;
 
-  constructor(partial: Partial<ReactionEntity>) {
+  constructor(partial: Partial<ReactionResponseDto>) {
     Object.assign(this, partial);
   }
 }
