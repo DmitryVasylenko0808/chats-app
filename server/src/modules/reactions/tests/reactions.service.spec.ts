@@ -9,24 +9,25 @@ import { createMockReaction } from '@/common/test-utils/factories/reaction.facto
 import { MessagesService } from '@/modules/messages/messages.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
+import { ReactionsRepository } from '../reactions-repository';
 import { ReactionsService } from '../reactions.service';
 
 describe('ReactionsService', () => {
   let reactionsService: ReactionsService;
-  let prismaService: DeepMockProxy<PrismaService>;
+  let reactionsRepositories: DeepMockProxy<ReactionsRepository>;
   let messagesService: DeepMockProxy<MessagesService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReactionsService,
-        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: ReactionsRepository, useValue: mockDeep<ReactionsRepository>() },
         { provide: MessagesService, useValue: mockDeep<MessagesService>() },
       ],
     }).compile();
 
     reactionsService = module.get<ReactionsService>(ReactionsService);
-    prismaService = module.get(PrismaService);
+    reactionsRepositories = module.get(ReactionsRepository);
     messagesService = module.get(MessagesService);
   });
 
@@ -43,14 +44,14 @@ describe('ReactionsService', () => {
       const mockReaction = createMockReaction(1, messageId, userId, { emoji });
 
       messagesService.findMessageByIdOrThrow.mockResolvedValueOnce(mockFoundedMessage);
-      prismaService.reaction.upsert.mockResolvedValueOnce(mockReaction);
+      reactionsRepositories.upsert.mockResolvedValueOnce(mockReaction);
       messagesService.refreshChatMessages.mockResolvedValueOnce();
 
       await expect(reactionsService.addReaction(messageId, userId, emoji)).resolves.toEqual(
         mockReaction
       );
       expect(messagesService.findMessageByIdOrThrow).toHaveBeenCalled();
-      expect(prismaService.reaction.upsert).toHaveBeenCalled();
+      expect(reactionsRepositories.upsert).toHaveBeenCalled();
       expect(messagesService.refreshChatMessages).toHaveBeenCalled();
     });
 
@@ -65,7 +66,7 @@ describe('ReactionsService', () => {
         NotFoundException
       );
       expect(messagesService.findMessageByIdOrThrow).toHaveBeenCalled();
-      expect(prismaService.reaction.upsert).not.toHaveBeenCalled();
+      expect(reactionsRepositories.upsert).not.toHaveBeenCalled();
       expect(messagesService.refreshChatMessages).not.toHaveBeenCalled();
     });
   });
@@ -79,16 +80,16 @@ describe('ReactionsService', () => {
       const mockFoundedReaction = createMockReaction(1, messageId, userId, { emoji });
 
       messagesService.findMessageByIdOrThrow.mockResolvedValueOnce(mockFoundedMessage);
-      prismaService.reaction.findUnique.mockResolvedValueOnce(mockFoundedReaction);
-      prismaService.reaction.delete.mockResolvedValueOnce(mockFoundedReaction);
+      reactionsRepositories.findOne.mockResolvedValueOnce(mockFoundedReaction);
+      reactionsRepositories.delete.mockResolvedValueOnce(mockFoundedReaction);
       messagesService.refreshChatMessages.mockResolvedValueOnce();
 
       await expect(reactionsService.deleteReaction(messageId, userId, emoji)).resolves.toEqual(
         mockFoundedReaction
       );
       expect(messagesService.findMessageByIdOrThrow).toHaveBeenCalled();
-      expect(prismaService.reaction.findUnique).toHaveBeenCalled();
-      expect(prismaService.reaction.delete).toHaveBeenCalled();
+      expect(reactionsRepositories.findOne).toHaveBeenCalled();
+      expect(reactionsRepositories.delete).toHaveBeenCalled();
       expect(messagesService.refreshChatMessages).toHaveBeenCalled();
     });
 
@@ -103,8 +104,8 @@ describe('ReactionsService', () => {
         NotFoundException
       );
       expect(messagesService.findMessageByIdOrThrow).toHaveBeenCalled();
-      expect(prismaService.reaction.findUnique).not.toHaveBeenCalled();
-      expect(prismaService.reaction.delete).not.toHaveBeenCalled();
+      expect(reactionsRepositories.findOne).not.toHaveBeenCalled();
+      expect(reactionsRepositories.delete).not.toHaveBeenCalled();
       expect(messagesService.refreshChatMessages).not.toHaveBeenCalled();
     });
 
@@ -115,14 +116,14 @@ describe('ReactionsService', () => {
       const mockFoundedMessage = createMockMessage(messageId, 1, 1);
 
       messagesService.findMessageByIdOrThrow.mockResolvedValueOnce(mockFoundedMessage);
-      prismaService.reaction.findUnique.mockRejectedValueOnce(new NotFoundException());
+      reactionsRepositories.findOne.mockRejectedValueOnce(new NotFoundException());
 
       await expect(reactionsService.deleteReaction(messageId, userId, emoji)).rejects.toThrow(
         NotFoundException
       );
       expect(messagesService.findMessageByIdOrThrow).toHaveBeenCalled();
-      expect(prismaService.reaction.findUnique).toHaveBeenCalled();
-      expect(prismaService.reaction.delete).not.toHaveBeenCalled();
+      expect(reactionsRepositories.findOne).toHaveBeenCalled();
+      expect(reactionsRepositories.delete).not.toHaveBeenCalled();
       expect(messagesService.refreshChatMessages).not.toHaveBeenCalled();
     });
   });
