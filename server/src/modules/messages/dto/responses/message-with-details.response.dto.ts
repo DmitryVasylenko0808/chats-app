@@ -5,7 +5,7 @@ import { Exclude, Transform, Type } from 'class-transformer';
 import { ReactionEntity } from '@/modules/reactions/entities/reaction.entity';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
-export class MessageEntity implements Message {
+export class MessageWithDetailsResponseDto implements Message {
   id: number;
   senderId: number;
   chatId: number;
@@ -22,8 +22,12 @@ export class MessageEntity implements Message {
 
   @Type(() => UserResponseDto)
   sender?: UserResponseDto;
-  replyToMessage?: MessageEntity;
-  forwardedMessage?: MessageEntity;
+
+  @Type(() => MessageWithDetailsResponseDto)
+  replyToMessage?: MessageWithDetailsResponseDto;
+
+  @Type(() => MessageWithDetailsResponseDto)
+  forwardedMessage?: MessageWithDetailsResponseDto;
 
   @Exclude()
   reactions?: ReactionEntity[];
@@ -31,18 +35,10 @@ export class MessageEntity implements Message {
   reactionsByEmoji?: Record<string, ReactionEntity[]>;
   reactionsCountByEmoji?: Record<string, number>;
 
-  constructor(partial: Partial<MessageEntity>) {
-    const { replyToMessage, forwardedMessage, reactions, ...data } = partial;
+  constructor(partial: Partial<MessageWithDetailsResponseDto>) {
+    const { reactions, ...data } = partial;
 
     Object.assign(this, data);
-
-    if (replyToMessage) {
-      this.replyToMessage = new MessageEntity(replyToMessage);
-    }
-
-    if (forwardedMessage) {
-      this.forwardedMessage = new MessageEntity(forwardedMessage);
-    }
 
     if (reactions) {
       this.reactions = reactions.map((r) => new ReactionEntity(r));

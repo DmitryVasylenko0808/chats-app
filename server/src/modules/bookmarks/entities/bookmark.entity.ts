@@ -2,7 +2,7 @@ import { Bookmark } from '@prisma/client';
 
 import { Type } from 'class-transformer';
 
-import { MessageEntity } from '@/modules/messages/entities/message.entity';
+import { MessageWithDetailsResponseDto } from '@/modules/messages/dto/responses';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
 export class BookmarkEntity implements Bookmark {
@@ -13,15 +13,11 @@ export class BookmarkEntity implements Bookmark {
 
   @Type(() => UserResponseDto)
   user?: UserResponseDto;
-  message?: MessageEntity;
+
+  @Type(() => MessageWithDetailsResponseDto)
+  message?: MessageWithDetailsResponseDto;
 
   constructor(partial: Partial<BookmarkEntity>) {
-    const { message, ...data } = partial;
-
-    Object.assign(this, data);
-
-    if (message) {
-      this.message = new MessageEntity(message);
-    }
+    Object.assign(this, partial);
   }
 }

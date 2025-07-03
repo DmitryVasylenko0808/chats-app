@@ -1,12 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { ChatsGateway } from '@/modules/chats/chats.gateway';
+import { ChatsService } from '@/modules/chats/chats.service';
+import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { ChatsGateway } from '../chats/chats.gateway';
-import { ChatsService } from '../chats/chats.service';
-import { NotificationsService } from '../notifications/notifications.service';
-import { EditMessageDto } from './dto/edit-message.dto';
-import { ForwardMessageDto } from './dto/forward-message.dto';
+import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
 import { ReplyMessageParams } from './types/reply-message-params';
 import { SendMessageParams } from './types/send-message-params';
 
@@ -52,7 +51,7 @@ export class MessagesService {
     return message;
   }
 
-  async editMessage(chatId: number, messageId: number, dto: EditMessageDto) {
+  async editMessage(chatId: number, messageId: number, dto: EditMessageRequestDto) {
     await this.findMessageByIdOrThrow(messageId);
 
     const message = await this.prismaService.message.update({
@@ -97,7 +96,7 @@ export class MessagesService {
     return message;
   }
 
-  async forwardMessage(messageId: number, senderId: number, dto: ForwardMessageDto) {
+  async forwardMessage(messageId: number, senderId: number, dto: ForwardMessageRequestDto) {
     await this.chatsService.findOneChatOrThrow(dto.targetChatId);
     await this.findMessageByIdOrThrow(messageId);
 

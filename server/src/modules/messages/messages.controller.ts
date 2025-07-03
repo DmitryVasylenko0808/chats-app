@@ -17,10 +17,12 @@ import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { multerOptions } from '@/common/storage/multer.config';
 
-import { EditMessageDto } from './dto/edit-message.dto';
-import { ForwardMessageDto } from './dto/forward-message.dto';
-import { SendMessageDto } from './dto/send-message.dto';
-import { MessageEntity } from './entities/message.entity';
+import {
+  EditMessageRequestDto,
+  ForwardMessageRequestDto,
+  SendMessageRequestDto,
+} from './dto/requests';
+import { GetMessagesResponseDto, MessageResponseDto } from './dto/responses';
 import { MessagesService } from './messages.service';
 
 @Controller('chats/:chatId/messages')
@@ -31,7 +33,7 @@ export class MessagesController {
   @Get()
   async findChatMessages(@Param('chatId', ParseIntPipe) chatId: number) {
     const messages = await this.messagesService.findMessagesByChatId(chatId);
-    return messages.map((m) => new MessageEntity(m));
+    return messages.map((m) => new GetMessagesResponseDto(m));
   }
 
   @Post()
@@ -39,27 +41,27 @@ export class MessagesController {
   async sendMessage(
     @Param('chatId', ParseIntPipe) chatId: number,
     @CurrentUser('id') senderId: number,
-    @Body() dto: SendMessageDto,
+    @Body() dto: SendMessageRequestDto,
     @UploadedFiles() imageFiles: Express.Multer.File[]
   ) {
     const message = await this.messagesService.sendMessage({ chatId, senderId, dto, imageFiles });
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Patch(':messageId')
   async editMessage(
     @Param('chatId', ParseIntPipe) chatId: number,
     @Param('messageId', ParseIntPipe) messageId: number,
-    @Body() dto: EditMessageDto
+    @Body() dto: EditMessageRequestDto
   ) {
     const message = await this.messagesService.editMessage(chatId, messageId, dto);
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Delete(':messageId')
   async deleteMessage(@Param('messageId', ParseIntPipe) messageId: number) {
     const message = await this.messagesService.deleteMessage(messageId);
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Post(':messageId/reply')
@@ -67,20 +69,20 @@ export class MessagesController {
     @Param('chatId', ParseIntPipe) chatId: number,
     @Param('messageId', ParseIntPipe) replyToId: number,
     @CurrentUser('id') senderId: number,
-    @Body() dto: SendMessageDto
+    @Body() dto: SendMessageRequestDto
   ) {
     const message = await this.messagesService.replyMessage({ replyToId, chatId, senderId, dto });
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Post(':messageId/forward')
   async forwardMessage(
     @Param('messageId', ParseIntPipe) messageId: number,
     @CurrentUser('id') senderId: number,
-    @Body() dto: ForwardMessageDto
+    @Body() dto: ForwardMessageRequestDto
   ) {
     const message = await this.messagesService.forwardMessage(messageId, senderId, dto);
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Patch(':messageId/pin')
@@ -89,7 +91,7 @@ export class MessagesController {
     @Param('messageId', ParseIntPipe) messageId: number
   ) {
     const message = await this.messagesService.pinMessage(chatId, messageId);
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 
   @Patch(':messageId/unpin')
@@ -98,6 +100,6 @@ export class MessagesController {
     @Param('messageId', ParseIntPipe) messageId: number
   ) {
     const message = await this.messagesService.unpinMessage(chatId, messageId);
-    return new MessageEntity(message);
+    return new MessageResponseDto(message);
   }
 }

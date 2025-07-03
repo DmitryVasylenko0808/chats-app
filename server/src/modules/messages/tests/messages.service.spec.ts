@@ -14,9 +14,11 @@ import { NotificationsService } from '@/modules/notifications/notifications.serv
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { MessagesService } from '../../messages/messages.service';
-import { EditMessageDto } from '../dto/edit-message.dto';
-import { ForwardMessageDto } from '../dto/forward-message.dto';
-import { SendMessageDto } from '../dto/send-message.dto';
+import {
+  EditMessageRequestDto,
+  ForwardMessageRequestDto,
+  SendMessageRequestDto,
+} from '../dto/requests';
 
 describe('MessagesService', () => {
   let messagesService: MessagesService;
@@ -79,7 +81,7 @@ describe('MessagesService', () => {
     it('should send message', async () => {
       const chatId = 1;
       const senderId = 1;
-      const dto: SendMessageDto = {
+      const dto: SendMessageRequestDto = {
         text: 'text-message',
       };
       const imageFiles = [];
@@ -107,7 +109,7 @@ describe('MessagesService', () => {
     it('should edit message', async () => {
       const messageId = 1;
       const chatId = 1;
-      const dto: EditMessageDto = {
+      const dto: EditMessageRequestDto = {
         text: 'text-message',
       };
       const mockFoundedMessage = createMockMessage(messageId, chatId, 1);
@@ -132,7 +134,7 @@ describe('MessagesService', () => {
     it('should throw error edit message (message is not found)', async () => {
       const messageId = 9999;
       const chatId = 1;
-      const dto: EditMessageDto = {
+      const dto: EditMessageRequestDto = {
         text: 'text-message',
       };
       prismaService.message.findUnique.mockResolvedValueOnce(null);
@@ -247,7 +249,7 @@ describe('MessagesService', () => {
     it('should forward message with text', async () => {
       const messageId = 1;
       const senderId = 1;
-      const forwardMessageDto: ForwardMessageDto = {
+      const forwardMessageDto: ForwardMessageRequestDto = {
         targetChatId: 2,
         text: 'text-message',
       };
@@ -278,7 +280,7 @@ describe('MessagesService', () => {
     it('should throw error forward message (Chat is not found)', async () => {
       const messageId = 1;
       const senderId = 1;
-      const forwardMessageDto: ForwardMessageDto = {
+      const forwardMessageDto: ForwardMessageRequestDto = {
         targetChatId: 9999,
         text: 'text-message',
       };
@@ -302,7 +304,7 @@ describe('MessagesService', () => {
     it('should throw error forward message (Message is not found)', async () => {
       const messageId = 999;
       const senderId = 1;
-      const forwardMessageDto: ForwardMessageDto = {
+      const forwardMessageDto: ForwardMessageRequestDto = {
         targetChatId: 2,
         text: 'text-message',
       };

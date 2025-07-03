@@ -11,7 +11,7 @@ import {
 
 import { instanceToPlain } from 'class-transformer';
 
-import { MessageEntity } from '../messages/entities/message.entity';
+import { MessageWithDetailsResponseDto } from '../messages/dto/responses';
 import { ChatResponseDto } from './dto/responses';
 import { UserChatRooms } from './types';
 
@@ -60,7 +60,10 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   emitUpdateMessages(chatId: number, messages: Message[]) {
-    const data = { chatId, messages: messages.map((m) => instanceToPlain(new MessageEntity(m))) };
+    const data = {
+      chatId,
+      messages: messages.map((m) => instanceToPlain(new MessageWithDetailsResponseDto(m))),
+    };
 
     this.socket.to(chatId.toString()).emit('messages:update', data);
   }

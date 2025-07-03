@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 
-import { MessageEntity } from '@/modules/messages/entities/message.entity';
+import { MessageResponseDto } from '@/modules/messages/dto/responses';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
 export class GetChatsResponseDto {
@@ -9,13 +9,10 @@ export class GetChatsResponseDto {
   @Type(() => UserResponseDto)
   members?: UserResponseDto[];
 
-  lastMessage?: MessageEntity;
+  @Type(() => MessageResponseDto)
+  lastMessage?: MessageResponseDto;
 
-  constructor({ lastMessage, ...data }: Partial<GetChatsResponseDto>) {
-    Object.assign(this, data);
-
-    if (lastMessage) {
-      this.lastMessage = new MessageEntity(lastMessage);
-    }
+  constructor(partial: Partial<GetChatsResponseDto>) {
+    Object.assign(this, partial);
   }
 }
