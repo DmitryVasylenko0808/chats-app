@@ -2,33 +2,23 @@ import { Chat, EntityType, Message, NotificationType, User } from '@prisma/clien
 
 import { Injectable } from '@nestjs/common';
 
-import { PrismaService } from '../prisma/prisma.service';
 import { NotificationQueryRequestDto } from './dto/requests';
+import { NotificationsRepository } from './notifications-repository';
 import { NotificationsGateway } from './notifications.gateway';
 
 @Injectable()
 export class NotificationsService {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly notificationsRepository: NotificationsRepository,
     private readonly notificationGateway: NotificationsGateway
   ) {}
 
   async findNotifications(userId: number, queryOptions?: NotificationQueryRequestDto) {
-    const { isRead, entityType, sortDate, page, limit } = queryOptions;
+    const { isRead, entityType, page, limit } = queryOptions;
 
     const [notifications, totalCount] = await Promise.all([
-      this.prismaService.notification.findMany({
-        where: { userId, isRead, entityType },
-        orderBy: { createdAt: sortDate },
-        skip: limit * (page - 1),
-        take: limit,
-        include: {
-          sender: true,
-        },
-      }),
-      this.prismaService.notification.count({
-        where: { userId, isRead, entityType },
-      }),
+      this.notificationsRepository.findManyByUserId(userId, queryOptions),
+      this.notificationsRepository.count({ userId, isRead, entityType }),
     ]);
     const totalPages = Math.ceil(totalCount / limit);
 
@@ -41,64 +31,49 @@ export class NotificationsService {
   }
 
   async getUnreadCountNotifications(userId: number) {
-    const count = await this.prismaService.notification.count({
-      where: { userId, isRead: false },
-    });
+    const count = await this.notificationsRepository.count({ userId, isRead: false });
 
     return { count };
   }
 
   async notifyNewChat(users: User[], creator: User, chat: Chat) {
-    const notifications = await this.prismaService.notification.createManyAndReturn({
-      data: users.map((u) => ({
+    const notifications = await this.notificationsRepository.createManyAndReturn(
+      users.map((u) => ({
         type: NotificationType.NEW_CHAT,
         userId: u.id,
         senderId: creator.id,
         entityId: chat.id,
         entityType: EntityType.CHAT,
-      })),
-      include: {
-        sender: true,
-      },
-    });
+      }))
+    );
 
     this.notificationGateway.sendNotifications(notifications);
   }
 
   async notifyNewMessage(users: User[], message: Message) {
-    const notifications = await this.prismaService.notification.createManyAndReturn({
-      data: users.map((u) => ({
+    const notifications = await this.notificationsRepository.createManyAndReturn(
+      users.map((u) => ({
         type: NotificationType.NEW_MESSAGE,
         userId: u.id,
         senderId: message.senderId,
         entityId: message.id,
         entityType: EntityType.MESSAGE,
         data: { chatId: message.chatId },
-      })),
-      include: {
-        sender: true,
-      },
-    });
+      }))
+    );
 
     this.notificationGateway.sendNotifications(notifications);
   }
 
   async markAsReadNotification(id: number) {
-    return await this.prismaService.notification.update({
-      where: { id },
-      data: { isRead: true },
-    });
+    return await this.notificationsRepository.updateOneById(id, { isRead: true });
   }
 
   async deleteAllNotifications(userId: number) {
-    return await this.prismaService.notification.deleteMany({
-      where: { userId },
-    });
+    return await this.notificationsRepository.deleteManyByUserId(userId);
   }
 
   async deleteNotificationById(id: number) {
-    return await this.prismaService.notification.delete({
-      where: { id },
-    });
+    return await this.notificationsRepository.deleteById(id);
   }
 }
