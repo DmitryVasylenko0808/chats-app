@@ -5,8 +5,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from '../users/users.service';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { SignInUserDto } from './dto/sing-in.user.dto';
+import { RegisterUserRequestDto, SignInUserRequestDto } from './dto/requests';
 import { AccessTokenPayload } from './types/access-token-payload';
 
 @Injectable()
@@ -16,7 +15,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async registerUser(dto: RegisterUserDto) {
+  async registerUser(dto: RegisterUserRequestDto) {
     await this.usersService.verifyUsernameNotTaken(dto.username);
     await this.usersService.verifyEmailNotTaken(dto.email);
 
@@ -28,7 +27,7 @@ export class AuthService {
     return registeredUser;
   }
 
-  async signInUser(dto: SignInUserDto) {
+  async signInUser(dto: SignInUserRequestDto) {
     const { username, password } = dto;
 
     const user = await this.validateUser(username, password);

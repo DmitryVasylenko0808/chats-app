@@ -1,6 +1,6 @@
-import { IsEmail, IsEmpty, IsNotEmpty, IsString, Length, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, MinLength } from 'class-validator';
 
-export class RegisterUserDto {
+export class RegisterUserRequestDto {
   @IsNotEmpty({ message: 'Username is required' })
   @IsString({ message: 'Invalid username' })
   @Length(3, 30, {

@@ -15,8 +15,8 @@ import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { UserGroup, UserResponseDto } from '../users/dto/responses';
 import { UsersService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { SignInUserDto } from './dto/sing-in.user.dto';
+import { RegisterUserRequestDto, SignInUserRequestDto } from './dto/requests';
+import { SignInResponseDto } from './dto/responses';
 
 @Controller('auth')
 @SerializeOptions({ groups: [UserGroup.USER_DETAILS] })
@@ -27,15 +27,16 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async registerUser(@Body() dto: RegisterUserDto) {
+  async registerUser(@Body() dto: RegisterUserRequestDto) {
     const user = await this.authService.registerUser(dto);
     return new UserResponseDto(user);
   }
 
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
-  async signInUser(@Body() dto: SignInUserDto) {
-    return await this.authService.signInUser(dto);
+  async signInUser(@Body() dto: SignInUserRequestDto) {
+    const data = await this.authService.signInUser(dto);
+    return new SignInResponseDto(data);
   }
 
   @Get('me')

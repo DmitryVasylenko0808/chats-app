@@ -9,8 +9,7 @@ import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
 import { UsersService } from '../../users/users.service';
 import { AuthService } from '../auth.service';
-import { RegisterUserDto } from '../dto/register-user.dto';
-import { SignInUserDto } from '../dto/sing-in.user.dto';
+import { RegisterUserRequestDto, SignInUserRequestDto } from '../dto/requests';
 import { AccessTokenPayload } from '../types/access-token-payload';
 
 describe('AuthService', () => {
@@ -37,7 +36,7 @@ describe('AuthService', () => {
   });
 
   describe('registerUser', () => {
-    const dto: RegisterUserDto = {
+    const dto: RegisterUserRequestDto = {
       username: 'test-username',
       name: 'test-name',
       password: 'test-password',
@@ -79,7 +78,7 @@ describe('AuthService', () => {
   });
 
   describe('signInUser', () => {
-    const dto: SignInUserDto = {
+    const dto: SignInUserRequestDto = {
       username: 'test-username',
       password: 'test-password',
     };

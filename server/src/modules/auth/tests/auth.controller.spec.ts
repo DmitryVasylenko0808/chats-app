@@ -9,8 +9,7 @@ import { UsersService } from '@/modules/users/users.service';
 
 import { AuthController } from '../auth.controller';
 import { AuthService } from '../auth.service';
-import { RegisterUserDto } from '../dto/register-user.dto';
-import { SignInUserDto } from '../dto/sing-in.user.dto';
+import { RegisterUserRequestDto, SignInUserRequestDto } from '../dto/requests';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -36,7 +35,7 @@ describe('AuthController', () => {
   });
 
   describe('registerUser', () => {
-    const dto: RegisterUserDto = {
+    const dto: RegisterUserRequestDto = {
       username: 'test-username',
       name: 'test-name',
       password: 'test-password',
@@ -76,7 +75,7 @@ describe('AuthController', () => {
   });
 
   describe('signInUser', () => {
-    const dto: SignInUserDto = {
+    const dto: SignInUserRequestDto = {
       username: 'test-username',
       password: 'test-password',
     };
