@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 import { MessageWithDetailsResponseDto } from '@/modules/messages/dto/responses';
 import { UserResponseDto } from '@/modules/users/dto/responses';
 
-export class BookmarkEntity implements Bookmark {
+export class BookmarkResponseDto implements Bookmark {
   id: number;
   userId: number;
   messageId: number;
@@ -17,7 +17,7 @@ export class BookmarkEntity implements Bookmark {
   @Type(() => MessageWithDetailsResponseDto)
   message?: MessageWithDetailsResponseDto;
 
-  constructor(partial: Partial<BookmarkEntity>) {
+  constructor(partial: Partial<BookmarkResponseDto>) {
     Object.assign(this, partial);
   }
 }

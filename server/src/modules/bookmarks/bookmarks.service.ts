@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
-import { AddBookmarkDto } from './dto/add-bookmark.dto';
+import { AddBookmarkRequestDto } from './dto/requests';
 
 @Injectable()
 export class BookmarksService {
@@ -21,7 +21,7 @@ export class BookmarksService {
     });
   }
 
-  async addBookmark(userId: number, dto: AddBookmarkDto) {
+  async addBookmark(userId: number, dto: AddBookmarkRequestDto) {
     return await this.prismaService.bookmark.create({
       data: { userId, ...dto },
       include: {
