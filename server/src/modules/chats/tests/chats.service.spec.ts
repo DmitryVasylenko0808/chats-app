@@ -6,15 +6,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createMockChat } from '@/common/test-utils/factories/chat.factory';
 
 import { NotificationsService } from '@/modules/notifications/notifications.service';
-import { PrismaService } from '@/modules/prisma/prisma.service';
 
+import { ChatsRepository } from '../chats-repository';
 import { ChatsGateway } from '../chats.gateway';
 import { ChatsService } from '../chats.service';
 import { CreateChatRequestDto } from '../dto/requests';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;
-  let prismaService: DeepMockProxy<PrismaService>;
+  let chatsRepository: DeepMockProxy<ChatsRepository>;
   let notificationsService: DeepMockProxy<NotificationsService>;
   let chatsGateway: DeepMockProxy<ChatsGateway>;
 
@@ -22,14 +22,14 @@ describe('ChatsService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ChatsService,
-        { provide: PrismaService, useValue: mockDeep<PrismaService>() },
+        { provide: ChatsRepository, useValue: mockDeep<ChatsRepository>() },
         { provide: NotificationsService, useValue: mockDeep<NotificationsService>() },
         { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
       ],
     }).compile();
 
     chatsService = module.get<ChatsService>(ChatsService);
-    prismaService = module.get(PrismaService);
+    chatsRepository = module.get(ChatsRepository);
     notificationsService = module.get(NotificationsService);
     chatsGateway = module.get(ChatsGateway);
   });
@@ -55,20 +55,20 @@ describe('ChatsService', () => {
           lastMessage: mockFoundedChats[0].messages[0],
         },
       ];
-      prismaService.chat.findMany.mockResolvedValueOnce(mockFoundedChats);
+      chatsRepository.findManyByUserId.mockResolvedValueOnce(mockFoundedChats);
 
       const result = await chatsService.findChats(userId);
 
-      expect(prismaService.chat.findMany).toHaveBeenCalled();
+      expect(chatsRepository.findManyByUserId).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
     it('should not find chats by user id', async () => {
-      prismaService.chat.findMany.mockResolvedValueOnce([]);
+      chatsRepository.findManyByUserId.mockResolvedValueOnce([]);
 
       const result = await chatsService.findChats(userId);
 
-      expect(prismaService.chat.findMany).toHaveBeenCalled();
+      expect(chatsRepository.findManyByUserId).toHaveBeenCalled();
       expect(result).toEqual([]);
     });
   });
@@ -79,20 +79,20 @@ describe('ChatsService', () => {
     it('should find chat by id', async () => {
       const mockFoundedChat = createMockChat(chatId, [1, 2]);
       const expectedResult = mockFoundedChat;
-      prismaService.chat.findUnique.mockResolvedValueOnce(mockFoundedChat);
+      chatsRepository.findOneById.mockResolvedValueOnce(mockFoundedChat);
 
       const result = await chatsService.findOneChatOrThrow(chatId);
 
-      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(chatsRepository.findOneById).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
     it('should throw error find chat by id (chat is not found)', async () => {
-      prismaService.chat.findUnique.mockResolvedValueOnce(null);
+      chatsRepository.findOneById.mockResolvedValueOnce(null);
 
       const findOneChat = chatsService.findOneChatOrThrow(chatId);
 
-      expect(prismaService.chat.findUnique).toHaveBeenCalled();
+      expect(chatsRepository.findOneById).toHaveBeenCalled();
       expect(findOneChat).rejects.toThrow(NotFoundException);
     });
   });
@@ -108,14 +108,14 @@ describe('ChatsService', () => {
         .spyOn(chatsService, 'refreshMembersChats')
         .mockResolvedValueOnce(null);
 
-      prismaService.chat.findFirst.mockResolvedValueOnce(null);
-      prismaService.chat.create.mockResolvedValueOnce(mockCreatedChat);
+      chatsRepository.findExistingChatBetweenUsers.mockResolvedValueOnce(null);
+      chatsRepository.create.mockResolvedValueOnce(mockCreatedChat);
       notificationsService.notifyNewChat.mockResolvedValueOnce();
 
       const result = await chatsService.createChat(userId, dto);
 
-      expect(prismaService.chat.findFirst).toHaveBeenCalled();
-      expect(prismaService.chat.create).toHaveBeenCalled();
+      expect(chatsRepository.findExistingChatBetweenUsers).toHaveBeenCalled();
+      expect(chatsRepository.create).toHaveBeenCalled();
       expect(refreshMembersChatsSpy).toHaveBeenCalled();
       expect(notificationsService.notifyNewChat).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
@@ -126,12 +126,12 @@ describe('ChatsService', () => {
       const mockExistedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockExistedChat;
 
-      prismaService.chat.findFirst.mockResolvedValueOnce(mockExistedChat);
+      chatsRepository.findExistingChatBetweenUsers.mockResolvedValueOnce(mockExistedChat);
 
       const result = await chatsService.createChat(userId, dto);
 
-      expect(prismaService.chat.findFirst).toHaveBeenCalled();
-      expect(prismaService.chat.create).not.toHaveBeenCalled();
+      expect(chatsRepository.findExistingChatBetweenUsers).toHaveBeenCalled();
+      expect(chatsRepository.create).not.toHaveBeenCalled();
       expect(notificationsService.notifyNewChat).not.toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
@@ -157,12 +157,12 @@ describe('ChatsService', () => {
         .spyOn(chatsService, 'refreshMembersChats')
         .mockResolvedValueOnce(null);
 
-      prismaService.chat.delete.mockResolvedValueOnce(mockDeletedChat);
+      chatsRepository.delete.mockResolvedValueOnce(mockDeletedChat);
 
       const result = await chatsService.deleteChat(id);
 
       expect(findOneChatOrThrowSpy).toHaveBeenCalled();
-      expect(prismaService.chat.delete).toHaveBeenCalled();
+      expect(chatsRepository.delete).toHaveBeenCalled();
       expect(refreshMembersChatsSpy).toHaveBeenCalled();
       expect(result).toEqual(mockDeletedChat);
     });
@@ -175,7 +175,7 @@ describe('ChatsService', () => {
 
       await expect(chatsService.deleteChat(id)).rejects.toThrow(NotFoundException);
       expect(findOneChatOrThrowSpy).toHaveBeenCalled();
-      expect(prismaService.chat.delete).not.toHaveBeenCalled();
+      expect(chatsRepository.delete).not.toHaveBeenCalled();
     });
   });
 });
