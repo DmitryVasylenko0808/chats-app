@@ -2,16 +2,15 @@ import { cn } from '@/utils/cn';
 
 import { ComponentProps } from 'react';
 
-type OptionValue = ComponentProps<'option'>['value'];
-export type Option<T extends OptionValue> = {
+export type Option<T extends string = string> = {
   value: T;
   label: string;
 };
-type SelectorProps<T extends OptionValue> = ComponentProps<'select'> & {
+type SelectorProps<T extends string = string> = ComponentProps<'select'> & {
   options: Option<T>[];
 };
 
-export const Selector = <T extends OptionValue>({
+export const Selector = <T extends string = string>({
   options,
   className,
   ...selectProps
@@ -25,7 +24,7 @@ export const Selector = <T extends OptionValue>({
       {...selectProps}
     >
       {options.map((opt) => (
-        <option key={opt.value?.toString()} value={opt.value}>
+        <option key={opt.value} value={opt.value}>
           {opt.label}
         </option>
       ))}

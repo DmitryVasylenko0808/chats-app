@@ -12,7 +12,7 @@ import {
   useMarkNotification,
   useNotificationsFilter,
 } from '../hooks';
-import { NotificationTabValue, ReadOptionValue, SortDateOptionValue } from '../types';
+import { NotificationTabValue } from '../types';
 import { NotificationsFilters } from './notifications-filters';
 import { NotificationsHeader } from './notifications-header';
 import { NotificationsList } from './notifications-list';
@@ -22,12 +22,12 @@ const tabs: TabItem<NotificationTabValue>[] = [
   { value: 'CHAT', title: 'Chats' },
   { value: 'MESSAGE', title: 'Messages' },
 ];
-const readOptions: Option<ReadOptionValue>[] = [
-  { value: -1, label: 'All' },
-  { value: 0, label: 'Unread' },
-  { value: 1, label: 'Read' },
+const readOptions: Option[] = [
+  { value: '-1', label: 'All' },
+  { value: '0', label: 'Unread' },
+  { value: '1', label: 'Read' },
 ];
-const sortOptions: Option<SortDateOptionValue>[] = [
+const sortOptions: Option[] = [
   { value: 'asc', label: 'Oldest' },
   { value: 'desc', label: 'Newest' },
 ];
@@ -49,7 +49,7 @@ export const Notifications = () => {
     error,
   } = useGetNotifications({
     sortDate: sortOption,
-    isRead: readOption === -1 ? undefined : !!readOption,
+    isRead: readOption === '-1' ? undefined : Boolean(Number(readOption)),
     entityType,
     page,
     limit,
@@ -61,9 +61,9 @@ export const Notifications = () => {
 
   const handleClickTab = (entityType: NotificationTabValue) => setEntityType(entityType);
   const handleChangeReadOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setReadOption(Number(e.target.value) as ReadOptionValue);
+    setReadOption(e.target.value);
   const handleChangeSortOption = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setSortOption(e.target.value as SortDateOptionValue);
+    setSortOption(e.target.value);
 
   const handleClickNotification = (notification: Notification, entityPath?: string) => {
     if (entityPath) {

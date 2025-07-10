@@ -13,7 +13,7 @@ import {
 type GetNotificationsQueryOptions = {
   page: number;
   limit: number;
-  sortDate?: 'asc' | 'desc';
+  sortDate?: string;
   isRead?: boolean;
   entityType?: EntityType;
 };

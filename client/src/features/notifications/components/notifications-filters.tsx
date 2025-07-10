@@ -1,12 +1,10 @@
 import { Option, Selector, Typograpghy } from '@/shared/ui';
 
-import { ReadOptionValue, SortDateOptionValue } from '../types';
-
 type NotificationsFiltersProps = {
-  readOptions: Option<ReadOptionValue>[];
-  activeReadOption: ReadOptionValue | number;
-  sortOptions: Option<SortDateOptionValue>[];
-  activeSortOption: SortDateOptionValue | string;
+  readOptions: Option[];
+  activeReadOption: string;
+  sortOptions: Option[];
+  activeSortOption: string;
   onChangeReadOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeSortOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
