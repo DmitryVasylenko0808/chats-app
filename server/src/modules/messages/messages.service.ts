@@ -4,6 +4,7 @@ import { ChatsGateway } from '@/modules/chats/chats.gateway';
 import { ChatsService } from '@/modules/chats/chats.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
+import { ChatsRealtimeService } from '../chats/chats-realtime.service';
 import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
 import { MessagesRepository } from './messages-repository';
 import { ReplyMessageParams } from './types/reply-message-params';
@@ -14,8 +15,9 @@ export class MessagesService {
   constructor(
     private readonly messagesRepository: MessagesRepository,
     private readonly chatsService: ChatsService,
-    private readonly notificationService: NotificationsService,
-    private readonly chatsGateway: ChatsGateway
+    private readonly chatsRealtimeService: ChatsRealtimeService,
+    private readonly chatsGateway: ChatsGateway,
+    private readonly notificationService: NotificationsService
   ) {}
 
   async findMessagesByChatId(chatId: number) {
@@ -43,9 +45,9 @@ export class MessagesService {
     });
 
     await this.refreshChatMessages(message.chatId);
-    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsService.findAbsentChatMembers(chatId);
+    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(chatId);
     await this.notificationService.notifyNewMessage(absentChatMembers, message);
 
     return message;
@@ -57,7 +59,7 @@ export class MessagesService {
     const message = await this.messagesRepository.updateOne(dto, messageId, chatId);
 
     await this.refreshChatMessages(message.chatId);
-    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
     return message;
   }
@@ -68,7 +70,7 @@ export class MessagesService {
     const deletedMessage = await this.messagesRepository.delete(id);
 
     await this.refreshChatMessages(deletedMessage.chatId);
-    await this.chatsService.refreshMembersChats({ chatId: deletedMessage.chatId });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: deletedMessage.chatId });
 
     return deletedMessage;
   }
@@ -81,9 +83,9 @@ export class MessagesService {
     const message = await this.messagesRepository.create({ replyToId, chatId, senderId, ...dto });
 
     await this.refreshChatMessages(message.chatId);
-    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsService.findAbsentChatMembers(chatId);
+    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(chatId);
     await this.notificationService.notifyNewMessage(absentChatMembers, message);
 
     return message;
@@ -101,9 +103,9 @@ export class MessagesService {
     });
 
     await this.refreshChatMessages(message.chatId);
-    await this.chatsService.refreshMembersChats({ chatId: message.chatId });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsService.findAbsentChatMembers(message.chatId);
+    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(message.chatId);
     await this.notificationService.notifyNewMessage(absentChatMembers, message);
 
     return message;

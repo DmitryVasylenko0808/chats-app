@@ -2,19 +2,18 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
+import { ChatsRealtimeService } from './chats-realtime.service';
 import { ChatsRepository } from './chats-repository';
-import { ChatsGateway } from './chats.gateway';
 import { ChatsUtils } from './chats.utils';
 import { CreateChatRequestDto } from './dto/requests';
-import { ChatPreview, RefreshChatMember, RefreshMembersChatParams, UserChatRooms } from './types';
 
 @Injectable()
 export class ChatsService {
   constructor(
     private readonly chatsRepository: ChatsRepository,
-    private readonly notificationsService: NotificationsService,
-    private readonly chatsGateway: ChatsGateway,
-    private readonly chatsUtils: ChatsUtils
+    private readonly chatsRealtimeService: ChatsRealtimeService,
+    private readonly chatsUtils: ChatsUtils,
+    private readonly notificationsService: NotificationsService
   ) {}
 
   async findChats(userId: number) {
@@ -46,7 +45,7 @@ export class ChatsService {
 
     const createdChat = await this.chatsRepository.create(dto);
 
-    await this.refreshMembersChats({ chatId: createdChat.id });
+    await this.chatsRealtimeService.refreshMembersChats({ chatId: createdChat.id });
 
     const creator = createdChat.members.find((m) => m.id === creatorId);
     const participants = createdChat.members.filter((m) => m.id !== creatorId);
@@ -60,33 +59,8 @@ export class ChatsService {
 
     const deletedChat = await this.chatsRepository.delete(id);
 
-    await this.refreshMembersChats({ members: deletedChat.members });
+    await this.chatsRealtimeService.refreshMembersChats({ members: deletedChat.members });
 
     return deletedChat;
-  }
-
-  async findAbsentChatMembers(chatId: number) {
-    const chat = await this.findOneChatOrThrow(chatId);
-
-    return chat.members.filter((m) => !this.chatsGateway.isUserInChat(m.id, chatId));
-  }
-
-  async refreshMembersChats(params: RefreshMembersChatParams) {
-    let members: RefreshChatMember[];
-
-    if ('chatId' in params) {
-      const chat = await this.findOneChatOrThrow(params.chatId);
-      members = chat.members;
-    } else {
-      members = params.members;
-    }
-
-    const membersIds = members.map((m) => m.id);
-
-    const chats = await this.chatsRepository.findChatsByMemberIds(membersIds);
-    const sortedChats = this.chatsUtils.sortChatsByLastMessage(chats);
-    const chatsByMemberId = this.chatsUtils.groupChatsByMember(membersIds, sortedChats);
-
-    this.chatsGateway.emitUpdateChats(chatsByMemberId);
   }
 }
