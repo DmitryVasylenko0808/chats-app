@@ -1,1 +1,1 @@
-export const webStorage: Storage = localStorage;
+export const webStorage: Storage = sessionStorage;

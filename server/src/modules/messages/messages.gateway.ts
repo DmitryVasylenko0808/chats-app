@@ -1,3 +1,4 @@
+import { Message } from '@prisma/client';
 import { Server, Socket } from 'socket.io';
 
 import {
@@ -10,11 +11,10 @@ import {
 
 import { instanceToPlain } from 'class-transformer';
 
-import { ChatResponseDto } from './dto/responses';
-import { UserChatRooms } from './types';
+import { MessageWithDetailsResponseDto } from './dto/responses';
 
-@WebSocketGateway({ cors: '*' })
-export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+@WebSocketGateway({ namespace: '/messages' })
+export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly userSocketsMap = new Map<string, Socket>();
 
   @WebSocketServer()
@@ -36,24 +36,28 @@ export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('chats:join')
+  @SubscribeMessage('rooms:join')
   handleJoinChat(client: Socket, chatId: number) {
     client.join(chatId.toString());
   }
 
-  @SubscribeMessage('chats:leave')
+  @SubscribeMessage('rooms:leave')
   handleLeaveChat(client: Socket, chatId: number) {
     client.leave(chatId.toString());
   }
 
-  emitUpdateChats(chatsByMemberId: UserChatRooms) {
-    Object.entries(chatsByMemberId).forEach(([userId, chats]) => {
-      const client = this.userSocketsMap.get(userId);
+  emitUpdateMessages(chatId: number, messages: Message[]) {
+    const data = {
+      chatId,
+      messages: messages.map((m) => instanceToPlain(new MessageWithDetailsResponseDto(m))),
+    };
 
-      client?.emit(
-        'chats:update',
-        chats.map((c) => instanceToPlain(new ChatResponseDto(c)))
-      );
-    });
+    this.socket.to(chatId.toString()).emit('messages:update', data);
+  }
+
+  isUserInChat(userId: number, chatId: number) {
+    const client = this.userSocketsMap.get(userId.toString());
+
+    return client ? client.rooms.has(chatId.toString()) : false;
   }
 }

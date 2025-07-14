@@ -1,13 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { MessagesService } from '../messages/messages.service';
+import { MessagingRoomsService } from '../messages/messaging-rooms.service';
 import { ReactionsRepository } from './reactions-repository';
 
 @Injectable()
 export class ReactionsService {
   constructor(
     private readonly reactionsRepository: ReactionsRepository,
-    private readonly messagesService: MessagesService
+    private readonly messagesService: MessagesService,
+    private readonly messagingRoomsService: MessagingRoomsService
   ) {}
 
   async addReaction(messageId: number, userId: number, emoji: string) {
@@ -15,7 +17,7 @@ export class ReactionsService {
 
     const reaction = await this.reactionsRepository.upsert(messageId, userId, emoji);
 
-    await this.messagesService.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
 
     return reaction;
   }
@@ -26,7 +28,7 @@ export class ReactionsService {
 
     const deletedReaction = await this.reactionsRepository.delete(messageId, userId, emoji);
 
-    await this.messagesService.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
 
     return deletedReaction;
   }

@@ -13,12 +13,6 @@ export class ChatsRealtimeService {
     private readonly chatsUtils: ChatsUtils
   ) {}
 
-  async findAbsentChatMembers(chatId: number) {
-    const chat = await this.chatsRepository.findOneById(chatId);
-
-    return chat.members.filter((m) => !this.chatsGateway.isUserInChat(m.id, chatId));
-  }
-
   async refreshMembersChats(params: RefreshMembersChatParams) {
     let members: RefreshChatMember[];
 

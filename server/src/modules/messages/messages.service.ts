@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { ChatsGateway } from '@/modules/chats/chats.gateway';
 import { ChatsService } from '@/modules/chats/chats.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
 import { ChatsRealtimeService } from '../chats/chats-realtime.service';
 import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
 import { MessagesRepository } from './messages-repository';
+import { MessagingRoomsService } from './messaging-rooms.service';
 import { ReplyMessageParams } from './types/reply-message-params';
 import { SendMessageParams } from './types/send-message-params';
 
@@ -14,9 +14,9 @@ import { SendMessageParams } from './types/send-message-params';
 export class MessagesService {
   constructor(
     private readonly messagesRepository: MessagesRepository,
+    private readonly messagingRoomsService: MessagingRoomsService,
     private readonly chatsService: ChatsService,
     private readonly chatsRealtimeService: ChatsRealtimeService,
-    private readonly chatsGateway: ChatsGateway,
     private readonly notificationService: NotificationsService
   ) {}
 
@@ -44,11 +44,11 @@ export class MessagesService {
       images: imageFiles.map((img) => img.filename),
     });
 
-    await this.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
     await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(chatId);
-    await this.notificationService.notifyNewMessage(absentChatMembers, message);
+    const absentMembers = await this.messagingRoomsService.findAbsentMembers(chatId);
+    await this.notificationService.notifyNewMessage(absentMembers, message);
 
     return message;
   }
@@ -58,7 +58,7 @@ export class MessagesService {
 
     const message = await this.messagesRepository.updateOne(dto, messageId, chatId);
 
-    await this.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
     await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
     return message;
@@ -69,7 +69,7 @@ export class MessagesService {
 
     const deletedMessage = await this.messagesRepository.delete(id);
 
-    await this.refreshChatMessages(deletedMessage.chatId);
+    await this.messagingRoomsService.refreshChatMessages(deletedMessage.chatId);
     await this.chatsRealtimeService.refreshMembersChats({ chatId: deletedMessage.chatId });
 
     return deletedMessage;
@@ -82,11 +82,11 @@ export class MessagesService {
 
     const message = await this.messagesRepository.create({ replyToId, chatId, senderId, ...dto });
 
-    await this.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
     await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(chatId);
-    await this.notificationService.notifyNewMessage(absentChatMembers, message);
+    const absentMembers = await this.messagingRoomsService.findAbsentMembers(chatId);
+    await this.notificationService.notifyNewMessage(absentMembers, message);
 
     return message;
   }
@@ -102,11 +102,11 @@ export class MessagesService {
       forwardedMessageId: messageId,
     });
 
-    await this.refreshChatMessages(message.chatId);
+    await this.messagingRoomsService.refreshChatMessages(message.chatId);
     await this.chatsRealtimeService.refreshMembersChats({ chatId: message.chatId });
 
-    const absentChatMembers = await this.chatsRealtimeService.findAbsentChatMembers(message.chatId);
-    await this.notificationService.notifyNewMessage(absentChatMembers, message);
+    const absentMembers = await this.messagingRoomsService.findAbsentMembers(message.chatId);
+    await this.notificationService.notifyNewMessage(absentMembers, message);
 
     return message;
   }
@@ -117,7 +117,7 @@ export class MessagesService {
     await this.messagesRepository.updateManyByChatId(chatId, { isPinned: false });
     const pinnedMessage = await this.messagesRepository.updateOne({ isPinned: true }, messageId);
 
-    await this.refreshChatMessages(pinnedMessage.chatId);
+    await this.messagingRoomsService.refreshChatMessages(pinnedMessage.chatId);
 
     return pinnedMessage;
   }
@@ -127,14 +127,8 @@ export class MessagesService {
 
     const unpinnedMessage = await this.messagesRepository.updateOne({ isPinned: false }, messageId);
 
-    await this.refreshChatMessages(chatId);
+    await this.messagingRoomsService.refreshChatMessages(chatId);
 
     return unpinnedMessage;
-  }
-
-  async refreshChatMessages(chatId: number) {
-    const messages = await this.findMessagesByChatId(chatId);
-
-    this.chatsGateway.emitUpdateMessages(chatId, messages);
   }
 }

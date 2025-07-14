@@ -1,4 +1,5 @@
 import { SideBar, SocketContainer } from '@/features/chats/components';
+import { MessagesSocketContainer } from '@/features/chats/components/messages-socket-containet';
 import {
   NotificationsSocketContainer,
   UnreadNotificationsNotifier,
@@ -9,14 +10,16 @@ import { Outlet } from 'react-router';
 const BaseLayout = () => {
   return (
     <SocketContainer>
-      <NotificationsSocketContainer>
-        <main className="dark:bg-dark-400 relative flex min-h-screen">
-          <SideBar />
-          <section className="flex-1">
-            <Outlet />
-          </section>
-        </main>
-      </NotificationsSocketContainer>
+      <MessagesSocketContainer>
+        <NotificationsSocketContainer>
+          <main className="dark:bg-dark-400 relative flex min-h-screen">
+            <SideBar />
+            <section className="flex-1">
+              <Outlet />
+            </section>
+          </main>
+        </NotificationsSocketContainer>
+      </MessagesSocketContainer>
       <UnreadNotificationsNotifier />
     </SocketContainer>
   );

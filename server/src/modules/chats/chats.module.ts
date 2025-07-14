@@ -13,6 +13,6 @@ import { ChatsUtils } from './chats.utils';
   imports: [PrismaModule, NotificationsModule],
   providers: [ChatsService, ChatsRealtimeService, ChatsGateway, ChatsRepository, ChatsUtils],
   controllers: [ChatsController],
-  exports: [ChatsService, ChatsRealtimeService, ChatsGateway],
+  exports: [ChatsService, ChatsRealtimeService, ChatsRepository, ChatsGateway],
 })
 export class ChatsModule {}
