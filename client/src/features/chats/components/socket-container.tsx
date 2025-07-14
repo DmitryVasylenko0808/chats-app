@@ -1,13 +1,10 @@
-import { socketMessagesUrl, socketUrl } from '@/config/contants';
+import { socketUrl } from '@/config/contants';
 import { Chat } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
 import { PropsWithChildren, useEffect, useRef } from 'react';
-import { useParams } from 'react-router';
-
-import { UpdatedMessages } from '../types';
 
 export const SocketContainer = ({ children }: Readonly<PropsWithChildren>) => {
   const { currentUser } = useAuth();
