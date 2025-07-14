@@ -4,6 +4,7 @@ import { NotificationsService } from '@/modules/notifications/notifications.serv
 
 import { ChatsRepository } from './chats-repository';
 import { ChatsGateway } from './chats.gateway';
+import { ChatsUtils } from './chats.utils';
 import { CreateChatRequestDto } from './dto/requests';
 import { ChatPreview, RefreshChatMember, RefreshMembersChatParams, UserChatRooms } from './types';
 
@@ -12,13 +13,14 @@ export class ChatsService {
   constructor(
     private readonly chatsRepository: ChatsRepository,
     private readonly notificationsService: NotificationsService,
-    private readonly chatsGateway: ChatsGateway
+    private readonly chatsGateway: ChatsGateway,
+    private readonly chatsUtils: ChatsUtils
   ) {}
 
   async findChats(userId: number) {
     const chats = await this.chatsRepository.findManyByUserId(userId);
 
-    return this.sortChatsByLastMessage(chats);
+    return this.chatsUtils.sortChatsByLastMessage(chats);
   }
 
   async findOneChatOrThrow(id: number) {
@@ -82,23 +84,9 @@ export class ChatsService {
     const membersIds = members.map((m) => m.id);
 
     const chats = await this.chatsRepository.findChatsByMemberIds(membersIds);
-    const sortedChats = this.sortChatsByLastMessage(chats);
-    const chatsByMemberId = this.groupChatsByMember(membersIds, sortedChats);
+    const sortedChats = this.chatsUtils.sortChatsByLastMessage(chats);
+    const chatsByMemberId = this.chatsUtils.groupChatsByMember(membersIds, sortedChats);
 
     this.chatsGateway.emitUpdateChats(chatsByMemberId);
-  }
-
-  private sortChatsByLastMessage(chats: ChatPreview[]) {
-    return chats
-      .map((c) => ({ id: c.id, members: c.members, lastMessage: c.messages[0] }))
-      .sort((a, b) => (a.lastMessage?.createdAt < b.lastMessage?.createdAt ? 1 : -1));
-  }
-
-  private groupChatsByMember(membersIds: number[], chats: ChatPreview[]): UserChatRooms {
-    return membersIds.reduce((acc, currId) => {
-      const memberChats = chats.filter((item) => item.members.map((m) => m.id).includes(currId));
-
-      return { ...acc, [currId]: memberChats };
-    }, {});
   }
 }
