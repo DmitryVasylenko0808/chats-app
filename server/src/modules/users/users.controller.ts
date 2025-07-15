@@ -17,8 +17,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 import { multerOptions } from '@/common/storage/multer.config';
 
-import { ChatsService } from '../chats/chats.service';
-import { GetChatsResponseDto } from '../chats/dto/responses';
 import { UpdateUserRequestDto } from './dto/requests';
 import { UserGroup, UserResponseDto } from './dto/responses/user.response.dto';
 import { UsersService } from './users.service';
@@ -27,10 +25,7 @@ import { UsersService } from './users.service';
 @UseGuards(PrivateAuthGuard)
 @SerializeOptions({ groups: [UserGroup.USER_DETAILS] })
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly chatsService: ChatsService
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   @SerializeOptions({ groups: [] })
@@ -60,11 +55,5 @@ export class UsersController {
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     const user = await this.usersService.deleteUser(id);
     return new UserResponseDto(user);
-  }
-
-  @Get(':id/chats')
-  async findUserChats(@Param('id', ParseIntPipe) id: number) {
-    const chats = await this.chatsService.findChats(id);
-    return chats.map((c) => new GetChatsResponseDto(c));
   }
 }

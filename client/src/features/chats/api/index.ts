@@ -11,8 +11,8 @@ import {
   UnpinMessageDto,
 } from './dto';
 
-export const getChats = async (userId?: number) => {
-  const response = await axiosInstance.get<GetChatsDto>(`${apiUrl}/users/${userId}/chats`);
+export const getChats = async () => {
+  const response = await axiosInstance.get<GetChatsDto>(`${apiUrl}/chats`);
 
   return response.data;
 };

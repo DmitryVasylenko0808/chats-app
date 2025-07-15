@@ -9,7 +9,7 @@ import { useGetChats } from '../hooks';
 
 export const RecentChats = () => {
   const { currentUser } = useAuth();
-  const { data, isLoading } = useGetChats(currentUser?.id);
+  const { data, isLoading } = useGetChats();
 
   if (isLoading) {
     return (
