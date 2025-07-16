@@ -58,6 +58,7 @@ export const SideBarDrawer = ({
       <ul className="flex flex-col">
         {menuItems.map((item) => (
           <SidebarMenuItem
+            type="link"
             key={item.label}
             to={item.to}
             icon={item.icon}
@@ -71,43 +72,68 @@ export const SideBarDrawer = ({
           <ThemeSwitcher />
         </li>
         <SidebarMenuDivider />
-        <li
-          className="hover:bg-secondary-300 dark:hover:bg-dark-100 dark:text-secondary-100 inline-flex w-full cursor-pointer items-center gap-4 px-6 py-2 text-lg"
+        <SidebarMenuItem
+          type="button"
+          icon={<AiOutlineLogout size={24} />}
+          label="Log Out"
           onClick={handleClickLogOut}
-        >
-          <AiOutlineLogout size={24} /> Log out
-        </li>
+        />
       </ul>
     </Drawer>
   );
 };
 
-type SidebarMenuItemProps = {
-  to: string;
+type SidebarMenuItemBaseProps = {
   icon: React.ReactNode;
   label: string;
+  onClick?: () => void;
+};
+type SidebarMenuItemLinkProps = SidebarMenuItemBaseProps & {
+  type: 'link';
+  to: string;
   state?: any;
   badge?: React.ReactNode;
 };
+type SidebarMenuItemButtonProps = SidebarMenuItemBaseProps & {
+  type: 'button';
+};
+type SidebarMenuItemProps = SidebarMenuItemLinkProps | SidebarMenuItemButtonProps;
 
-const SidebarMenuItem = ({ to, icon, label, state, badge }: Readonly<SidebarMenuItemProps>) => (
-  <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
-    <Link
-      to={to}
-      state={state}
-      className={cn(
-        'dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg',
-        { 'justify-between': badge }
-      )}
-    >
-      <div className="inline-flex items-center gap-4">
-        {icon}
-        <span>{label}</span>
-      </div>
-      {badge}
-    </Link>
-  </li>
-);
+const SidebarMenuItem = (props: Readonly<SidebarMenuItemProps>) => {
+  if (props.type === 'link') {
+    const { to, state, badge, icon, label } = props;
+
+    return (
+      <li className="hover:bg-secondary-300 dark:hover:bg-dark-100 inline-flex">
+        <Link
+          to={to}
+          state={state}
+          className={cn(
+            'dark:text-secondary-100 inline-flex w-full items-center gap-4 px-6 py-2 text-lg',
+            { 'justify-between': badge }
+          )}
+        >
+          <div className="inline-flex items-center gap-4">
+            {icon}
+            <span>{label}</span>
+          </div>
+          {badge}
+        </Link>
+      </li>
+    );
+  } else {
+    const { icon, label, onClick } = props;
+
+    return (
+      <li
+        className="hover:bg-secondary-300 dark:hover:bg-dark-100 dark:text-secondary-100 inline-flex w-full cursor-pointer items-center gap-4 px-6 py-2 text-lg"
+        onClick={onClick}
+      >
+        {icon} {label}
+      </li>
+    );
+  }
+};
 
 const SidebarMenuDivider = () => (
   <li className="mx-6 inline-flex">
