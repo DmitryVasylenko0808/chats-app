@@ -7,7 +7,6 @@ export * from './deleting-chat-modal';
 export * from './empty-chat';
 export * from './new-chat-modal';
 export * from './socket-container';
-export * from './chat-emoji-picker';
 export * from './create-chat-button';
 export * from './start-messaging';
 export * from './sidebar';

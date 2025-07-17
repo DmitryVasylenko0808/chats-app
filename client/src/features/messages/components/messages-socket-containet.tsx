@@ -1,12 +1,11 @@
 import { socketMessagesUrl } from '@/config/contants';
 import { useAuth } from '@/features/auth/hooks';
+import { UpdatedMessages } from '@/features/messages/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
 import { PropsWithChildren, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
-
-import { UpdatedMessages } from '../types';
 
 export const MessagesSocketContainer = ({ children }: Readonly<PropsWithChildren>) => {
   const { id } = useParams();

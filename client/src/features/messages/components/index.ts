@@ -7,3 +7,5 @@ export * from './reply-message-modal';
 export * from './pinned-message';
 export * from './preview-message-images';
 export * from './message-item';
+export * from './chat-emoji-picker';
+export * from './messages-socket-containet';

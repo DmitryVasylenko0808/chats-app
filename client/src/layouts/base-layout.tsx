@@ -1,5 +1,5 @@
 import { SideBar, SocketContainer } from '@/features/chats/components';
-import { MessagesSocketContainer } from '@/features/chats/components/messages-socket-containet';
+import { MessagesSocketContainer } from '@/features/messages/components';
 import {
   NotificationsSocketContainer,
   UnreadNotificationsNotifier,
