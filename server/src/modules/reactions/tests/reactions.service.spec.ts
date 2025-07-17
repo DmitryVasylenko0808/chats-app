@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createMockMessage } from '@/common/test-utils/factories/message.factory';
 import { createMockReaction } from '@/common/test-utils/factories/reaction.factory';
 
-import { MessagesService } from '@/modules/messages/messages.service';
+import { MessagesService } from '@/modules/messages/services/messages.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
 import { ReactionsRepository } from '../reactions-repository';

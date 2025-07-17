@@ -4,11 +4,11 @@ import { ChatsRealtimeService } from '@/modules/chats/services/chats-realtime.se
 import { ChatsService } from '@/modules/chats/services/chats.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
-import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
-import { MessagesRepository } from './messages-repository';
+import { EditMessageRequestDto, ForwardMessageRequestDto } from '../dto/requests';
+import { MessagesRepository } from '../messages-repository';
+import { ReplyMessageParams } from '../types/reply-message-params';
+import { SendMessageParams } from '../types/send-message-params';
 import { MessagingRoomsService } from './messaging-rooms.service';
-import { ReplyMessageParams } from './types/reply-message-params';
-import { SendMessageParams } from './types/send-message-params';
 
 @Injectable()
 export class MessagesService {

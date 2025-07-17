@@ -23,7 +23,7 @@ import {
   SendMessageRequestDto,
 } from './dto/requests';
 import { GetMessagesResponseDto, MessageResponseDto } from './dto/responses';
-import { MessagesService } from './messages.service';
+import { MessagesService } from './services/messages.service';
 
 @Controller('chats/:chatId/messages')
 @UseGuards(PrivateAuthGuard)

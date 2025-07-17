@@ -13,13 +13,13 @@ import { ReplyMessageParams } from '@/modules/messages/types/reply-message-param
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';
 
-import { MessagesService } from '../../messages/messages.service';
 import {
   EditMessageRequestDto,
   ForwardMessageRequestDto,
   SendMessageRequestDto,
 } from '../dto/requests';
 import { MessagesRepository } from '../messages-repository';
+import { MessagesService } from '../services/messages.service';
 
 describe('MessagesService', () => {
   let messagesService: MessagesService;

@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { MessagesService } from '../messages/messages.service';
-import { MessagingRoomsService } from '../messages/messaging-rooms.service';
+import { MessagesService } from '@/modules/messages/services/messages.service';
+import { MessagingRoomsService } from '@/modules/messages/services/messaging-rooms.service';
+
 import { ReactionsRepository } from './reactions-repository';
 
 @Injectable()

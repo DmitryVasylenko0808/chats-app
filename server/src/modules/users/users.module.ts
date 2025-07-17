@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { ChatsModule } from '../chats/chats.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UsersRepository } from './users-repository';
 import { UsersController } from './users.controller';

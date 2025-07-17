@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChatsRepository } from '../chats/chats-repository';
-import { MessagesRepository } from './messages-repository';
-import { MessagesGateway } from './messages.gateway';
+import { ChatsRepository } from '../../chats/chats-repository';
+import { MessagesRepository } from '../messages-repository';
+import { MessagesGateway } from '../messages.gateway';
 
 @Injectable()
 export class MessagingRoomsService {

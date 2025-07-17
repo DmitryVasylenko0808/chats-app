@@ -6,8 +6,8 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { MessagesRepository } from './messages-repository';
 import { MessagesController } from './messages.controller';
 import { MessagesGateway } from './messages.gateway';
-import { MessagesService } from './messages.service';
-import { MessagingRoomsService } from './messaging-rooms.service';
+import { MessagesService } from './services/messages.service';
+import { MessagingRoomsService } from './services/messaging-rooms.service';
 
 @Module({
   imports: [PrismaModule, ChatsModule, NotificationsModule],
