@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChatPreview, UserChatRooms } from './types';
+import { ChatPreview, UserChatRooms } from '../types';
 
 @Injectable()
 export class ChatsUtils {

@@ -2,10 +2,10 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
+import { ChatsRepository } from '../chats-repository';
+import { CreateChatRequestDto } from '../dto/requests';
+import { ChatsUtils } from '../providers/chats.utils';
 import { ChatsRealtimeService } from './chats-realtime.service';
-import { ChatsRepository } from './chats-repository';
-import { ChatsUtils } from './chats.utils';
-import { CreateChatRequestDto } from './dto/requests';
 
 @Injectable()
 export class ChatsService {

@@ -9,8 +9,8 @@ import { NotificationsService } from '@/modules/notifications/notifications.serv
 
 import { ChatsRepository } from '../chats-repository';
 import { ChatsGateway } from '../chats.gateway';
-import { ChatsService } from '../chats.service';
 import { CreateChatRequestDto } from '../dto/requests';
+import { ChatsService } from '../services/chats.service';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;

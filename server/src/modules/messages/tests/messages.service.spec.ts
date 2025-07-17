@@ -8,7 +8,7 @@ import { createMockMessage } from '@/common/test-utils/factories/message.factory
 import { createMockUser } from '@/common/test-utils/factories/user.factory';
 
 import { ChatsGateway } from '@/modules/chats/chats.gateway';
-import { ChatsService } from '@/modules/chats/chats.service';
+import { ChatsService } from '@/modules/chats/services/chats.service';
 import { ReplyMessageParams } from '@/modules/messages/types/reply-message-params';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 import { PrismaService } from '@/modules/prisma/prisma.service';

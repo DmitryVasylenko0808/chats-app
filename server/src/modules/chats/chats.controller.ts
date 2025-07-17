@@ -12,9 +12,9 @@ import {
 import { CurrentUser } from '@/common/decorators/current-user.descorator';
 import { PrivateAuthGuard } from '@/common/guards/private-auth.guard';
 
-import { ChatsService } from './chats.service';
 import { CreateChatRequestDto } from './dto/requests';
 import { ChatResponseDto, GetChatsResponseDto } from './dto/responses';
+import { ChatsService } from './services/chats.service';
 
 @Controller('chats')
 @UseGuards(PrivateAuthGuard)

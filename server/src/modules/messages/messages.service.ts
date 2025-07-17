@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { ChatsService } from '@/modules/chats/chats.service';
+import { ChatsRealtimeService } from '@/modules/chats/services/chats-realtime.service';
+import { ChatsService } from '@/modules/chats/services/chats.service';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
-import { ChatsRealtimeService } from '../chats/chats-realtime.service';
 import { EditMessageRequestDto, ForwardMessageRequestDto } from './dto/requests';
 import { MessagesRepository } from './messages-repository';
 import { MessagingRoomsService } from './messaging-rooms.service';

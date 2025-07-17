@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChatsRepository } from './chats-repository';
-import { ChatsGateway } from './chats.gateway';
-import { ChatsUtils } from './chats.utils';
-import { RefreshChatMember, RefreshMembersChatParams } from './types';
+import { ChatsRepository } from '../chats-repository';
+import { ChatsGateway } from '../chats.gateway';
+import { ChatsUtils } from '../providers/chats.utils';
+import { RefreshChatMember, RefreshMembersChatParams } from '../types';
 
 @Injectable()
 export class ChatsRealtimeService {
