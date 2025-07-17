@@ -1,3 +1,4 @@
+import { Messages, SendMessageForm } from '@/features/messages/components';
 import { useAlerts } from '@/shared/hooks';
 import { Button, Loader } from '@/shared/ui';
 
@@ -8,8 +9,6 @@ import { useNavigate, useParams } from 'react-router';
 import { useGetChatById } from '../hooks';
 import { ChatInfo } from './chat-info';
 import { ChatMenu } from './chat-menu';
-import { Messages } from './messages';
-import { SendMessageForm } from './send-message-form';
 
 export const Chat = () => {
   const { id } = useParams();

@@ -1,11 +1,12 @@
 import { Message } from '@/entities';
 import { useAddBookmark } from '@/features/bookmarks/hooks';
-import { useAlerts, useCopy } from '@/shared/hooks';
-import { Loader, Typograpghy } from '@/shared/ui';
-
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-
+import {
+  EditMessageModal,
+  ForwardMessageModal,
+  MessagesList,
+  PinnedMessage,
+  ReplyMessageModal,
+} from '@/features/messages/components';
 import {
   useDeleteMessage,
   useEditMessage,
@@ -14,13 +15,13 @@ import {
   usePinMessage,
   useReplyMessage,
   useUnpinMessage,
-} from '../hooks';
-import { EditMessageFormFields, ReplyMessageFormFields } from '../validations';
-import { EditMessageModal } from './edit-message-modal';
-import { ForwardMessageModal } from './forward-message-modal';
-import { MessagesList } from './messages-list';
-import { PinnedMessage } from './pinned-message';
-import { ReplyMessageModal } from './reply-message-modal';
+} from '@/features/messages/hooks';
+import { EditMessageFormFields, ReplyMessageFormFields } from '@/features/messages/validations';
+import { useAlerts, useCopy } from '@/shared/hooks';
+import { Loader, Typograpghy } from '@/shared/ui';
+
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 type MessagesProps = {
   chatId: number;

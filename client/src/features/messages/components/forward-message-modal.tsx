@@ -1,8 +1,7 @@
 import { Chat, Message } from '@/entities';
+import { ChatsList } from '@/features/chats/components';
+import { useGetChats } from '@/features/chats/hooks';
 import { Modal, ModalProps, Typograpghy } from '@/shared/ui';
-
-import { useGetChats } from '../hooks';
-import { ChatsList } from './chats-list';
 
 type ForwardMessageModalProps = ModalProps & {
   message: Message;
