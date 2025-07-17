@@ -1,5 +1,6 @@
 import { Message, User } from '@/entities';
-import { useAddReaction, useDeleteReaction } from '@/features/messages/hooks';
+import { MessageReactions } from '@/features/reactions/components';
+import { useAddReaction, useDeleteReaction } from '@/features/reactions/hooks';
 import { Typograpghy } from '@/shared/ui';
 import { cn } from '@/utils/cn';
 
@@ -9,7 +10,6 @@ import { MessageContent } from './message-content';
 import { MessageImages } from './message-images';
 import { MessageMenu } from './message-menu';
 import { MessageMeta } from './message-meta';
-import { MessageReactions } from './message-reactions';
 import { MessageSender } from './message-sender';
 
 type MessageItemProps = {
