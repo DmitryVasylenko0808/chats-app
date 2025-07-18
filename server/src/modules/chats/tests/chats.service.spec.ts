@@ -8,30 +8,34 @@ import { createMockChat } from '@/common/test-utils/factories/chat.factory';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 
 import { ChatsRepository } from '../chats-repository';
-import { ChatsGateway } from '../chats.gateway';
 import { CreateChatRequestDto } from '../dto/requests';
+import { ChatsUtils } from '../providers/chats.utils';
+import { ChatsRealtimeService } from '../services/chats-realtime.service';
 import { ChatsService } from '../services/chats.service';
 
 describe('ChatsService', () => {
   let chatsService: ChatsService;
   let chatsRepository: DeepMockProxy<ChatsRepository>;
+  let chatsUtils: DeepMockProxy<ChatsUtils>;
+  let chatsRealtimeService: DeepMockProxy<ChatsRealtimeService>;
   let notificationsService: DeepMockProxy<NotificationsService>;
-  let chatsGateway: DeepMockProxy<ChatsGateway>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ChatsService,
         { provide: ChatsRepository, useValue: mockDeep<ChatsRepository>() },
+        { provide: ChatsUtils, useValue: mockDeep<ChatsUtils>() },
+        { provide: ChatsRealtimeService, useValue: mockDeep<ChatsRealtimeService>() },
         { provide: NotificationsService, useValue: mockDeep<NotificationsService>() },
-        { provide: ChatsGateway, useValue: mockDeep<ChatsGateway>() },
       ],
     }).compile();
 
     chatsService = module.get<ChatsService>(ChatsService);
     chatsRepository = module.get(ChatsRepository);
+    chatsUtils = module.get(ChatsUtils);
+    chatsRealtimeService = module.get(ChatsRealtimeService);
     notificationsService = module.get(NotificationsService);
-    chatsGateway = module.get(ChatsGateway);
   });
 
   it('should be defined', () => {
@@ -56,15 +60,18 @@ describe('ChatsService', () => {
         },
       ];
       chatsRepository.findManyByUserId.mockResolvedValueOnce(mockFoundedChats);
+      chatsUtils.sortChatsByLastMessage.mockReturnValueOnce(expectedResult);
 
       const result = await chatsService.findChats(userId);
 
       expect(chatsRepository.findManyByUserId).toHaveBeenCalled();
+      expect(chatsUtils.sortChatsByLastMessage).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
 
     it('should not find chats by user id', async () => {
       chatsRepository.findManyByUserId.mockResolvedValueOnce([]);
+      chatsUtils.sortChatsByLastMessage.mockReturnValueOnce([]);
 
       const result = await chatsService.findChats(userId);
 
@@ -104,19 +111,17 @@ describe('ChatsService', () => {
       const dto: CreateChatRequestDto = { membersIds: [userId, 2] };
       const mockCreatedChat = createMockChat(1, dto.membersIds);
       const expectedResult = mockCreatedChat;
-      const refreshMembersChatsSpy = jest
-        .spyOn(chatsService, 'refreshMembersChats')
-        .mockResolvedValueOnce(null);
 
       chatsRepository.findExistingChatBetweenUsers.mockResolvedValueOnce(null);
       chatsRepository.create.mockResolvedValueOnce(mockCreatedChat);
+      chatsRealtimeService.refreshMembersChats.mockResolvedValueOnce(undefined);
       notificationsService.notifyNewChat.mockResolvedValueOnce();
 
       const result = await chatsService.createChat(userId, dto);
 
       expect(chatsRepository.findExistingChatBetweenUsers).toHaveBeenCalled();
       expect(chatsRepository.create).toHaveBeenCalled();
-      expect(refreshMembersChatsSpy).toHaveBeenCalled();
+      expect(chatsRealtimeService.refreshMembersChats).toHaveBeenCalled();
       expect(notificationsService.notifyNewChat).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
@@ -132,6 +137,7 @@ describe('ChatsService', () => {
 
       expect(chatsRepository.findExistingChatBetweenUsers).toHaveBeenCalled();
       expect(chatsRepository.create).not.toHaveBeenCalled();
+      expect(chatsRealtimeService.refreshMembersChats).not.toHaveBeenCalled();
       expect(notificationsService.notifyNewChat).not.toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
@@ -153,17 +159,15 @@ describe('ChatsService', () => {
       const findOneChatOrThrowSpy = jest
         .spyOn(chatsService, 'findOneChatOrThrow')
         .mockResolvedValueOnce(mockFoundedChat);
-      const refreshMembersChatsSpy = jest
-        .spyOn(chatsService, 'refreshMembersChats')
-        .mockResolvedValueOnce(null);
 
       chatsRepository.delete.mockResolvedValueOnce(mockDeletedChat);
+      chatsRealtimeService.refreshMembersChats.mockResolvedValueOnce(undefined);
 
       const result = await chatsService.deleteChat(id);
 
       expect(findOneChatOrThrowSpy).toHaveBeenCalled();
       expect(chatsRepository.delete).toHaveBeenCalled();
-      expect(refreshMembersChatsSpy).toHaveBeenCalled();
+      expect(chatsRealtimeService.refreshMembersChats).toHaveBeenCalled();
       expect(result).toEqual(mockDeletedChat);
     });
 
