@@ -1,6 +1,5 @@
 import { Message } from '@/entities';
-import { Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { cn, Typograpghy } from '@/shared';
 
 import { MessageImages } from './message-images';
 

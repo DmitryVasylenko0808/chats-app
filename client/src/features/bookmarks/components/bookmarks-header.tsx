@@ -1,4 +1,4 @@
-import { Button, Typograpghy } from '@/shared/ui';
+import { Button, Typograpghy } from '@/shared';
 
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { FiBookmark } from 'react-icons/fi';

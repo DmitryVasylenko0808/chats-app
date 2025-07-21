@@ -1,6 +1,6 @@
-import { socketUrl } from '@/config/contants';
 import { Chat } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
+import { SOCKET_URL } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
@@ -17,7 +17,7 @@ export const SocketContainer = ({ children }: Readonly<PropsWithChildren>) => {
     };
 
     if (currentUser?.id) {
-      socket.current = io(socketUrl, {
+      socket.current = io(SOCKET_URL, {
         query: {
           userId: currentUser.id,
         },

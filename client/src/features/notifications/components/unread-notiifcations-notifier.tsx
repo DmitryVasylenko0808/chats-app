@@ -1,4 +1,4 @@
-import { useAlerts } from '@/shared/hooks';
+import { useAlerts } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 

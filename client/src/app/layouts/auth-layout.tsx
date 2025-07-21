@@ -1,5 +1,4 @@
-import { Logo, ThemeSwitcher } from '@/shared/components';
-import { Typograpghy } from '@/shared/ui';
+import { Logo, ThemeSwitcher, Typograpghy } from '@/shared';
 
 import { Link, Outlet } from 'react-router';
 

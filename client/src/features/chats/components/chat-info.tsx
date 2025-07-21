@@ -1,6 +1,6 @@
 import { Chat } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
-import { Typograpghy } from '@/shared/ui';
+import { Typograpghy } from '@/shared';
 
 type ChatInfoProps = { chat: Chat };
 

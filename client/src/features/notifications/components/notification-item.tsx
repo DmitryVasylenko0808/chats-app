@@ -1,6 +1,5 @@
 import { EntityType, Notification, NotificationType } from '@/entities';
-import { Button, Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { Button, cn, Typograpghy } from '@/shared';
 
 import { AiOutlineClose } from 'react-icons/ai';
 

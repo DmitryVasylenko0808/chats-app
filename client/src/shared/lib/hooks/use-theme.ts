@@ -1,6 +1,6 @@
-import { webStorage } from '@/config/web-storage';
+import { webStorage } from '@/shared/config/web-storage';
 
-import { useThemeStore } from '../theme-store';
+import { useThemeStore } from '../../model/theme-store';
 
 export const useTheme = () => {
   const { isDarkTheme, setIsDarkTheme } = useThemeStore();

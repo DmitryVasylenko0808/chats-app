@@ -1,8 +1,7 @@
 import { Chat } from '@/entities';
 import { useSendMessage } from '@/features/messages/hooks';
 import { SendMessageFormFields, sendMessageSchema } from '@/features/messages/validations';
-import { useAlerts } from '@/shared/hooks';
-import { Button, FilesUploadButton, Loader, TextArea } from '@/shared/ui';
+import { Button, FilesUploadButton, Loader, TextArea, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useEffect } from 'react';

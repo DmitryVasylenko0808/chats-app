@@ -1,5 +1,5 @@
 import { Message } from '@/entities';
-import { Button, Typograpghy } from '@/shared/ui';
+import { Button, Typograpghy } from '@/shared';
 
 import { AiOutlineClose } from 'react-icons/ai';
 

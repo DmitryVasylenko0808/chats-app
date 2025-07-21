@@ -14,3 +14,8 @@ export * from './switcher';
 export * from './tabs';
 export * from './selector';
 export * from './pagination';
+export * from './alerts-container';
+export * from './logo';
+export * from './require-auth';
+export * from './theme-switcher';
+export * from './users-list';

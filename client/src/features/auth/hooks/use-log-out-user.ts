@@ -1,4 +1,4 @@
-import { webStorage } from '@/config/web-storage';
+import { webStorage } from '@/shared';
 
 import { useAuthStore } from '../store';
 

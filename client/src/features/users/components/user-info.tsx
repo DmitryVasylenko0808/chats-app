@@ -1,5 +1,5 @@
 import { User } from '@/entities';
-import { Typograpghy } from '@/shared/ui';
+import { Typograpghy } from '@/shared';
 
 type UserInfoProps = { user: User };
 

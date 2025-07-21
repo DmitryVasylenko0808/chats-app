@@ -8,7 +8,7 @@ import ProfilePage from '@/pages/profile-page';
 import RegisterPage from '@/pages/register-page';
 import SettingsPage from '@/pages/settings-page';
 import SignInPage from '@/pages/sign-in-page';
-import { RequireAuth } from '@/shared/components';
+import { RequireAuth } from '@/shared';
 
 import { Route, Routes, useLocation } from 'react-router';
 

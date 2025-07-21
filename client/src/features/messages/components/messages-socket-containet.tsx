@@ -1,6 +1,6 @@
-import { socketMessagesUrl } from '@/config/contants';
 import { useAuth } from '@/features/auth/hooks';
 import { UpdatedMessages } from '@/features/messages/types';
+import { SOCKET_MESSAGES_URL } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
@@ -21,7 +21,7 @@ export const MessagesSocketContainer = ({ children }: Readonly<PropsWithChildren
     };
 
     if (currentUser?.id) {
-      socket.current = io(socketMessagesUrl, {
+      socket.current = io(SOCKET_MESSAGES_URL, {
         query: {
           userId: currentUser.id,
         },

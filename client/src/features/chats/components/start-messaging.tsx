@@ -1,6 +1,5 @@
 import { NewChatModal } from '@/features/chats/components';
-import { useModal } from '@/shared/hooks';
-import { Button } from '@/shared/ui';
+import { Button, useModal } from '@/shared';
 
 export const StartMessaging = () => {
   const modal = useModal();

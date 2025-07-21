@@ -1,7 +1,6 @@
 import { Chat, User } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
-import { Loader, Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { cn, Loader, Typograpghy } from '@/shared';
 
 import { NavLink } from 'react-router';
 

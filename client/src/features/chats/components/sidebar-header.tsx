@@ -1,8 +1,5 @@
 import { useGetUnreadCountNotifications } from '@/features/notifications/hooks';
-import { Logo } from '@/shared/components';
-import { useDrawer } from '@/shared/hooks';
-import { Button, Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { Button, cn, Logo, Typograpghy, useDrawer } from '@/shared';
 
 import { AiOutlineMenu } from 'react-icons/ai';
 import { Link } from 'react-router';

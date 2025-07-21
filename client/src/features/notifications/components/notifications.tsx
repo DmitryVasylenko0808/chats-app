@@ -1,7 +1,14 @@
 import { Notification } from '@/entities';
-import { usePagination } from '@/shared/hooks';
-import { Loader, Option, Pagination, TabItem, Tabs, Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import {
+  cn,
+  Loader,
+  Option,
+  Pagination,
+  TabItem,
+  Tabs,
+  Typograpghy,
+  usePagination,
+} from '@/shared';
 
 import { useNavigate } from 'react-router';
 

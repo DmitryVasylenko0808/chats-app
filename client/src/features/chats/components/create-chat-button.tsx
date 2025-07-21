@@ -1,7 +1,6 @@
 import { User } from '@/entities';
 import { useCreateChat } from '@/features/chats/hooks';
-import { useAlerts } from '@/shared/hooks';
-import { Button, Loader } from '@/shared/ui';
+import { Button, Loader, useAlerts } from '@/shared';
 
 import { useNavigate } from 'react-router';
 

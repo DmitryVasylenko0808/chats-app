@@ -1,8 +1,7 @@
 import { Message, User } from '@/entities';
 import { MessageReactions } from '@/features/reactions/components';
 import { useAddReaction, useDeleteReaction } from '@/features/reactions/hooks';
-import { Typograpghy } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { cn, Typograpghy } from '@/shared';
 
 import { EmbeddedMessage } from './embedded-message';
 import { MessageAvatar } from './message-avatar';

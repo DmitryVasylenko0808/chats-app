@@ -1,6 +1,5 @@
 import { Bookmark } from '@/entities';
-import { useAlerts, useCopy } from '@/shared/hooks';
-import { Loader, Typograpghy } from '@/shared/ui';
+import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 

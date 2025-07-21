@@ -1,6 +1,4 @@
-import { useToogleMenu } from '@/shared/hooks';
-import { Button, Menu, ReactionPicker } from '@/shared/ui';
-import { cn } from '@/utils/cn';
+import { Button, cn, Menu, ReactionPicker, useToogleMenu } from '@/shared';
 
 import {
   AiOutlineCopy,

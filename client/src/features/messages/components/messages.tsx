@@ -17,8 +17,7 @@ import {
   useUnpinMessage,
 } from '@/features/messages/hooks';
 import { EditMessageFormFields, ReplyMessageFormFields } from '@/features/messages/validations';
-import { useAlerts, useCopy } from '@/shared/hooks';
-import { Loader, Typograpghy } from '@/shared/ui';
+import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';

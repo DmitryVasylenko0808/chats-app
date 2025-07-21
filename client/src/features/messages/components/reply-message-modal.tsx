@@ -1,6 +1,6 @@
 import { Message } from '@/entities';
 import { ReplyMessageFormFields, replyMessageSchema } from '@/features/messages/validations';
-import { Button, Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';

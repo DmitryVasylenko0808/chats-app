@@ -1,6 +1,5 @@
 import { User } from '@/entities';
-import { useAlerts } from '@/shared/hooks';
-import { Button, Loader, TextArea, TextField } from '@/shared/ui';
+import { Button, Loader, TextArea, TextField, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';

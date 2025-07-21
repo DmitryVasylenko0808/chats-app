@@ -1,5 +1,4 @@
-import { axiosInstance } from '@/config/axios.config';
-import { apiUrl } from '@/config/contants';
+import { API_URL, apiClient } from '@/shared';
 
 import { GetMeDto, SignInUserDto } from './dto';
 
@@ -11,7 +10,7 @@ export type RegisterUserParams = {
 };
 
 export const registerUser = async (data: RegisterUserParams) => {
-  const response = await axiosInstance.post(`${apiUrl}/auth/register`, data);
+  const response = await apiClient.post(`${API_URL}/auth/register`, data);
 
   return response.data;
 };
@@ -22,13 +21,13 @@ export type SignInUserParams = {
 };
 
 export const signInUser = async (data: SignInUserParams) => {
-  const response = await axiosInstance.post<SignInUserDto>(`${apiUrl}/auth/sign-in`, data);
+  const response = await apiClient.post<SignInUserDto>(`${API_URL}/auth/sign-in`, data);
 
   return response.data;
 };
 
 export const getMe = async () => {
-  const response = await axiosInstance.get<GetMeDto>(`${apiUrl}/auth/me`);
+  const response = await apiClient.get<GetMeDto>(`${API_URL}/auth/me`);
 
   return response.data;
 };

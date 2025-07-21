@@ -1,5 +1,4 @@
-import { useToogleMenu } from '@/shared/hooks';
-import { Button, Menu, Typograpghy } from '@/shared/ui';
+import { Button, Menu, Typograpghy, useToogleMenu } from '@/shared';
 
 import { AiOutlineArrowLeft, AiOutlineBell, AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 import { useNavigate } from 'react-router';

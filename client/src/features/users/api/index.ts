@@ -1,10 +1,9 @@
-import { axiosInstance } from '@/config/axios.config';
-import { apiUrl } from '@/config/contants';
+import { API_URL, apiClient } from '@/shared';
 
 import { GetUserDto, GetUsersDto, UpdateUserDto } from './dto';
 
 export const getUsers = async (search?: string) => {
-  const response = await axiosInstance.get<GetUsersDto>(`${apiUrl}/users`, {
+  const response = await apiClient.get<GetUsersDto>(`${API_URL}/users`, {
     params: { search },
   });
 
@@ -12,7 +11,7 @@ export const getUsers = async (search?: string) => {
 };
 
 export const getUser = async (id?: number | null) => {
-  const response = await axiosInstance.get<GetUserDto>(`${apiUrl}/users/${id}`);
+  const response = await apiClient.get<GetUserDto>(`${API_URL}/users/${id}`);
 
   return response.data;
 };
@@ -33,7 +32,7 @@ export const updateUser = async (data: UpdateUserParams) => {
 
   Object.entries(updateData).forEach(([k, v]) => formData.append(k, v));
 
-  const response = await axiosInstance.patch<UpdateUserDto>(`${apiUrl}/users/${id}`, formData, {
+  const response = await apiClient.patch<UpdateUserDto>(`${API_URL}/users/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -43,7 +42,7 @@ export const updateUser = async (data: UpdateUserParams) => {
 };
 
 export const deleteUser = async (id?: number | null) => {
-  const response = await axiosInstance.delete(`${apiUrl}/users/${id}`);
+  const response = await apiClient.delete(`${API_URL}/users/${id}`);
 
   return response.data;
 };

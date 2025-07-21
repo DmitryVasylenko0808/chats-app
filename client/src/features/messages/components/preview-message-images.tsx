@@ -1,5 +1,4 @@
-import { usePreviewImages } from '@/shared/hooks';
-import { Button } from '@/shared/ui';
+import { Button, usePreviewImages } from '@/shared';
 
 import { ComponentProps } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';

@@ -1,6 +1,5 @@
 import { useAuth } from '@/features/auth/hooks';
-import { useAlerts } from '@/shared/hooks';
-import { Button, Loader, Modal, ModalProps, Typograpghy } from '@/shared/ui';
+import { Button, Loader, Modal, ModalProps, Typograpghy, useAlerts } from '@/shared';
 
 import { useDeleteUser } from '../hooks';
 

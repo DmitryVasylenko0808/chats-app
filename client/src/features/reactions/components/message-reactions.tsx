@@ -1,5 +1,5 @@
 import { Message, Reaction, User } from '@/entities';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared';
 
 type MessageReactionsProps = {
   participantMessage: boolean;

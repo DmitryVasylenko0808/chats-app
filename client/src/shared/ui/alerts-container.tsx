@@ -6,10 +6,11 @@ import {
   AiOutlineStop,
 } from 'react-icons/ai';
 
-import { useAlerts } from '../hooks';
+import { useAlerts } from '../lib/hooks/use-alerts';
 import { AlertVariant } from '../types';
-import { Button, Typograpghy } from '../ui';
-import Portal from '../ui/portal';
+import { Button } from './button';
+import Portal from './portal';
+import { Typograpghy } from './typography';
 
 export const AlertsContainer = () => {
   const { alerts, removeAlert } = useAlerts();

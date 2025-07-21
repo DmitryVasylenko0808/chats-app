@@ -1,4 +1,4 @@
-import { Option, Selector, Typograpghy } from '@/shared/ui';
+import { Option, Selector, Typograpghy } from '@/shared';
 
 type NotificationsFiltersProps = {
   readOptions: Option[];

@@ -1,4 +1,4 @@
-import { webStorage } from '@/config/web-storage';
+import { webStorage } from '@/shared';
 import { useQuery } from '@tanstack/react-query';
 
 import { getMe } from '../api';

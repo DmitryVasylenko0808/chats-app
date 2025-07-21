@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { Alert } from './types';
+import { Alert } from '../types';
 
 type AlertsState = { alerts: Alert[] };
 type AlertsAction = {

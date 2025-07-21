@@ -1,10 +1,9 @@
-import { axiosInstance } from '@/config/axios.config';
-import { apiUrl } from '@/config/contants';
+import { API_URL, apiClient } from '@/shared';
 
 import { AddBookmarkDto, DeleteBookmarkDto, GetBookmarksDto } from './dto';
 
 export const getBookmarks = async () => {
-  const response = await axiosInstance.get<GetBookmarksDto>(`${apiUrl}/bookmarks`);
+  const response = await apiClient.get<GetBookmarksDto>(`${API_URL}/bookmarks`);
 
   return response.data;
 };
@@ -12,7 +11,7 @@ export const getBookmarks = async () => {
 type AddBookmarkParams = { messageId: number };
 
 export const addBookmark = async (params: AddBookmarkParams) => {
-  const response = await axiosInstance.post<AddBookmarkDto>(`${apiUrl}/bookmarks`, params);
+  const response = await apiClient.post<AddBookmarkDto>(`${API_URL}/bookmarks`, params);
 
   return response.data;
 };
@@ -20,9 +19,7 @@ export const addBookmark = async (params: AddBookmarkParams) => {
 type DeleteBookmarkParams = { id?: number };
 
 export const deleteBookmark = async (params: DeleteBookmarkParams) => {
-  const response = await axiosInstance.delete<DeleteBookmarkDto>(
-    `${apiUrl}/bookmarks/${params.id}`
-  );
+  const response = await apiClient.delete<DeleteBookmarkDto>(`${API_URL}/bookmarks/${params.id}`);
 
   return response.data;
 };

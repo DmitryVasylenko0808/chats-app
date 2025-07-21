@@ -1,5 +1,4 @@
-import { useClickOutside } from '@/shared/hooks';
-import { Button, EmojiPicker } from '@/shared/ui';
+import { Button, EmojiPicker, useClickOutside } from '@/shared';
 
 import { useRef, useState } from 'react';
 import { AiOutlineSmile } from 'react-icons/ai';

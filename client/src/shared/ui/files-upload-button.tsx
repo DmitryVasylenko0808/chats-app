@@ -1,7 +1,7 @@
 import { ComponentProps, useEffect } from 'react';
 import { AiOutlinePicture } from 'react-icons/ai';
 
-import { useAlerts } from '../hooks';
+import { useAlerts } from '../lib/hooks/use-alerts';
 
 type FilesUploadButtonProps = ComponentProps<'input'> & {
   label?: string;

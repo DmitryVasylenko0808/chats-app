@@ -1,5 +1,4 @@
-import { useModal } from '@/shared/hooks';
-import { Button, Typograpghy } from '@/shared/ui';
+import { Button, Typograpghy, useModal } from '@/shared';
 
 import { NewChatModal } from './new-chat-modal';
 

@@ -1,5 +1,4 @@
-import { useAlerts } from '@/shared/hooks';
-import { Button, Loader, TextField, Typograpghy } from '@/shared/ui';
+import { Button, Loader, TextField, Typograpghy, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';

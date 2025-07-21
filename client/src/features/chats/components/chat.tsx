@@ -1,6 +1,5 @@
 import { Messages, SendMessageForm } from '@/features/messages/components';
-import { useAlerts } from '@/shared/hooks';
-import { Button, Loader } from '@/shared/ui';
+import { Button, Loader, useAlerts } from '@/shared';
 
 import { useEffect } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';

@@ -1,4 +1,4 @@
-import { Typograpghy } from '@/shared/ui';
+import { Typograpghy } from '@/shared';
 
 import { Link } from 'react-router';
 

@@ -1,5 +1,4 @@
-import { useModal, useToogleMenu } from '@/shared/hooks';
-import { Button, Menu } from '@/shared/ui';
+import { Button, Menu, useModal, useToogleMenu } from '@/shared';
 
 import { AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 

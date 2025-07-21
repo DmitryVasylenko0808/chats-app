@@ -1,4 +1,4 @@
-import { useDebounce } from '@/shared/hooks';
+import { useDebounce } from '@/shared';
 
 import { useState } from 'react';
 

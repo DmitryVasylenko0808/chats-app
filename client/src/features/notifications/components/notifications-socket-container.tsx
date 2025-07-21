@@ -1,7 +1,6 @@
-import { notificationsSocketUrl } from '@/config/contants';
 import { Notification } from '@/entities';
 import { useAuth } from '@/features/auth/hooks';
-import { useAlerts } from '@/shared/hooks';
+import { NOTIFICATIONS_SOCKET_URL, useAlerts } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 
@@ -29,7 +28,7 @@ export const NotificationsSocketContainer = ({
     };
 
     if (currentUser?.id) {
-      socket.current = io(notificationsSocketUrl, {
+      socket.current = io(NOTIFICATIONS_SOCKET_URL, {
         query: {
           userId: currentUser.id,
         },

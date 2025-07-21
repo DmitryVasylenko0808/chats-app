@@ -1,5 +1,4 @@
-import { useModal, useTheme } from '@/shared/hooks';
-import { Button, Switcher, Typograpghy } from '@/shared/ui';
+import { Button, Switcher, Typograpghy, useModal, useTheme } from '@/shared';
 
 import { ChangeEvent } from 'react';
 

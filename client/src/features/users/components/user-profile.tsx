@@ -1,7 +1,6 @@
 import { useAuth } from '@/features/auth/hooks';
 import { CreateChatButton } from '@/features/chats/components';
-import { useModal } from '@/shared/hooks';
-import { Button, Loader } from '@/shared/ui';
+import { Button, Loader, useModal } from '@/shared';
 
 import { useParams } from 'react-router';
 

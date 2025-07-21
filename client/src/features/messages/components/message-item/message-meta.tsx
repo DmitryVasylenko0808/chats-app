@@ -1,5 +1,5 @@
 import { Message } from '@/entities';
-import { cn } from '@/utils/cn';
+import { cn } from '@/shared';
 
 import { AiOutlineClockCircle } from 'react-icons/ai';
 

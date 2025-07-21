@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { webStorage } from './web-storage';
+import { webStorage } from '../config/web-storage';
 
-const axiosInstance = axios.create();
+const apiClient = axios.create();
 
-axiosInstance.interceptors.request.use((cfg) => {
+apiClient.interceptors.request.use((cfg) => {
   const accessToken = webStorage.getItem('access_token');
 
   cfg.headers.Authorization = `Bearer ${accessToken}`;
@@ -12,7 +12,7 @@ axiosInstance.interceptors.request.use((cfg) => {
   return cfg;
 });
 
-axiosInstance.interceptors.response.use(
+apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (axios.isAxiosError(error)) {
@@ -25,4 +25,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export { axiosInstance };
+export { apiClient };

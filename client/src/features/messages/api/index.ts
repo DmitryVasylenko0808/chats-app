@@ -1,10 +1,9 @@
-import { axiosInstance } from '@/config/axios.config';
-import { apiUrl } from '@/config/contants';
+import { API_URL, apiClient } from '@/shared';
 
 import { GetMessagesDto, PinMessageDto, SendMessageDto, UnpinMessageDto } from './dto';
 
 export const getMessages = async (chatid: number) => {
-  const response = await axiosInstance.get<GetMessagesDto>(`${apiUrl}/chats/${chatid}/messages`);
+  const response = await apiClient.get<GetMessagesDto>(`${API_URL}/chats/${chatid}/messages`);
 
   return response.data;
 };
@@ -23,8 +22,8 @@ export const sendMessage = async (params: SendMessageParams) => {
   Object.entries(data).forEach(([k, v]) => formData.append(k, v));
   images?.map((img) => formData.append('images', img));
 
-  const response = await axiosInstance.post<SendMessageDto>(
-    `${apiUrl}/chats/${chatId}/messages`,
+  const response = await apiClient.post<SendMessageDto>(
+    `${API_URL}/chats/${chatId}/messages`,
     formData,
     {
       headers: {
@@ -45,7 +44,7 @@ type EditMessageParams = {
 export const editMessage = async (params: EditMessageParams) => {
   const { chatId, messageId, ...data } = params;
 
-  const response = await axiosInstance.patch(`${apiUrl}/chats/${chatId}/messages/${messageId}`, {
+  const response = await apiClient.patch(`${API_URL}/chats/${chatId}/messages/${messageId}`, {
     chatId,
     ...data,
   });
@@ -59,7 +58,7 @@ type DeleteMessageParams = {
 };
 
 export const deleteMessage = async ({ chatId, messageId }: DeleteMessageParams) => {
-  const response = await axiosInstance.delete(`${apiUrl}/chats/${chatId}/messages/${messageId}`);
+  const response = await apiClient.delete(`${API_URL}/chats/${chatId}/messages/${messageId}`);
 
   return response.data;
 };
@@ -73,8 +72,8 @@ type ReplyMessageParams = {
 export const replyMessage = async (params: ReplyMessageParams) => {
   const { chatId, messageId, ...data } = params;
 
-  const result = await axiosInstance.post(
-    `${apiUrl}/chats/${chatId}/messages/${messageId}/reply`,
+  const result = await apiClient.post(
+    `${API_URL}/chats/${chatId}/messages/${messageId}/reply`,
     data
   );
 
@@ -90,8 +89,8 @@ type ForwardMessageParams = {
 export const forwardMessage = async (params: ForwardMessageParams) => {
   const { chatId, messageId, ...data } = params;
 
-  const result = await axiosInstance.post(
-    `${apiUrl}/chats/${chatId}/messages/${messageId}/forward`,
+  const result = await apiClient.post(
+    `${API_URL}/chats/${chatId}/messages/${messageId}/forward`,
     data
   );
 
@@ -103,8 +102,8 @@ type PinMessageParams = { chatId: number; messageId: number };
 export const pinMessage = async (params: PinMessageParams) => {
   const { chatId, messageId } = params;
 
-  const result = await axiosInstance.patch<PinMessageDto>(
-    `${apiUrl}/chats/${chatId}/messages/${messageId}/pin`
+  const result = await apiClient.patch<PinMessageDto>(
+    `${API_URL}/chats/${chatId}/messages/${messageId}/pin`
   );
 
   return result.data;
@@ -115,8 +114,8 @@ type UnpinMessageParams = { chatId: number; messageId: number };
 export const unpinMessage = async (params: UnpinMessageParams) => {
   const { chatId, messageId } = params;
 
-  const result = await axiosInstance.patch<UnpinMessageDto>(
-    `${apiUrl}/chats/${chatId}/messages/${messageId}/unpin`
+  const result = await apiClient.patch<UnpinMessageDto>(
+    `${API_URL}/chats/${chatId}/messages/${messageId}/unpin`
   );
 
   return result.data;

@@ -1,5 +1,5 @@
 import { UserSettings } from '@/features/users/components';
-import { Modal } from '@/shared/ui';
+import { Modal } from '@/shared';
 
 import { useNavigate } from 'react-router';
 

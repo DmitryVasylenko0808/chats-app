@@ -1,5 +1,6 @@
 import { User } from '@/entities';
-import { Typograpghy } from '@/shared/ui';
+
+import { Typograpghy } from './typography';
 
 type UsersListProps = { users?: User[]; onClickItem: (user: User) => void };
 
