@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router';
 
-import { useAuth } from '../hooks';
+import { useAuth } from '../../features/auth/hooks';
 
 export const RequireAuth = () => {
   const { isAuthenticated } = useAuth();
