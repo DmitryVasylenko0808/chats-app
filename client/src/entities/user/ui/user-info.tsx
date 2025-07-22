@@ -1,9 +1,12 @@
-import { User } from '@/entities';
 import { Typograpghy } from '@/shared';
 
-type UserInfoProps = { user: User };
+import { PropsWithChildren } from 'react';
 
-export const UserInfo = ({ user }: Readonly<UserInfoProps>) => {
+import { User } from '../model/user';
+
+type UserInfoProps = { user: User } & PropsWithChildren;
+
+export const UserInfo = ({ user, children }: Readonly<UserInfoProps>) => {
   return (
     <div>
       <div className="mb-6 flex justify-center">
@@ -30,6 +33,7 @@ export const UserInfo = ({ user }: Readonly<UserInfoProps>) => {
           <Typograpghy tagVariant="h4">Joined At</Typograpghy>
           <Typograpghy>{new Date(user.createdAt).toLocaleDateString()}</Typograpghy>
         </div>
+        {children}
       </div>
     </div>
   );

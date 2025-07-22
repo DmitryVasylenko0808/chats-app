@@ -1,4 +1,5 @@
-import { Message, Reaction, User } from '@/entities';
+import { Message, Reaction } from '@/entities';
+import { User } from '@/entities/user';
 import { cn } from '@/shared';
 
 type MessageReactionsProps = {

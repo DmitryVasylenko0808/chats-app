@@ -1,6 +1,5 @@
+import { getUsers } from '@/entities/user';
 import { useQuery } from '@tanstack/react-query';
-
-import { getUsers } from '../api';
 
 export const useGetUsers = (search?: string) => {
   return useQuery({

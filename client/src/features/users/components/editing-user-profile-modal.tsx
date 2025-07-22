@@ -1,6 +1,6 @@
+import { useGetUser } from '@/entities/user';
 import { Loader, Modal, ModalProps, Typograpghy, useAuth } from '@/shared';
 
-import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';
 
 type EditingProfileModalProps = ModalProps;

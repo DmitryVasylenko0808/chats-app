@@ -1,11 +1,10 @@
+import { useGetUser, UserInfo } from '@/entities/user';
 import { CreateChatButton } from '@/features/chats/components';
 import { Button, Loader, useAuth, useModal } from '@/shared';
 
 import { useParams } from 'react-router';
 
-import { useGetUser } from '../hooks';
 import { EditingUserProfileModal } from './editing-user-profile-modal';
-import { UserInfo } from './user-info';
 
 export const UserProfile = () => {
   const { id } = useParams();

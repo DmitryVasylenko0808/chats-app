@@ -1,8 +1,7 @@
+import { useGetUsers } from '@/entities/user';
 import { useDebounce } from '@/shared';
 
 import { useState } from 'react';
-
-import { useGetUsers } from './use-get-users';
 
 export const useSearchUsers = () => {
   const [search, setSearch] = useState('');

@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { User } from '@/entities/user';
 import { useCreateChat } from '@/features/chats/hooks';
 import { Button, Loader, useAlerts } from '@/shared';
 

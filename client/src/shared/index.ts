@@ -40,6 +40,5 @@ export * from './ui/pagination';
 export * from './ui/alerts-container';
 export * from './ui/logo';
 export * from './ui/require-auth';
-export * from './ui/users-list';
 
 export * from './types';

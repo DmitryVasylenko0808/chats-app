@@ -1,4 +1,5 @@
-import { Chat, User } from '@/entities';
+import { Chat } from '@/entities';
+import { User } from '@/entities/user';
 import { Typograpghy, useAuth } from '@/shared';
 
 type ChatsListProps = { chats?: Chat[]; onClickItem?: (chat: Chat) => void };

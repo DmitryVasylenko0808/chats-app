@@ -1,4 +1,4 @@
-import { User } from '@/entities';
+import { User } from '@/entities/user';
 import { Button, Loader, TextArea, TextField, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 

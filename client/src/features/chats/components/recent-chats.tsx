@@ -1,4 +1,5 @@
-import { Chat, User } from '@/entities';
+import { Chat } from '@/entities';
+import { User } from '@/entities/user';
 import { cn, Loader, Typograpghy, useAuth } from '@/shared';
 
 import { NavLink } from 'react-router';

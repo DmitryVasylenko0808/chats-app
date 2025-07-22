@@ -1,4 +1,4 @@
-import { User } from '../../../entities/user';
+import { User } from '../model/user';
 
 export type GetUserDto = User;
 export type GetUsersDto = User[];

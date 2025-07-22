@@ -1,7 +1,6 @@
+import { updateUser } from '@/entities/user';
 import { useAuth } from '@/shared';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { updateUser } from '../api';
 
 export const useEditProfile = () => {
   const queryClient = useQueryClient();

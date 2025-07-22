@@ -1,6 +1,6 @@
-import { User } from '@/entities';
+import { User, UsersList } from '@/entities/user';
 import { useSearchUsers } from '@/features/users/hooks';
-import { Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts, UsersList } from '@/shared';
+import { Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
 
 import { useNavigate } from 'react-router';
 

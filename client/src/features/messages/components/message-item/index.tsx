@@ -1,4 +1,5 @@
-import { Message, User } from '@/entities';
+import { Message } from '@/entities';
+import { User } from '@/entities/user';
 import { MessageReactions } from '@/features/reactions/components';
 import { useAddReaction, useDeleteReaction } from '@/features/reactions/hooks';
 import { cn, Typograpghy } from '@/shared';
