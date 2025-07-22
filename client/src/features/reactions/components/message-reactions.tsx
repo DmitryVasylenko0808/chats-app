@@ -1,5 +1,5 @@
-import { Reaction } from '@/entities';
 import { Message } from '@/entities/message';
+import { Reaction } from '@/entities/reaction';
 import { User } from '@/entities/user';
 import { cn } from '@/shared';
 

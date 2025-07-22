@@ -1,6 +1,5 @@
+import { addReaction } from '@/entities/reaction/api';
 import { useMutation } from '@tanstack/react-query';
-
-import { addReaction } from '../api';
 
 export const useAddReaction = () => {
   return useMutation({ mutationFn: addReaction });
