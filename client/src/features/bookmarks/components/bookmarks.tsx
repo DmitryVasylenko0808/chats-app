@@ -1,12 +1,13 @@
-import { Bookmark } from '@/entities';
+import { Bookmark, useGetBookmarks } from '@/entities/bookmark';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
-import { useDeleteBookmark, useGetBookmarks } from '../hooks';
+import { useDeleteBookmark } from '../hooks';
 import { BookmarksHeader } from './bookmarks-header';
 import { BookmarksList } from './bookmarks-list';
 
+// Widget
 export const Bookmarks = () => {
   const { data, isLoading, error } = useGetBookmarks();
   const { mutateAsync: deleteBookmarkMutate } = useDeleteBookmark();

@@ -1,6 +1,5 @@
+import { getUnreadCountNotificationsDto } from '@/entities/notification';
 import { useQuery } from '@tanstack/react-query';
-
-import { getUnreadCountNotificationsDto } from '../api';
 
 export const useGetUnreadCountNotifications = () => {
   return useQuery({

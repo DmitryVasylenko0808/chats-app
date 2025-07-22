@@ -1,6 +1,5 @@
+import { addBookmark } from '@/entities/bookmark';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { addBookmark } from '../api';
 
 export const useAddBookmark = () => {
   const queryClient = useQueryClient();

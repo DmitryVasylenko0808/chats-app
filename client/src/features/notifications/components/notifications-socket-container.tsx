@@ -1,4 +1,4 @@
-import { Notification } from '@/entities';
+import { Notification } from '@/entities/notification';
 import { NOTIFICATIONS_SOCKET_URL, useAlerts, useAuth } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';

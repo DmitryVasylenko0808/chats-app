@@ -1,19 +1,19 @@
-import { EntityType, Notification, NotificationType } from '@/entities';
+import { EntityType, Notification, NotificationType } from '@/entities/notification';
 import { Button, cn, Typograpghy } from '@/shared';
 
 import { AiOutlineClose } from 'react-icons/ai';
 
-type NotificationItemProps = {
+type NotificationBlockProps = {
   notification: Notification;
   onClick?: (notification: Notification, entityPath?: string) => void;
   onDelete?: () => void;
 };
 
-export const NotificationItem = ({
+export const NotificationBlock = ({
   notification,
   onClick,
   onDelete,
-}: Readonly<NotificationItemProps>) => {
+}: Readonly<NotificationBlockProps>) => {
   const typeContent: Record<NotificationType, string> = {
     NEW_CHAT: `Created chat with you`,
     NEW_MESSAGE: `Sent message`,
@@ -35,7 +35,7 @@ export const NotificationItem = ({
   };
 
   return (
-    <li
+    <div
       className={cn(
         'hover:bg-secondary-200 dark:hover:bg-dark-300 block cursor-pointer px-6 py-4 duration-100',
         {
@@ -63,6 +63,6 @@ export const NotificationItem = ({
           <AiOutlineClose size={18} />
         </Button>
       </div>
-    </li>
+    </div>
   );
 };

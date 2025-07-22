@@ -1,4 +1,4 @@
-import { Notification } from '@/entities';
+import { Notification, useGetNotifications } from '@/entities/notification';
 import {
   cn,
   Loader,
@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router';
 import {
   useDeleteAllNotifications,
   useDeleteNotificationById,
-  useGetNotifications,
   useMarkNotification,
   useNotificationsFilter,
 } from '../hooks';

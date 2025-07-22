@@ -1,5 +1,6 @@
-import { Notification } from '@/entities';
 import { PaginatinedDto } from '@/shared';
+
+import { Notification } from '../model/notification';
 
 export type GetNotificationsDto = PaginatinedDto<Notification>;
 export type GetUnreadCountNotificationsDto = { count: number };

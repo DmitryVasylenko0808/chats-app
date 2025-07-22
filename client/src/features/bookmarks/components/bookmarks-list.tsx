@@ -1,4 +1,4 @@
-import { Bookmark } from '@/entities';
+import { Bookmark } from '@/entities/bookmark';
 import { useAuth } from '@/shared';
 
 import { BookmarkItem } from './bookmark-item';

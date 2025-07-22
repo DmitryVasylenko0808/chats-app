@@ -1,6 +1,5 @@
+import { deleteAllNotifications } from '@/entities/notification';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { deleteAllNotifications } from '../api';
 
 export const useDeleteAllNotifications = () => {
   const queryClient = useQueryClient();

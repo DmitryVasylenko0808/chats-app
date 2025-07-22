@@ -1,4 +1,4 @@
-import { Bookmark } from '@/entities';
+import { Bookmark } from '@/entities/bookmark';
 import { MessageItem } from '@/entities/message';
 
 // FIX

@@ -1,6 +1,6 @@
-import { EntityType } from '@/entities';
 import { API_URL, apiClient } from '@/shared';
 
+import { EntityType } from '../model/notification';
 import {
   DeleteAllNotificationsDto,
   DeleteNotificationByIdDto,

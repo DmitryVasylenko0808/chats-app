@@ -1,5 +1,5 @@
-import { Message } from './message';
-import { User } from './user';
+import { Message } from '@/entities/message';
+import { User } from '@/entities/user';
 
 export type Bookmark = {
   id: number;

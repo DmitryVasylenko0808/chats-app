@@ -1,8 +1,6 @@
-import { Notification } from '@/entities';
+import { Notification, NotificationBlock } from '@/entities/notification';
 
 import { ComponentProps } from 'react';
-
-import { NotificationItem } from './notification-item';
 
 type NotificationsListProps = ComponentProps<'ul'> & {
   notifications?: Notification[];
@@ -19,12 +17,14 @@ export const NotificationsList = ({
   return (
     <ul className={className} {...listProps}>
       {notifications.map((n) => (
-        <NotificationItem
-          notification={n}
-          key={n.id}
-          onClick={onClickItem}
-          onDelete={() => onDeleteItem?.(n)}
-        />
+        <li key={n.id}>
+          <NotificationBlock
+            notification={n}
+            key={n.id}
+            onClick={onClickItem}
+            onDelete={() => onDeleteItem?.(n)}
+          />
+        </li>
       ))}
     </ul>
   );

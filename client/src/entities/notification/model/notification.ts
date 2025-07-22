@@ -1,4 +1,4 @@
-import { User } from './user';
+import { User } from '@/entities/user';
 
 export type NotificationType = 'NEW_CHAT' | 'NEW_MESSAGE';
 export type EntityType = 'CHAT' | 'MESSAGE';
