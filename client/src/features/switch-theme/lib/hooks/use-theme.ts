@@ -1,4 +1,4 @@
-import { webStorage } from '@/shared/config/web-storage';
+import { webStorage } from '@/shared';
 
 import { useThemeStore } from '../../model/theme-store';
 

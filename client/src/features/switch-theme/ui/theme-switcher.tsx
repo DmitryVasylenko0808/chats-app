@@ -1,8 +1,9 @@
+import { Switcher } from '@/shared';
+
 import { ChangeEvent } from 'react';
 import { AiOutlineMoon, AiOutlineSun } from 'react-icons/ai';
 
 import { useTheme } from '../lib/hooks/use-theme';
-import { Switcher } from './switcher';
 
 export const ThemeSwitcher = () => {
   const { isDarkTheme, onToggleTheme } = useTheme();

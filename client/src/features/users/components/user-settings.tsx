@@ -1,4 +1,5 @@
-import { Button, Switcher, Typograpghy, useModal, useTheme } from '@/shared';
+import { useTheme } from '@/features/switch-theme';
+import { Button, Switcher, Typograpghy, useModal } from '@/shared';
 
 import { ChangeEvent } from 'react';
 

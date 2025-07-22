@@ -1,4 +1,5 @@
-import { Logo, ThemeSwitcher, Typograpghy } from '@/shared';
+import { ThemeSwitcher } from '@/features/switch-theme';
+import { Logo, Typograpghy } from '@/shared';
 
 import { Link, Outlet } from 'react-router';
 

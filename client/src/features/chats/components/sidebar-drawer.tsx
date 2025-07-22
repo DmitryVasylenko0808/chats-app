@@ -1,5 +1,6 @@
 import { useAuth, useLogOutUser } from '@/features/auth/hooks';
-import { cn, Drawer, DrawerProps, Logo, ThemeSwitcher, Typograpghy } from '@/shared';
+import { ThemeSwitcher } from '@/features/switch-theme';
+import { cn, Drawer, DrawerProps, Logo, Typograpghy } from '@/shared';
 
 import { AiOutlineBell, AiOutlineLogout, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import { FiBookmark } from 'react-icons/fi';
