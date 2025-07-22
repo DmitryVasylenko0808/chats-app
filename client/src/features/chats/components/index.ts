@@ -1,5 +1,4 @@
 export * from './recent-chats';
-export * from './chats-list';
 export * from './chat';
 export * from './chat-menu';
 export * from './chat-info';

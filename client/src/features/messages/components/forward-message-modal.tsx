@@ -1,6 +1,5 @@
-import { Chat, Message } from '@/entities';
-import { ChatsList } from '@/features/chats/components';
-import { useGetChats } from '@/features/chats/hooks';
+import { Message } from '@/entities';
+import { Chat, ChatsList, useGetChats } from '@/entities/chat';
 import { Modal, ModalProps, Typograpghy } from '@/shared';
 
 type ForwardMessageModalProps = ModalProps & {

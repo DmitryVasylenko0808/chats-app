@@ -1,5 +1,6 @@
-import { Message } from './message';
-import { User } from './user';
+import { User } from '@/entities/user';
+
+import { Message } from '../../message';
 
 export type Chat = {
   id: number;

@@ -1,7 +1,6 @@
+import { createChat } from '@/entities/chat';
 import { useAuth } from '@/shared';
 import { useMutation } from '@tanstack/react-query';
-
-import { createChat } from '../api';
 
 export const useCreateChat = () => {
   const { currentUser } = useAuth();

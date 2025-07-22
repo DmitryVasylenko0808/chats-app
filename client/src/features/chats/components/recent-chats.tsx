@@ -1,10 +1,8 @@
-import { Chat } from '@/entities';
+import { Chat, useGetChats } from '@/entities/chat';
 import { User } from '@/entities/user';
 import { cn, Loader, Typograpghy, useAuth } from '@/shared';
 
 import { NavLink } from 'react-router';
-
-import { useGetChats } from '../hooks';
 
 export const RecentChats = () => {
   const { currentUser } = useAuth();

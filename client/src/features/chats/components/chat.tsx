@@ -1,3 +1,4 @@
+import { useGetChatById } from '@/entities/chat';
 import { Messages, SendMessageForm } from '@/features/messages/components';
 import { Button, Loader, useAlerts } from '@/shared';
 
@@ -5,7 +6,6 @@ import { useEffect } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router';
 
-import { useGetChatById } from '../hooks';
 import { ChatInfo } from './chat-info';
 import { ChatMenu } from './chat-menu';
 
