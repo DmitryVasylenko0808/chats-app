@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { useSignInUser } from '../hooks';
-import { SignInFormFields, signInSchema } from '../validations';
+import { useSignInUser } from '../lib/hooks/use-sign-in-user';
+import { SignInFormFields, signInSchema } from '../model/sign-in-user-validation';
 import { WithoutAccount } from './without-account';
 
 export const SignInUserForm = () => {

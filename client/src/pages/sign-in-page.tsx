@@ -1,4 +1,4 @@
-import { SignInUserForm } from '@/features/auth/components';
+import { SignInUserForm } from '@/features/sign-in-user';
 
 const SignInPage = () => {
   return <SignInUserForm />;
