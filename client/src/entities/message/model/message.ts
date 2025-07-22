@@ -1,6 +1,5 @@
 import { Reaction } from '@/entities';
-
-import { User } from './user';
+import { User } from '@/entities/user';
 
 export type Message = {
   id: number;

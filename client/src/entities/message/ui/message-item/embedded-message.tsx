@@ -1,17 +1,17 @@
-import { Message } from '@/entities';
+import { Message } from '@/entities/message';
 import { cn, Typograpghy } from '@/shared';
 
 import { MessageImages } from './message-images';
 
 type EmbeddedMessageProps = {
   variant: 'reply' | 'forward';
-  participantMessage: boolean;
+  isParticipantMessage: boolean;
   message?: Message;
 };
 
 export const EmbeddedMessage = ({
   variant,
-  participantMessage,
+  isParticipantMessage,
   message,
 }: Readonly<EmbeddedMessageProps>) => {
   if (!message) {
@@ -24,17 +24,17 @@ export const EmbeddedMessage = ({
   return (
     <div
       className={cn('mb-1.5 rounded-xl p-2.5', {
-        'bg-secondary-300 dark:bg-dark-200': !participantMessage,
-        'bg-primary-100 text-secondary-100': participantMessage,
+        'bg-secondary-300 dark:bg-dark-200': !isParticipantMessage,
+        'bg-primary-100 text-secondary-100': isParticipantMessage,
       })}
     >
-      <Typograpghy tagVariant="h6" className={cn({ 'text-secondary-100': participantMessage })}>
+      <Typograpghy tagVariant="h6" className={cn({ 'text-secondary-100': isParticipantMessage })}>
         {title}
       </Typograpghy>
       <Typograpghy
         className={cn({
-          'dark:text-secondary-100 text-black': !participantMessage,
-          'text-secondary-100': participantMessage,
+          'dark:text-secondary-100 text-black': !isParticipantMessage,
+          'text-secondary-100': isParticipantMessage,
         })}
       >
         {message.text}

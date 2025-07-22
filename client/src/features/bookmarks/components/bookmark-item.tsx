@@ -1,6 +1,7 @@
 import { Bookmark } from '@/entities';
-import { MessageItem } from '@/features/messages/components';
+import { MessageItem } from '@/entities/message';
 
+// FIX
 type BookmarkItemProps = {
   bookmark: Bookmark;
   isOwnMessage: boolean;
@@ -16,13 +17,7 @@ export const BookmarkItem = ({
 }: Readonly<BookmarkItemProps>) => {
   return (
     <li key={bookmark.id}>
-      <MessageItem
-        message={bookmark.message}
-        participantMessage={!isOwnMessage}
-        reactionsEnabled={false}
-        onCopy={onCopy}
-        onDelete={onDelete}
-      />
+      <MessageItem message={bookmark.message} participantMessage={!isOwnMessage} />
     </li>
   );
 };

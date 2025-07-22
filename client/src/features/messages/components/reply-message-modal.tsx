@@ -1,22 +1,17 @@
-import { Message } from '@/entities';
+import { Message } from '@/entities/message';
 import { ReplyMessageFormFields, replyMessageSchema } from '@/features/messages/validations';
-import { Button, Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared';
+import { Button, Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
+import { useReplyMessage } from '../hooks';
+
 type ReplyMessageModalProps = ModalProps & {
   message: Message;
-  onSubmitReply: (message: Message, data: ReplyMessageFormFields) => void;
-  isPending?: boolean;
 };
-export const ReplyMessageModal = ({
-  message,
-  onSubmitReply,
-  isPending,
-  ...modalProps
-}: Readonly<ReplyMessageModalProps>) => {
+export const ReplyMessageModal = ({ message, ...modalProps }: Readonly<ReplyMessageModalProps>) => {
   const {
     register,
     handleSubmit,
@@ -24,8 +19,17 @@ export const ReplyMessageModal = ({
   } = useForm<ReplyMessageFormFields>({
     resolver: zodResolver(replyMessageSchema),
   });
+  const { mutateAsync: replyMessage, isPending: isPendingReply } = useReplyMessage();
+  const { notify } = useAlerts();
 
-  const submitHandler = (data: ReplyMessageFormFields) => onSubmitReply(message, data);
+  const submitHandler = (data: ReplyMessageFormFields) => {
+    replyMessage({ chatId: message.chatId, messageId: message.id, ...data })
+      .then(() => {
+        modalProps.onClose();
+        notify({ variant: 'success', text: 'Message is replied' });
+      })
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
+  };
 
   return (
     <Modal className="w-xl" {...modalProps}>
@@ -40,7 +44,7 @@ export const ReplyMessageModal = ({
           {...register('text')}
         />
         <Button variant="primary" className="min-w-max px-4">
-          {isPending ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
+          {isPendingReply ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
         </Button>
       </form>
     </Modal>

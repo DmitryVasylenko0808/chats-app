@@ -1,40 +1,42 @@
-import { Message, Reaction } from '@/entities';
+import { Reaction } from '@/entities';
+import { Message } from '@/entities/message';
 import { User } from '@/entities/user';
 import { cn } from '@/shared';
 
+import { useAddReaction, useDeleteReaction } from '../hooks';
+
 type MessageReactionsProps = {
+  message: Message;
   participantMessage: boolean;
-  reactions?: Message['reactionsByEmoji'];
   currentUser?: User | null;
-  onAddReaction?: (emoji: string) => void;
-  onDeleteReaction?: (emoji: string) => void;
 };
 export const MessageReactions = ({
-  reactions,
+  message,
   participantMessage,
   currentUser,
-  onAddReaction,
-  onDeleteReaction,
 }: Readonly<MessageReactionsProps>) => {
-  if (!reactions) {
+  if (!message.reactionsByEmoji || !message.reactionsByEmojiCount) {
     return null;
   }
+
+  const { mutateAsync: addReaction } = useAddReaction();
+  const { mutateAsync: deleteReaction } = useDeleteReaction();
 
   const isOwnReaction = (reactions: Reaction[]) =>
     !!reactions.find((r) => r.userId === currentUser?.id);
 
   const handleClickReaction = (emoji: string, reactions: Reaction[]) => {
     if (isOwnReaction(reactions)) {
-      onDeleteReaction?.(emoji);
+      deleteReaction({ messageId: message.id, emoji });
     } else {
-      onAddReaction?.(emoji);
+      addReaction({ messageId: message.id, emoji });
     }
   };
 
   return (
     <div className="mt-1.5">
       <ul className="flex flex-wrap gap-x-1 gap-y-1.5">
-        {Object.entries(reactions).map(([emoji, reactions]) => (
+        {Object.entries(message.reactionsByEmoji).map(([emoji, reactions]) => (
           <MessageReactionItem
             emoji={emoji}
             reactions={reactions}

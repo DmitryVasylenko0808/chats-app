@@ -1,4 +1,4 @@
-import { Message } from '@/entities';
+import { Message } from '@/entities/message';
 
 import { Link, useLocation } from 'react-router';
 

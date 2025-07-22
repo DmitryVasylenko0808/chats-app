@@ -1,23 +1,18 @@
-import { Message } from '@/entities';
+import { Message } from '@/entities/message';
 import { EditMessageFormFields, editMessageSchema } from '@/features/messages/validations';
-import { Button, Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared';
+import { Button, Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
+import { useEditMessage } from '../hooks';
+
 type EditMessageModalProps = ModalProps & {
   message: Message;
-  onEditSubmit: (message: Message, data: EditMessageFormFields) => void;
-  isPending?: boolean;
 };
 
-export const EditMessageModal = ({
-  message,
-  isPending,
-  onEditSubmit,
-  ...modalProps
-}: Readonly<EditMessageModalProps>) => {
+export const EditMessageModal = ({ message, ...modalProps }: Readonly<EditMessageModalProps>) => {
   const {
     register,
     handleSubmit,
@@ -28,8 +23,17 @@ export const EditMessageModal = ({
       text: message.text,
     },
   });
+  const { mutateAsync: editMessage, isPending: isPendingEdit } = useEditMessage();
+  const { notify } = useAlerts();
 
-  const submitHandler = (data: EditMessageFormFields) => onEditSubmit(message, data);
+  const submitHandler = (data: EditMessageFormFields) => {
+    editMessage({ chatId: message.chatId, messageId: message.id, ...data })
+      .then(() => {
+        modalProps.onClose();
+        notify({ variant: 'success', text: 'Message is edited' });
+      })
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
+  };
 
   return (
     <Modal className="w-xl" {...modalProps}>
@@ -43,7 +47,7 @@ export const EditMessageModal = ({
           {...register('text')}
         />
         <Button variant="primary" className="min-w-max px-4">
-          {isPending ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
+          {isPendingEdit ? <Loader variant="secondary" size="sm" /> : <AiOutlineSend size={24} />}
         </Button>
       </form>
     </Modal>

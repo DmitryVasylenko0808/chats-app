@@ -1,4 +1,4 @@
-import { Message } from '@/entities';
+import { Message } from '@/entities/message';
 import { Button, Typograpghy } from '@/shared';
 
 import { AiOutlineClose } from 'react-icons/ai';

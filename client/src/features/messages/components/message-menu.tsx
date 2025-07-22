@@ -1,3 +1,4 @@
+import { Message } from '@/entities/message';
 import { Button, cn, Menu, ReactionPicker, useToogleMenu } from '@/shared';
 
 import {
@@ -10,9 +11,11 @@ import {
 import { FiBookmark } from 'react-icons/fi';
 import { TiArrowBackOutline, TiArrowForwardOutline } from 'react-icons/ti';
 
+// to Widget "ChatMessages"
 type MessageMenuProps = {
+  message: Message;
   participantMessage: boolean;
-  reactionsEnabled: boolean;
+  reactionsEnabled?: boolean;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
@@ -25,7 +28,7 @@ type MessageMenuProps = {
 
 export const MessageMenu = ({
   participantMessage,
-  reactionsEnabled,
+  reactionsEnabled = true,
   onReply,
   onForward,
   onPin,

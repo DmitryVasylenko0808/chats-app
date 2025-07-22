@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { deleteMessage } from '../api';
+import { deleteMessage } from '../../../entities/message/api';
 
 export const useDeleteMessage = () => {
   return useMutation({

@@ -1,4 +1,4 @@
-import { Message } from '@/entities';
+import { Message } from '../model/message';
 
 export type GetMessagesDto = Message[];
 export type SendMessageDto = Message;

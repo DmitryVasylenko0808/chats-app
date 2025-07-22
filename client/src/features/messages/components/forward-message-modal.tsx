@@ -1,20 +1,33 @@
-import { Message } from '@/entities';
 import { Chat, ChatsList, useGetChats } from '@/entities/chat';
-import { Modal, ModalProps, Typograpghy } from '@/shared';
+import { Message } from '@/entities/message';
+import { Modal, ModalProps, Typograpghy, useAlerts } from '@/shared';
+
+import { useNavigate } from 'react-router';
+
+import { useForwardMessage } from '../hooks';
 
 type ForwardMessageModalProps = ModalProps & {
   message: Message;
-  onForward: (message: Message, targetChatId: number) => void;
 };
 
 export const ForwardMessageModal = ({
   message,
-  onForward,
   ...modalProps
 }: Readonly<ForwardMessageModalProps>) => {
   const { data } = useGetChats();
+  const { mutateAsync: forwardMessage } = useForwardMessage();
+  const { notify } = useAlerts();
+  const navigate = useNavigate();
 
-  const handleClick = (chat: Chat) => onForward(message, chat.id);
+  const handleClick = (chat: Chat) => {
+    forwardMessage({ chatId: message.chatId, messageId: message.id, targetChatId: chat.id })
+      .then(() => {
+        modalProps.onClose();
+        navigate(`/chats/${chat.id}`);
+        notify({ variant: 'success', text: 'Message is forwarded' });
+      })
+      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
+  };
 
   return (
     <Modal {...modalProps}>

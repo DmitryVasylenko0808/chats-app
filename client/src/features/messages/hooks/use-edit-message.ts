@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { editMessage } from '../api';
+import { editMessage } from '../../../entities/message/api';
 
 export const useEditMessage = () => {
   return useMutation({

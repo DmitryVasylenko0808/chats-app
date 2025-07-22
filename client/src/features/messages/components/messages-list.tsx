@@ -1,8 +1,10 @@
-import { Message } from '@/entities';
+import { Message, MessageItem } from '@/entities/message';
+import { MessageReactions } from '@/features/reactions/components';
 import { useAuth } from '@/shared';
 
-import { MessageItem } from './message-item';
+import { MessageMenu } from './message-menu';
 
+// part of widget
 type MessagesListProps = {
   messages?: Message[];
   onReplyItem?: (message: Message) => void;
@@ -26,21 +28,35 @@ export const MessagesList = ({
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
 
+  const isParticipant = (senderId: Message['senderId']) => senderId !== currentUser?.id;
+
   return (
     <ul className="flex flex-col space-y-4">
       {messages.map((m) => (
         <li className="block" key={m.id}>
           <MessageItem
             message={m}
-            participantMessage={m.senderId !== currentUser?.id}
-            currentUser={currentUser}
-            onReply={() => onReplyItem?.(m)}
-            onForward={() => onForwardItem?.(m)}
-            onPin={() => onPinItem?.(m)}
-            onCopy={() => onCopyItem?.(m)}
-            onEdit={m.senderId === currentUser?.id ? () => onEditItem?.(m) : undefined}
-            onDelete={m.senderId === currentUser?.id ? () => onDeleteItem?.(m) : undefined}
-            onBookmark={() => onAddBookmarkItem?.(m)}
+            isParticipantMessage={isParticipant(m.senderId)}
+            extra={
+              <MessageReactions
+                message={m}
+                participantMessage={isParticipant(m.senderId)}
+                currentUser={currentUser}
+              />
+            }
+            actions={
+              <MessageMenu
+                message={m}
+                participantMessage={isParticipant(m.senderId)}
+                onReply={() => onReplyItem?.(m)}
+                onForward={() => onForwardItem?.(m)}
+                onPin={() => onPinItem?.(m)}
+                onCopy={() => onCopyItem?.(m)}
+                onEdit={isParticipant(m.senderId) ? () => onEditItem?.(m) : undefined}
+                onDelete={isParticipant(m.senderId) ? () => onDeleteItem?.(m) : undefined}
+                onAddBookmark={() => onAddBookmarkItem?.(m)}
+              />
+            }
           />
         </li>
       ))}

@@ -6,6 +6,6 @@ export * from './send-message-form';
 export * from './reply-message-modal';
 export * from './pinned-message';
 export * from './preview-message-images';
-export * from './message-item';
+export * from '../../../entities/message/ui/message-item';
 export * from './chat-emoji-picker';
 export * from './messages-socket-containet';
