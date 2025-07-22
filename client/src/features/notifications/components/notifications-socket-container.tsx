@@ -1,6 +1,5 @@
 import { Notification } from '@/entities';
-import { useAuth } from '@/features/auth/hooks';
-import { NOTIFICATIONS_SOCKET_URL, useAlerts } from '@/shared';
+import { NOTIFICATIONS_SOCKET_URL, useAlerts, useAuth } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 

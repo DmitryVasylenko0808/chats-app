@@ -1,6 +1,5 @@
-import { useAuth } from '@/features/auth/hooks';
 import { useTheme } from '@/features/switch-theme';
-import { AlertsContainer } from '@/shared';
+import { AlertsContainer, useAuth } from '@/shared';
 
 import { useEffect } from 'react';
 

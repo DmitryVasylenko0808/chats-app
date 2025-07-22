@@ -1,5 +1,4 @@
-import { useAuth } from '@/features/auth/hooks';
-import { Loader, Modal, ModalProps, Typograpghy } from '@/shared';
+import { Loader, Modal, ModalProps, Typograpghy, useAuth } from '@/shared';
 
 import { useGetUser } from '../hooks';
 import { EditingUserProfileForm } from './editing-user-profile-form';

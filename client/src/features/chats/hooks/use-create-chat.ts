@@ -1,4 +1,4 @@
-import { useAuth } from '@/features/auth/hooks';
+import { useAuth } from '@/shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { createChat } from '../api';

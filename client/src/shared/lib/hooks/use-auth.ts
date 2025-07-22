@@ -1,8 +1,7 @@
-import { webStorage } from '@/shared';
+import { getMe, webStorage } from '@/shared';
 import { useQuery } from '@tanstack/react-query';
 
-import { getMe } from '../api';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../../model/auth-store';
 
 export const useAuth = () => {
   const {

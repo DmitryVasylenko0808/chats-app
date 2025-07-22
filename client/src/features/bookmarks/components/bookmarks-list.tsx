@@ -1,5 +1,5 @@
 import { Bookmark } from '@/entities';
-import { useAuth } from '@/features/auth/hooks';
+import { useAuth } from '@/shared';
 
 import { BookmarkItem } from './bookmark-item';
 

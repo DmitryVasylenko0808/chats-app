@@ -1,6 +1,5 @@
 import { Chat } from '@/entities';
-import { useAuth } from '@/features/auth/hooks';
-import { SOCKET_URL } from '@/shared';
+import { SOCKET_URL, useAuth } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';
 

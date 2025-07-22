@@ -1,6 +1,6 @@
 import { webStorage } from '@/shared';
 
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../../model/auth-store';
 
 export const useLogOutUser = () => {
   const { reset: resetAuth } = useAuthStore();

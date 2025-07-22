@@ -1,6 +1,6 @@
 import { API_URL, apiClient } from '@/shared';
 
-import { GetMeDto, SignInUserDto } from './dto';
+import { SignInUserDto } from './dto';
 
 export type RegisterUserParams = {
   username: string;
@@ -22,12 +22,6 @@ export type SignInUserParams = {
 
 export const signInUser = async (data: SignInUserParams) => {
   const response = await apiClient.post<SignInUserDto>(`${API_URL}/auth/sign-in`, data);
-
-  return response.data;
-};
-
-export const getMe = async () => {
-  const response = await apiClient.get<GetMeDto>(`${API_URL}/auth/me`);
 
   return response.data;
 };

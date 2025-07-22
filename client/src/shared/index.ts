@@ -1,9 +1,11 @@
 export * from './api/api-client';
+export * from './api/api';
 
 export * from './config/constants';
 export * from './config/web-storage';
 
 export * from './model/alerts-store';
+export * from './model/auth-store';
 
 export * from './lib/utils/cn';
 
@@ -16,6 +18,8 @@ export * from './lib/hooks/use-preview-images';
 export * from './lib/hooks/use-alerts';
 export * from './lib/hooks/use-drawer';
 export * from './lib/hooks/use-pagination';
+export * from './lib/hooks/use-auth';
+export * from './lib/hooks/use-log-out-user';
 
 export * from './ui/textfield';
 export * from './ui/button';

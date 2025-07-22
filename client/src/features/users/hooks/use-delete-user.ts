@@ -1,5 +1,4 @@
-import { useAuthStore } from '@/features/auth/store';
-import { webStorage } from '@/shared';
+import { useAuthStore, webStorage } from '@/shared';
 import { useMutation } from '@tanstack/react-query';
 
 import { deleteUser } from '../api';
