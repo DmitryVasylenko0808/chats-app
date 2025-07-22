@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { useRegisterUser } from '../hooks';
-import { RegisterFormFields, registerSchema } from '../validations';
+import { useRegisterUser } from '../lib/hooks/use-register-user';
+import { RegisterFormFields, registerSchema } from '../model/register-user-validation';
 import { WithAccount } from './with-account';
 
 export const RegisterUserForm = () => {
