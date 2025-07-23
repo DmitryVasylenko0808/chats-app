@@ -1,5 +1,9 @@
 import { Notification, useGetNotifications } from '@/entities/notification';
 import {
+  useDeleteAllNotifications,
+  useDeleteNotificationById,
+} from '@/features/delete-notification';
+import {
   cn,
   Loader,
   Option,
@@ -12,12 +16,7 @@ import {
 
 import { useNavigate } from 'react-router';
 
-import {
-  useDeleteAllNotifications,
-  useDeleteNotificationById,
-  useMarkNotification,
-  useNotificationsFilter,
-} from '../hooks';
+import { useMarkNotification, useNotificationsFilter } from '../hooks';
 import { NotificationTabValue } from '../types';
 import { NotificationsFilters } from './notifications-filters';
 import { NotificationsHeader } from './notifications-header';
