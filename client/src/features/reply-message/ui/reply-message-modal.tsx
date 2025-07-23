@@ -1,12 +1,12 @@
 import { Message } from '@/entities/message';
-import { ReplyMessageFormFields, replyMessageSchema } from '@/features/messages/validations';
 import { Button, Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
-import { useReplyMessage } from '../hooks';
+import { useReplyMessage } from '../lib/hooks/use-reply-message';
+import { ReplyMessageFormFields, replyMessageSchema } from '../model/reply-message-validation';
 
 type ReplyMessageModalProps = ModalProps & {
   message: Message;
