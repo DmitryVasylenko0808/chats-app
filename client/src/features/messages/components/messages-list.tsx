@@ -1,5 +1,5 @@
 import { Message, MessageItem } from '@/entities/message';
-import { MessageReactions } from '@/features/reactions/components';
+import { MessageReactions, ReactionPicker } from '@/features/message-reactions';
 import { useAuth } from '@/shared';
 
 import { MessageMenu } from './message-menu';
@@ -55,6 +55,7 @@ export const MessagesList = ({
                 onEdit={!isParticipant(m.senderId) ? () => onEditItem?.(m) : undefined}
                 onDelete={!isParticipant(m.senderId) ? () => onDeleteItem?.(m) : undefined}
                 onAddBookmark={() => onAddBookmarkItem?.(m)}
+                topSlot={<ReactionPicker message={m} />}
               />
             }
           />

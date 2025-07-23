@@ -1,5 +1,5 @@
 import { Message } from '@/entities/message';
-import { Button, cn, Menu, ReactionPicker, useToogleMenu } from '@/shared';
+import { Button, cn, Menu, useToogleMenu } from '@/shared';
 
 import {
   AiOutlineCopy,
@@ -15,7 +15,7 @@ import { TiArrowBackOutline, TiArrowForwardOutline } from 'react-icons/ti';
 type MessageMenuProps = {
   message: Message;
   participantMessage: boolean;
-  reactionsEnabled?: boolean;
+  topSlot?: React.ReactNode;
   onReply?: () => void;
   onForward?: () => void;
   onPin?: () => void;
@@ -28,7 +28,7 @@ type MessageMenuProps = {
 
 export const MessageMenu = ({
   participantMessage,
-  reactionsEnabled = true,
+  topSlot,
   onReply,
   onForward,
   onPin,
@@ -36,11 +36,8 @@ export const MessageMenu = ({
   onEdit,
   onDelete,
   onAddBookmark,
-  onAddReaction,
 }: Readonly<MessageMenuProps>) => {
   const { open, ref, handleToggle } = useToogleMenu();
-
-  const handleClickReactionPicker = (reaction: string) => onAddReaction?.(reaction);
 
   return (
     <div className="relative">
@@ -50,11 +47,7 @@ export const MessageMenu = ({
             <AiOutlineMore size={24} />
           </Button>
         }
-        header={
-          reactionsEnabled && (
-            <ReactionPicker onClickReaction={handleClickReactionPicker} className="mb-1" />
-          )
-        }
+        topSlot={topSlot}
         content={
           <ul>
             {onReply && (

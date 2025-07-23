@@ -1,20 +1,29 @@
+import { Message } from '@/entities/message';
 import { cn } from '@/shared/lib/utils/cn';
 
 import { ComponentProps } from 'react';
 
+import { useAddReaction } from '../hooks/use-add-reaction';
+
 export const defaultReactions = ['👍', '❤️', '😀', '😢', '🙏', '👎', '😡'];
 
 type ReactionPickerProps = ComponentProps<'div'> & {
+  message: Message;
   reactions?: string[];
-  onClickReaction: (reaction: string) => void;
 };
 
 export const ReactionPicker = ({
-  onClickReaction,
+  message,
   reactions,
   className,
   ...divProps
 }: Readonly<ReactionPickerProps>) => {
+  const { mutateAsync: addReaction } = useAddReaction();
+
+  const handleClickReaction = (emoji: string) => {
+    addReaction({ messageId: message.id, emoji });
+  };
+
   const data = reactions || defaultReactions;
 
   return (
@@ -30,7 +39,7 @@ export const ReactionPicker = ({
           <li
             className="inline-flex h-10 w-10 cursor-pointer items-center justify-center text-2xl duration-100 hover:scale-125"
             key={index}
-            onClick={() => onClickReaction(reaction)}
+            onClick={() => handleClickReaction(reaction)}
           >
             {reaction}
           </li>

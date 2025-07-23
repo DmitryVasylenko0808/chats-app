@@ -8,7 +8,7 @@ type MenuProps = {
   open: boolean;
   ref: RefObject<HTMLDivElement | null>;
   contentContainerPosition?: 'bottom' | 'top';
-  header?: React.ReactNode;
+  topSlot?: React.ReactNode;
   className?: string;
 };
 
@@ -19,7 +19,7 @@ export const Menu = ({
   ref,
   contentContainerPosition = 'bottom',
   className,
-  header,
+  topSlot,
 }: Readonly<MenuProps>) => {
   return (
     <div className="relative">
@@ -36,7 +36,7 @@ export const Menu = ({
           )}
           ref={ref}
         >
-          {header}
+          {topSlot}
           <div
             className={cn(
               'border-secondary-300 bg-secondary-100 dark:bg-dark-300 dark:border-dark-100 rounded-xl border py-2 shadow-xl'

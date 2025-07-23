@@ -30,7 +30,6 @@ export * from './ui/modal';
 export * from './ui/files-upload-button';
 export * from './ui/portal';
 export * from './ui/emoji-picker';
-export * from './ui/reaction-picker';
 export * from './ui/drawer';
 export * from './ui/typography';
 export * from './ui/switcher';

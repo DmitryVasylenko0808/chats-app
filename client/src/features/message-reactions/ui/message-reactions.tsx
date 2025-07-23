@@ -3,7 +3,8 @@ import { Reaction } from '@/entities/reaction';
 import { User } from '@/entities/user';
 import { cn } from '@/shared';
 
-import { useAddReaction, useDeleteReaction } from '../hooks';
+import { useAddReaction } from '../hooks/use-add-reaction';
+import { useDeleteReaction } from '../hooks/use-delete-reaction';
 
 type MessageReactionsProps = {
   message: Message;
@@ -15,7 +16,7 @@ export const MessageReactions = ({
   participantMessage,
   currentUser,
 }: Readonly<MessageReactionsProps>) => {
-  if (!message.reactionsByEmoji || !message.reactionsByEmojiCount) {
+  if (!message.reactionsByEmoji || !Object.keys(message.reactionsByEmoji).length) {
     return null;
   }
 
