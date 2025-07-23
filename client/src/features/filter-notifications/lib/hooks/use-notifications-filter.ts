@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { NotificationTabValue } from '../types';
+import { NotificationTabValue } from '../../types';
 
 export const useNotificationsFilter = () => {
   const [entityType, setEntityType] = useState<NotificationTabValue>();

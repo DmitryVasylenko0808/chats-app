@@ -3,6 +3,11 @@ import {
   useDeleteAllNotifications,
   useDeleteNotificationById,
 } from '@/features/delete-notification';
+import {
+  NotificationsFilters,
+  NotificationTabValue,
+  useNotificationsFilter,
+} from '@/features/filter-notifications';
 import { useMarkNotification } from '@/features/mark-notification';
 import {
   cn,
@@ -17,9 +22,6 @@ import {
 
 import { useNavigate } from 'react-router';
 
-import { useNotificationsFilter } from '../hooks';
-import { NotificationTabValue } from '../types';
-import { NotificationsFilters } from './notifications-filters';
 import { NotificationsHeader } from './notifications-header';
 import { NotificationsList } from './notifications-list';
 
