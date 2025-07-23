@@ -1,9 +1,9 @@
 import { Bookmark, useGetBookmarks } from '@/entities/bookmark';
+import { useDeleteBookmark } from '@/features/delete-bookmark';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
-import { useDeleteBookmark } from '../hooks';
 import { BookmarksHeader } from './bookmarks-header';
 import { BookmarksList } from './bookmarks-list';
 
