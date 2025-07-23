@@ -1,4 +1,4 @@
-import { Reaction } from '@/entities';
+import { Reaction } from '@/entities/reaction';
 import { User } from '@/entities/user';
 
 export type Message = {
