@@ -1,12 +1,12 @@
 import { Message } from '@/entities/message';
-import { EditMessageFormFields, editMessageSchema } from '@/features/messages/validations';
 import { Button, Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 import { AiOutlineSend } from 'react-icons/ai';
 
-import { useEditMessage } from '../hooks';
+import { useEditMessage } from '../lib/hooks/use-edit-message';
+import { EditMessageFormFields, editMessageSchema } from '../model/edit-message-validation';
 
 type EditMessageModalProps = ModalProps & {
   message: Message;

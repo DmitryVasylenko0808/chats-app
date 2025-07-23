@@ -1,7 +1,7 @@
 import { Message, useGetMessages } from '@/entities/message';
 import { useAddBookmark } from '@/features/bookmarks/hooks';
+import { EditMessageModal } from '@/features/edit-message';
 import {
-  EditMessageModal,
   ForwardMessageModal,
   MessagesList,
   PinnedMessage,
