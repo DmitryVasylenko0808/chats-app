@@ -3,8 +3,8 @@ import { useAddBookmark } from '@/features/bookmarks/hooks';
 import { useDeleteMessage } from '@/features/delete-message';
 import { EditMessageModal } from '@/features/edit-message';
 import { ForwardMessageModal } from '@/features/forward-message';
-import { MessagesList, PinnedMessage } from '@/features/messages/components';
-import { usePinMessage, useUnpinMessage } from '@/features/messages/hooks';
+import { MessagesList } from '@/features/messages/components';
+import { PinnedMessage, usePinMessage } from '@/features/pin-message';
 import { ReplyMessageModal } from '@/features/reply-message';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
@@ -18,7 +18,6 @@ type MessagesProps = {
 export const Messages = ({ chatId }: MessagesProps) => {
   const { data, isLoading, error } = useGetMessages(chatId);
   const { mutateAsync: pinMessage } = usePinMessage();
-  const { mutateAsync: unpinMessage } = useUnpinMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
   const { mutateAsync: addBookmark } = useAddBookmark();
   const { handleCopy } = useCopy();
@@ -42,12 +41,6 @@ export const Messages = ({ chatId }: MessagesProps) => {
   const handlePinMessage = (message: Message) => {
     pinMessage({ chatId: message.chatId, messageId: message.id })
       .then(() => notify({ variant: 'success', text: 'Successfully pinned!' }))
-      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
-  };
-
-  const handleUnpinMessage = (message: Message) => {
-    unpinMessage({ chatId: message.chatId, messageId: message.id })
-      .then(() => notify({ variant: 'success', text: 'Successfully unpinned!' }))
       .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
   };
 
@@ -97,7 +90,7 @@ export const Messages = ({ chatId }: MessagesProps) => {
 
   return (
     <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto">
-      <PinnedMessage pinnedMessage={data?.find((m) => m.isPinned)} onUnpin={handleUnpinMessage} />
+      <PinnedMessage pinnedMessage={data?.find((m) => m.isPinned)} />
       <div className="p-6">
         <MessagesList
           messages={data}
