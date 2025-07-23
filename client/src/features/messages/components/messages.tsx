@@ -1,5 +1,5 @@
 import { Message, useGetMessages } from '@/entities/message';
-import { useAddBookmark } from '@/features/bookmarks/hooks';
+import { useAddBookmark } from '@/features/add-bookmark';
 import { useDeleteMessage } from '@/features/delete-message';
 import { EditMessageModal } from '@/features/edit-message';
 import { ForwardMessageModal } from '@/features/forward-message';
