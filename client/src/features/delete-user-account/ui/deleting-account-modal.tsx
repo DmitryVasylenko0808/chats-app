@@ -1,6 +1,6 @@
 import { Button, Loader, Modal, ModalProps, Typograpghy, useAlerts, useAuth } from '@/shared';
 
-import { useDeleteUser } from '../hooks';
+import { useDeleteUser } from '../lib/hooks/use-delete-user';
 
 type DeletingUserModalProps = ModalProps;
 

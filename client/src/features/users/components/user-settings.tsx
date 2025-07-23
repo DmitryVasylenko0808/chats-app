@@ -1,13 +1,11 @@
+import { DeleteAccountButton } from '@/features/delete-user-account';
 import { useTheme } from '@/features/switch-theme';
-import { Button, Switcher, Typograpghy, useModal } from '@/shared';
+import { Switcher, Typograpghy } from '@/shared';
 
 import { ChangeEvent } from 'react';
 
-import { DeletingAccountModal } from './deleting-account-modal';
-
 export const UserSettings = () => {
   const { isDarkTheme, onToggleTheme } = useTheme();
-  const deleteAccModal = useModal();
 
   const handleChangeTheme = (e: ChangeEvent<HTMLInputElement>) => onToggleTheme(e.target.checked);
 
@@ -20,10 +18,7 @@ export const UserSettings = () => {
         <Typograpghy tagVariant="h3">Dark Theme:</Typograpghy>
         <Switcher onChange={handleChangeTheme} checked={isDarkTheme} />
       </div>
-      <Button variant="danger" onClick={deleteAccModal.handleClickOpen} fullWidth>
-        Delete Account
-      </Button>
-      <DeletingAccountModal open={deleteAccModal.open} onClose={deleteAccModal.handleClickClose} />
+      <DeleteAccountButton />
     </div>
   );
 };
