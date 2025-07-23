@@ -1,6 +1,5 @@
+import { SearchUsersModal } from '@/features/search-users';
 import { Button, Typograpghy, useModal } from '@/shared';
-
-import { NewChatModal } from './new-chat-modal';
 
 export const EmptyChat = () => {
   const modal = useModal();
@@ -16,7 +15,7 @@ export const EmptyChat = () => {
       <Button variant="primary" onClick={modal.handleClickOpen}>
         New Chat
       </Button>
-      <NewChatModal open={modal.open} onClose={modal.handleClickClose} />
+      <SearchUsersModal open={modal.open} onClose={modal.handleClickClose} />
     </div>
   );
 };

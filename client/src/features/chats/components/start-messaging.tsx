@@ -1,4 +1,4 @@
-import { NewChatModal } from '@/features/chats/components';
+import { SearchUsersModal } from '@/features/search-users';
 import { Button, useModal } from '@/shared';
 
 export const StartMessaging = () => {
@@ -9,7 +9,7 @@ export const StartMessaging = () => {
       <Button variant="primary" onClick={modal.handleClickOpen} fullWidth>
         Start Messaging
       </Button>
-      <NewChatModal open={modal.open} onClose={modal.handleClickClose} />
+      <SearchUsersModal open={modal.open} onClose={modal.handleClickClose} />
     </div>
   );
 };

@@ -1,26 +1,21 @@
 import { User, UsersList } from '@/entities/user';
-import { useSearchUsers } from '@/features/users/hooks';
-import { Loader, Modal, ModalProps, TextField, Typograpghy, useAlerts } from '@/shared';
+import { Loader, Modal, ModalProps, TextField, Typograpghy } from '@/shared';
 
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
-import { useCreateChat } from '../hooks';
+import { useSearchUsers } from '../libs/hooks/use-search-users';
 
-type NewChatModalProps = ModalProps;
+type SearchUsersModalProps = ModalProps;
 
-export const NewChatModal = (modalProps: NewChatModalProps) => {
+export const SearchUsersModal = (modalProps: Readonly<SearchUsersModalProps>) => {
   const { search, data, isFetching, handleChangeSearch } = useSearchUsers();
-  const { mutateAsync } = useCreateChat();
-  const { notify } = useAlerts();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleClick = (user: User) =>
-    mutateAsync(user.id)
-      .then((data) => {
-        modalProps.onClose();
-        navigate(`/chats/${data.id}`);
-      })
-      .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
+  const handleClick = (user: User) => {
+    navigate(`/profile/${user.id}`, { state: { backgroundLocation: location } });
+    modalProps.onClose();
+  };
 
   const isShowList = search && data;
 
