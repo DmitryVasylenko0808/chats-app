@@ -2,7 +2,6 @@ export * from './recent-chats';
 export * from './chat';
 export * from './chat-menu';
 export * from './chat-info';
-export * from './deleting-chat-modal';
 export * from './empty-chat';
 export * from './socket-container';
 export * from './start-messaging';

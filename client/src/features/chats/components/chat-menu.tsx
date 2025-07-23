@@ -1,8 +1,7 @@
+import { DeletingChatModal } from '@/features/delete-chat';
 import { Button, Menu, useModal, useToogleMenu } from '@/shared';
 
 import { AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
-
-import { DeletingChatModal } from './deleting-chat-modal';
 
 type ChatMenuProps = { chatId: number };
 

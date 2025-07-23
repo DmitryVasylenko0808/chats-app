@@ -2,7 +2,7 @@ import { Button, Loader, Modal, ModalProps, Typograpghy, useAlerts } from '@/sha
 
 import { useNavigate } from 'react-router';
 
-import { useDeleteChat } from '../hooks';
+import { useDeleteChat } from '../lib/hooks/use-delete.chat';
 
 type DeletingChatModalProps = { chatId: number } & ModalProps;
 
