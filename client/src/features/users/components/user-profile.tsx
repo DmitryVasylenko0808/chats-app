@@ -1,16 +1,14 @@
 import { useGetUser, UserInfo } from '@/entities/user';
 import { CreateChatButton } from '@/features/chats/components';
-import { Button, Loader, useAuth, useModal } from '@/shared';
+import { EditProfileButton } from '@/features/edit-user-profile';
+import { Loader, useAuth } from '@/shared';
 
 import { useParams } from 'react-router';
-
-import { EditingUserProfileModal } from './editing-user-profile-modal';
 
 export const UserProfile = () => {
   const { id } = useParams();
   const { currentUser } = useAuth();
   const { data, isLoading, isError } = useGetUser(Number(id));
-  const editModal = useModal();
 
   const isCurrentUserProfile = currentUser?.id === Number(id);
 
@@ -29,20 +27,9 @@ export const UserProfile = () => {
   return (
     data && (
       <div className="min-w-xs">
-        <UserInfo user={data} />
-        {!isCurrentUserProfile ? (
-          <CreateChatButton user={data} />
-        ) : (
-          <Button
-            variant="secondary"
-            className="mt-3"
-            onClick={editModal.handleClickOpen}
-            fullWidth
-          >
-            Edit Profile
-          </Button>
-        )}
-        <EditingUserProfileModal open={editModal.open} onClose={editModal.handleClickClose} />
+        <UserInfo user={data}>
+          {!isCurrentUserProfile ? <CreateChatButton user={data} /> : <EditProfileButton />}
+        </UserInfo>
       </div>
     )
   );

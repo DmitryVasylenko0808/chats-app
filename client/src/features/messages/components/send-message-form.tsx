@@ -1,4 +1,4 @@
-import { Chat } from '@/entities';
+import { Chat } from '@/entities/chat';
 import { useSendMessage } from '@/features/messages/hooks';
 import { SendMessageFormFields, sendMessageSchema } from '@/features/messages/validations';
 import { Button, FilesUploadButton, Loader, TextArea, useAlerts } from '@/shared';

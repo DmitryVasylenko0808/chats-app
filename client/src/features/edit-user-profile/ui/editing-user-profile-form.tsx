@@ -4,8 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useForm } from 'react-hook-form';
 
-import { useEditProfile } from '../hooks';
-import { EditingProfileFormFields, editingProfileSchema } from '../validations';
+import { useEditProfile } from '../lib/hooks/use-edit-profile';
+import {
+  EditingProfileFormFields,
+  editingProfileSchema,
+} from '../model/editing-user-profile-validation';
 
 type EditingUserProfileFormProps = { user: User; onSubmit?: () => void };
 
