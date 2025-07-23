@@ -1,5 +1,6 @@
 import { useGetChatById } from '@/entities/chat';
-import { Messages, SendMessageForm } from '@/features/messages/components';
+import { Messages } from '@/features/messages/components';
+import { SendMessageForm } from '@/features/send-message';
 import { Button, Loader, useAlerts } from '@/shared';
 
 import { useEffect } from 'react';
