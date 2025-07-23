@@ -1,4 +1,4 @@
-import { Chat } from '@/entities';
+import { Chat } from '@/entities/chat';
 import { Typograpghy, useAuth } from '@/shared';
 
 type ChatInfoProps = { chat: Chat };

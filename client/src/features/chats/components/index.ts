@@ -5,7 +5,6 @@ export * from './chat-info';
 export * from './deleting-chat-modal';
 export * from './empty-chat';
 export * from './socket-container';
-export * from './create-chat-button';
 export * from './start-messaging';
 export * from './sidebar';
 export * from './sidebar-header';

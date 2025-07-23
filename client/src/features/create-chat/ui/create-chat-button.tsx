@@ -1,8 +1,9 @@
 import { User } from '@/entities/user';
-import { useCreateChat } from '@/features/chats/hooks';
 import { Button, Loader, useAlerts } from '@/shared';
 
 import { useNavigate } from 'react-router';
+
+import { useCreateChat } from '../lib/hooks/use-create-chat';
 
 type CreateChatButtonProps = { user: User };
 
