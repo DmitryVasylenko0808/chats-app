@@ -4,7 +4,7 @@ import { Modal, ModalProps, Typograpghy, useAlerts } from '@/shared';
 
 import { useNavigate } from 'react-router';
 
-import { useForwardMessage } from '../hooks';
+import { useForwardMessage } from '../lib/hooks/use-forward-message';
 
 type ForwardMessageModalProps = ModalProps & {
   message: Message;

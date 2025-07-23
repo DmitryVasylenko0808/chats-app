@@ -1,4 +1,3 @@
-export * from './forward-message-modal';
 export * from './messages-list';
 export * from './messages';
 export * from './pinned-message';
