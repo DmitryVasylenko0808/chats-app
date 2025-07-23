@@ -2,7 +2,7 @@ import { useAlerts } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
-import { useGetUnreadCountNotifications } from '../hooks';
+import { useGetUnreadCountNotifications } from '../lib/hooks/use-get-unread-count-notifications';
 
 export const UnreadNotificationsNotifier = () => {
   const { data } = useGetUnreadCountNotifications();

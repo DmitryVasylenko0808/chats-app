@@ -1,4 +1,4 @@
-import { useGetUnreadCountNotifications } from '@/features/notifications/hooks';
+import { useGetUnreadCountNotifications } from '@/features/notify-unread-notifications';
 import { Button, cn, Logo, Typograpghy, useDrawer } from '@/shared';
 
 import { AiOutlineMenu } from 'react-icons/ai';
