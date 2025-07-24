@@ -1,4 +1,3 @@
-import { Chat } from '@/entities/chat';
 import { Button, FilesUploadButton, Loader, TextArea, useAlerts } from '@/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -11,9 +10,9 @@ import { SendMessageFormFields, sendMessageSchema } from '../model/send-message-
 import { ChatEmojiPicker } from './chat-emoji-picker';
 import { PreviewMessageImages } from './preview-message-images';
 
-type SendMessageFormProps = { chat: Chat };
+type SendMessageFormProps = { chatId: number };
 
-export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
+export const SendMessageForm = ({ chatId }: Readonly<SendMessageFormProps>) => {
   const {
     control,
     register,
@@ -30,7 +29,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const { mutateAsync, isPending } = useSendMessage();
   const { notify } = useAlerts();
 
-  useEffect(() => setFocus('text'), [chat]);
+  useEffect(() => setFocus('text'), [chatId]);
 
   const handleEmojiClick = (emoji: string) => {
     setValue('text', getValues('text') + emoji);
@@ -38,7 +37,7 @@ export const SendMessageForm = ({ chat }: Readonly<SendMessageFormProps>) => {
   const handleClosePreview = () => setValue('images', []);
 
   const submitHandler = (data: SendMessageFormFields) =>
-    mutateAsync({ ...data, chatId: chat.id })
+    mutateAsync({ ...data, chatId })
       .then(() => reset())
       .catch((err) => notify({ variant: 'error', title: 'Error', text: err.message }));
 

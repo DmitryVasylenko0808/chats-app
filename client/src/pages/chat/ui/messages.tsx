@@ -5,10 +5,11 @@ import { EditMessageModal } from '@/features/message/edit-message';
 import { ForwardMessageModal } from '@/features/message/forward-message';
 import { PinnedMessage, usePinMessage } from '@/features/message/pin-message';
 import { ReplyMessageModal } from '@/features/message/reply-message';
-import { MessagesList } from '@/features/messages/components';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef, useState } from 'react';
+
+import { MessagesList } from './messages-list';
 
 // Widget "ChatMessages"
 type MessagesProps = {

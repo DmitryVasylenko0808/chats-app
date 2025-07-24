@@ -1,5 +1,5 @@
 import BookmarksPage from '@/pages/bookmarks';
-import ChatPage from '@/pages/chat-page';
+import ChatPage from '@/pages/chat';
 import HomePage from '@/pages/home';
 import NotificationsPage from '@/pages/notifications';
 import RegisterPage from '@/pages/register';
