@@ -1,5 +1,5 @@
-import { DeleteAccountButton } from '@/features/delete-user-account';
 import { useTheme } from '@/features/switch-theme';
+import { DeleteAccountButton } from '@/features/user/delete-user-account';
 import { Switcher, Typograpghy } from '@/shared';
 
 import { ChangeEvent } from 'react';

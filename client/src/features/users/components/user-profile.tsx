@@ -1,6 +1,6 @@
 import { useGetUser, UserInfo } from '@/entities/user';
-import { CreateChatButton } from '@/features/create-chat';
-import { EditProfileButton } from '@/features/edit-user-profile';
+import { CreateChatButton } from '@/features/chat/create-chat';
+import { EditProfileButton } from '@/features/user/edit-user-profile';
 import { Loader, useAuth } from '@/shared';
 
 import { useParams } from 'react-router';

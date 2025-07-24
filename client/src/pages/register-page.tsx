@@ -1,4 +1,4 @@
-import { RegisterUserForm } from '@/features/register-user';
+import { RegisterUserForm } from '@/features/session/register-user';
 
 const RegisterPage = () => {
   return <RegisterUserForm />;

@@ -2,13 +2,13 @@ import { Notification, useGetNotifications } from '@/entities/notification';
 import {
   useDeleteAllNotifications,
   useDeleteNotificationById,
-} from '@/features/delete-notification';
+} from '@/features/notification/delete-notification';
 import {
   NotificationsFilters,
   NotificationTabValue,
   useNotificationsFilter,
-} from '@/features/filter-notifications';
-import { useMarkNotification } from '@/features/mark-notification';
+} from '@/features/notification/filter-notifications';
+import { useMarkNotification } from '@/features/notification/mark-notification';
 import {
   cn,
   Loader,

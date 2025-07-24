@@ -1,11 +1,11 @@
 import { Message, useGetMessages } from '@/entities/message';
-import { useAddBookmark } from '@/features/add-bookmark';
-import { useDeleteMessage } from '@/features/delete-message';
-import { EditMessageModal } from '@/features/edit-message';
-import { ForwardMessageModal } from '@/features/forward-message';
+import { useAddBookmark } from '@/features/bookmark/add-bookmark';
+import { useDeleteMessage } from '@/features/message/delete-message';
+import { EditMessageModal } from '@/features/message/edit-message';
+import { ForwardMessageModal } from '@/features/message/forward-message';
+import { PinnedMessage, usePinMessage } from '@/features/message/pin-message';
+import { ReplyMessageModal } from '@/features/message/reply-message';
 import { MessagesList } from '@/features/messages/components';
-import { PinnedMessage, usePinMessage } from '@/features/pin-message';
-import { ReplyMessageModal } from '@/features/reply-message';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef, useState } from 'react';

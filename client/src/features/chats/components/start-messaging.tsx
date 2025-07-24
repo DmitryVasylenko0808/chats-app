@@ -1,4 +1,4 @@
-import { SearchUsersModal } from '@/features/search-users';
+import { SearchUsersModal } from '@/features/user/search-users';
 import { Button, useModal } from '@/shared';
 
 export const StartMessaging = () => {

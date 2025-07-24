@@ -1,5 +1,5 @@
 import { Bookmark, useGetBookmarks } from '@/entities/bookmark';
-import { useDeleteBookmark } from '@/features/delete-bookmark';
+import { useDeleteBookmark } from '@/features/bookmark/delete-bookmark';
 import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';

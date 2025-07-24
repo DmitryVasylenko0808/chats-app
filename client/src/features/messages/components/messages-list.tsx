@@ -1,5 +1,5 @@
 import { Message, MessageItem } from '@/entities/message';
-import { MessageReactions, ReactionPicker } from '@/features/message-reactions';
+import { MessageReactions, ReactionPicker } from '@/features/message/message-reactions';
 import { useAuth } from '@/shared';
 
 import { MessageMenu } from './message-menu';

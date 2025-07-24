@@ -1,4 +1,4 @@
-import { DeletingChatModal } from '@/features/delete-chat';
+import { DeletingChatModal } from '@/features/chat/delete-chat';
 import { Button, Menu, useModal, useToogleMenu } from '@/shared';
 
 import { AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
