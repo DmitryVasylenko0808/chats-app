@@ -1,6 +1,6 @@
 import BookmarksPage from '@/pages/bookmarks-page';
 import ChatPage from '@/pages/chat-page';
-import HomePage from '@/pages/home-page';
+import HomePage from '@/pages/home';
 import NotificationsPage from '@/pages/notifications-page';
 import RegisterPage from '@/pages/register';
 import SettingsPage from '@/pages/settings';

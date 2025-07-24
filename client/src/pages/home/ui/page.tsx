@@ -1,4 +1,4 @@
-import { EmptyChat } from '@/features/chats/components';
+import { EmptyChat } from './empty-chat';
 
 const HomePage = () => {
   return (
