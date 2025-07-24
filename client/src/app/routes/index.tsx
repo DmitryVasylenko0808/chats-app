@@ -1,4 +1,4 @@
-import BookmarksPage from '@/pages/bookmarks-page';
+import BookmarksPage from '@/pages/bookmarks';
 import ChatPage from '@/pages/chat-page';
 import HomePage from '@/pages/home';
 import NotificationsPage from '@/pages/notifications-page';

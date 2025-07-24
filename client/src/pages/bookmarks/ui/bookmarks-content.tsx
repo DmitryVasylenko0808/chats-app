@@ -4,11 +4,9 @@ import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
-import { BookmarksHeader } from './bookmarks-header';
 import { BookmarksList } from './bookmarks-list';
 
-// Widget
-export const Bookmarks = () => {
+export const BookmarksContent = () => {
   const { data, isLoading, error } = useGetBookmarks();
   const { mutateAsync: deleteBookmarkMutate } = useDeleteBookmark();
   const { handleCopy } = useCopy();
@@ -17,7 +15,7 @@ export const Bookmarks = () => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  }, [data]);
 
   const handleClickDelete = (bookmark: Bookmark) => {
     deleteBookmarkMutate({ id: bookmark.id }).catch((err) =>
@@ -32,8 +30,7 @@ export const Bookmarks = () => {
   };
 
   return (
-    <div className="h-screen">
-      <BookmarksHeader />
+    <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto">
       {isLoading ? (
         <div className="flex h-full items-center justify-center">
           <Loader size="lg" variant="primary" />
@@ -47,7 +44,7 @@ export const Bookmarks = () => {
           <Typograpghy>No bookmarks</Typograpghy>
         </div>
       ) : (
-        <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto p-6">
+        <div className="p-6">
           <BookmarksList
             bookmarks={data}
             onCopyItem={handleClickCopy}
