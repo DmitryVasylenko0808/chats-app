@@ -1,4 +1,4 @@
-import { UpdatedMessages } from '@/features/messages/types';
+import { UpdatedMessages } from '@/features/message/realtime/types';
 import { SOCKET_MESSAGES_URL, useAuth } from '@/shared';
 import { useQueryClient } from '@tanstack/react-query';
 import { io, Socket } from 'socket.io-client';

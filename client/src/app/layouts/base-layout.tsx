@@ -1,7 +1,8 @@
-import { SideBar, SocketContainer } from '@/features/chats/components';
-import { MessagesSocketContainer } from '@/features/messages/components';
+import { SocketContainer } from '@/features/chat/realtime';
+import { SideBar } from '@/features/chats/components';
+import { MessagesSocketContainer } from '@/features/message/realtime';
 import { UnreadNotificationsNotifier } from '@/features/notification/notify-unread-notifications';
-import { NotificationsSocketContainer } from '@/features/notifications/components';
+import { NotificationsSocketContainer } from '@/features/notification/realtime';
 
 import { Outlet } from 'react-router';
 

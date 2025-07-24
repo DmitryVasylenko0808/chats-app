@@ -3,7 +3,6 @@ export * from './chat';
 export * from './chat-menu';
 export * from './chat-info';
 export * from './empty-chat';
-export * from './socket-container';
 export * from './start-messaging';
 export * from './sidebar';
 export * from './sidebar-header';
