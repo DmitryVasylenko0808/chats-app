@@ -4,7 +4,7 @@ import { Switcher, Typograpghy } from '@/shared';
 
 import { ChangeEvent } from 'react';
 
-export const UserSettings = () => {
+export const Settings = () => {
   const { isDarkTheme, onToggleTheme } = useTheme();
 
   const handleChangeTheme = (e: ChangeEvent<HTMLInputElement>) => onToggleTheme(e.target.checked);
