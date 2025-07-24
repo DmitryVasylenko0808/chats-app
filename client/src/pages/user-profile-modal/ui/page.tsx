@@ -1,9 +1,9 @@
-import { UserProfile } from '@/features/users/components';
 import { Modal } from '@/shared';
+import { UserProfile } from '@/widgets';
 
 import { useNavigate } from 'react-router';
 
-const ProfileModal = () => {
+const UserProfileModalPage = () => {
   const navigate = useNavigate();
 
   const handleClickClose = () => navigate(-1);
@@ -15,4 +15,4 @@ const ProfileModal = () => {
   );
 };
 
-export default ProfileModal;
+export default UserProfileModalPage;

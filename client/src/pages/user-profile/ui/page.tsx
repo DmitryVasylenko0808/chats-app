@@ -1,4 +1,4 @@
-import { UserProfile } from '@/features/users/components';
+import { UserProfile } from '@/widgets';
 
 const ProfilePage = () => {
   return (

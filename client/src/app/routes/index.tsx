@@ -1,13 +1,13 @@
 import BookmarksPage from '@/pages/bookmarks-page';
 import ChatPage from '@/pages/chat-page';
 import HomePage from '@/pages/home-page';
-import ProfileModal from '@/pages/modals/profile-modal';
 import SettingsModal from '@/pages/modals/settings-modal';
 import NotificationsPage from '@/pages/notifications-page';
-import ProfilePage from '@/pages/profile-page';
 import RegisterPage from '@/pages/register-page';
 import SettingsPage from '@/pages/settings-page';
 import SignInPage from '@/pages/sign-in-page';
+import ProfilePage from '@/pages/user-profile';
+import UserProfileModalPage from '@/pages/user-profile-modal';
 import { RequireAuth } from '@/shared';
 
 import { Route, Routes, useLocation } from 'react-router';
@@ -40,7 +40,7 @@ export const AppRoutes = () => {
       </Routes>
       {state?.backgroundLocation && (
         <Routes>
-          <Route path="/profile/:id" element={<ProfileModal />} />
+          <Route path="/profile/:id" element={<UserProfileModalPage />} />
           <Route path="/settings" element={<SettingsModal />} />
         </Routes>
       )}
