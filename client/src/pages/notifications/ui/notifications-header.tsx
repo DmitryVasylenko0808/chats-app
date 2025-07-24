@@ -1,17 +1,19 @@
+import { useDeleteAllNotifications } from '@/features/notification/delete-notification';
 import { Button, Menu, Typograpghy, useToogleMenu } from '@/shared';
 
 import { AiOutlineArrowLeft, AiOutlineBell, AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
-type NotificationsHeaderProps = {
-  onDeleteAll: () => void;
-};
-
-export const NotificationsHeader = ({ onDeleteAll }: Readonly<NotificationsHeaderProps>) => {
+export const NotificationsHeader = () => {
   const navigate = useNavigate();
   const { open, ref, handleToggle } = useToogleMenu();
+  const { mutateAsync: deleteNotifications } = useDeleteAllNotifications();
 
   const handleClickBack = () => navigate(-1);
+
+  const handleDeleteAllNotifications = () => {
+    deleteNotifications();
+  };
 
   return (
     <div className="border-b-secondary-300 dark:border-b-dark-100 flex h-22 items-center border-b px-6">
@@ -33,7 +35,7 @@ export const NotificationsHeader = ({ onDeleteAll }: Readonly<NotificationsHeade
           }
           content={
             <>
-              <Button variant="menu-danger" onClick={onDeleteAll}>
+              <Button variant="menu-danger" onClick={handleDeleteAllNotifications}>
                 <AiOutlineDelete size={18} /> Delete All
               </Button>
             </>

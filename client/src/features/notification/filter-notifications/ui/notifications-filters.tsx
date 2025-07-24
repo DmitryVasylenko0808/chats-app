@@ -17,7 +17,7 @@ export const NotificationsFilters = ({
   onChangeSortOption,
 }: Readonly<NotificationsFiltersProps>) => {
   return (
-    <div className="my-2 flex justify-end gap-4 px-4">
+    <div className="flex gap-3">
       <div className="inline-flex items-center gap-2">
         <Typograpghy>Filter:</Typograpghy>
         <Selector options={readOptions} value={activeReadOption} onChange={onChangeReadOption} />

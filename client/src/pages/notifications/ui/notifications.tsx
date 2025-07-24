@@ -1,8 +1,5 @@
 import { Notification, useGetNotifications } from '@/entities/notification';
-import {
-  useDeleteAllNotifications,
-  useDeleteNotificationById,
-} from '@/features/notification/delete-notification';
+import { useDeleteNotificationById } from '@/features/notification/delete-notification';
 import {
   NotificationsFilters,
   NotificationTabValue,
@@ -22,7 +19,6 @@ import {
 
 import { useNavigate } from 'react-router';
 
-import { NotificationsHeader } from './notifications-header';
 import { NotificationsList } from './notifications-list';
 
 const tabs: TabItem<NotificationTabValue>[] = [
@@ -63,7 +59,6 @@ export const Notifications = () => {
     limit,
   });
   const { mutateAsync: markNotification } = useMarkNotification();
-  const { mutateAsync: deleteNotifications } = useDeleteAllNotifications();
   const { mutateAsync: deleteNotification } = useDeleteNotificationById();
   const navigate = useNavigate();
 
@@ -79,24 +74,23 @@ export const Notifications = () => {
       markNotification(notification.id);
     }
   };
-  const handleDeleteAllNotifications = () => {
-    deleteNotifications();
-  };
+
   const handleDeleteNotification = (notification: Notification) => {
     deleteNotification(notification.id);
   };
 
   return (
     <div>
-      <NotificationsHeader onDeleteAll={handleDeleteAllNotifications} />
-      <NotificationsFilters
-        readOptions={readOptions}
-        activeReadOption={readOption}
-        sortOptions={sortOptions}
-        activeSortOption={sortOption}
-        onChangeReadOption={handleChangeReadOption}
-        onChangeSortOption={handleChangeSortOption}
-      />
+      <div className="my-2 flex justify-end gap-4 px-4">
+        <NotificationsFilters
+          readOptions={readOptions}
+          activeReadOption={readOption}
+          sortOptions={sortOptions}
+          activeSortOption={sortOption}
+          onChangeReadOption={handleChangeReadOption}
+          onChangeSortOption={handleChangeSortOption}
+        />
+      </div>
       <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
       <div
         className={cn('scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto', {
