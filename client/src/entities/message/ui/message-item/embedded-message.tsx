@@ -24,17 +24,17 @@ export const EmbeddedMessage = ({
   return (
     <div
       className={cn('mb-1.5 rounded-xl p-2.5', {
-        'bg-secondary-300 dark:bg-dark-200': !isParticipantMessage,
-        'bg-primary-100 text-secondary-100': isParticipantMessage,
+        'bg-secondary-300 dark:bg-dark-200': isParticipantMessage,
+        'bg-primary-100 text-secondary-100': !isParticipantMessage,
       })}
     >
-      <Typograpghy tagVariant="h6" className={cn({ 'text-secondary-100': isParticipantMessage })}>
+      <Typograpghy tagVariant="h6" className={cn({ 'text-secondary-100': !isParticipantMessage })}>
         {title}
       </Typograpghy>
       <Typograpghy
         className={cn({
-          'dark:text-secondary-100 text-black': !isParticipantMessage,
-          'text-secondary-100': isParticipantMessage,
+          'dark:text-secondary-100 text-black': isParticipantMessage,
+          'text-secondary-100': !isParticipantMessage,
         })}
       >
         {message.text}

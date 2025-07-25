@@ -11,8 +11,8 @@ export const MessageContent = ({
   return (
     <div
       className={cn('rounded-2xl px-5 py-3', {
-        'bg-primary-200': isParticipantMessage,
-        'bg-secondary-200 dark:bg-dark-300': !isParticipantMessage,
+        'bg-secondary-200 dark:bg-dark-300': isParticipantMessage,
+        'bg-primary-200': !isParticipantMessage,
       })}
     >
       {children}

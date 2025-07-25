@@ -50,8 +50,8 @@ export const MessageItem = ({
             />
             <Typograpghy
               className={cn('mb-1.5', {
-                'text-secondary-100': isParticipantMessage,
-                'dark:text-secondary-100 text-black': !isParticipantMessage,
+                'dark:text-secondary-100 text-black': isParticipantMessage,
+                'text-secondary-100': !isParticipantMessage,
               })}
             >
               {message.text}

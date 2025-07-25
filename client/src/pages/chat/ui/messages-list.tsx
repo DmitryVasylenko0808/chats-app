@@ -4,7 +4,6 @@ import { useAuth } from '@/shared';
 
 import { MessageMenu } from './message-menu';
 
-// part of widget
 type MessagesListProps = {
   messages?: Message[];
   onReplyItem?: (message: Message) => void;

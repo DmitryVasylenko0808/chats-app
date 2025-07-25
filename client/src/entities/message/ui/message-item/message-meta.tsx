@@ -13,8 +13,8 @@ export const MessageMeta = ({ message, isParticipantMessage }: Readonly<MessageM
     {message.createdAt !== message.updatedAt && (
       <span
         className={cn('inline-flex items-center gap-1 text-xs', {
-          'text-meta-100': isParticipantMessage,
-          'text-meta-200': !isParticipantMessage,
+          'text-meta-100': !isParticipantMessage,
+          'text-meta-200': isParticipantMessage,
         })}
       >
         edited
@@ -22,8 +22,8 @@ export const MessageMeta = ({ message, isParticipantMessage }: Readonly<MessageM
     )}
     <span
       className={cn('inline-flex items-center gap-1 text-xs', {
-        'text-meta-100': isParticipantMessage,
-        'text-meta-200': !isParticipantMessage,
+        'text-meta-100': !isParticipantMessage,
+        'text-meta-200': isParticipantMessage,
       })}
     >
       <AiOutlineClockCircle size={14} /> {new Date(message.createdAt).toLocaleString()}
