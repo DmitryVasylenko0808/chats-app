@@ -1,18 +1,16 @@
 import { EntityType, Notification, NotificationType } from '@/entities/notification';
-import { Button, cn, Typograpghy } from '@/shared';
-
-import { AiOutlineClose } from 'react-icons/ai';
+import { cn, Typograpghy } from '@/shared';
 
 type NotificationBlockProps = {
   notification: Notification;
+  actionsSlot?: React.ReactNode;
   onClick?: (notification: Notification, entityPath?: string) => void;
-  onDelete?: () => void;
 };
 
 export const NotificationBlock = ({
   notification,
+  actionsSlot,
   onClick,
-  onDelete,
 }: Readonly<NotificationBlockProps>) => {
   const typeContent: Record<NotificationType, string> = {
     NEW_CHAT: `Created chat with you`,
@@ -27,11 +25,6 @@ export const NotificationBlock = ({
     const path = notification.entityType ? entityPath[notification.entityType] : undefined;
 
     onClick?.(notification, path);
-  };
-
-  const handleClickDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onDelete?.();
   };
 
   return (
@@ -59,9 +52,7 @@ export const NotificationBlock = ({
           </div>
           <Typograpghy>{typeContent[notification.type]}</Typograpghy>
         </div>
-        <Button variant="text" onClick={handleClickDelete}>
-          <AiOutlineClose size={18} />
-        </Button>
+        {actionsSlot}
       </div>
     </div>
   );

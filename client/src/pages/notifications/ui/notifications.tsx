@@ -59,7 +59,6 @@ export const Notifications = () => {
     limit,
   });
   const { mutateAsync: markNotification } = useMarkNotification();
-  const { mutateAsync: deleteNotification } = useDeleteNotificationById();
   const navigate = useNavigate();
 
   const handleClickTab = (entityType: NotificationTabValue) => setEntityType(entityType);
@@ -73,10 +72,6 @@ export const Notifications = () => {
       navigate(entityPath);
       markNotification(notification.id);
     }
-  };
-
-  const handleDeleteNotification = (notification: Notification) => {
-    deleteNotification(notification.id);
   };
 
   return (
@@ -114,7 +109,6 @@ export const Notifications = () => {
           <NotificationsList
             notifications={notifications?.data}
             onClickItem={handleClickNotification}
-            onDeleteItem={handleDeleteNotification}
           />
         )}
       </div>

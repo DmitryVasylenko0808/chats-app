@@ -1,4 +1,5 @@
 import { Notification, NotificationBlock } from '@/entities/notification';
+import { DeleteNotificationButton } from '@/features/notification/delete-notification';
 
 import { ComponentProps } from 'react';
 
@@ -22,7 +23,7 @@ export const NotificationsList = ({
             notification={n}
             key={n.id}
             onClick={onClickItem}
-            onDelete={() => onDeleteItem?.(n)}
+            actionsSlot={<DeleteNotificationButton notification={n} />}
           />
         </li>
       ))}
