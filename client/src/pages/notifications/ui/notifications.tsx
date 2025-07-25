@@ -2,38 +2,16 @@ import { Notification, useGetNotifications } from '@/entities/notification';
 import {
   NotificationsFilters,
   NotificationTabValue,
+  NotificationTypeTabs,
   useNotificationsFilter,
 } from '@/features/notification/filter-notifications';
 import { useMarkNotification } from '@/features/notification/mark-notification';
-import {
-  cn,
-  Loader,
-  Option,
-  Pagination,
-  TabItem,
-  Tabs,
-  Typograpghy,
-  usePagination,
-} from '@/shared';
+import { cn, Loader, Pagination, Typograpghy, usePagination } from '@/shared';
 
 import { useNavigate } from 'react-router';
 
 import { NotificationsList } from './notifications-list';
 
-const tabs: TabItem<NotificationTabValue>[] = [
-  { value: undefined, title: 'All' },
-  { value: 'CHAT', title: 'Chats' },
-  { value: 'MESSAGE', title: 'Messages' },
-];
-const readOptions: Option[] = [
-  { value: '-1', label: 'All' },
-  { value: '0', label: 'Unread' },
-  { value: '1', label: 'Read' },
-];
-const sortOptions: Option[] = [
-  { value: 'asc', label: 'Oldest' },
-  { value: 'desc', label: 'Newest' },
-];
 const initialPage = 1;
 const initialLimit = 9;
 
@@ -77,15 +55,13 @@ export const Notifications = () => {
     <div>
       <div className="my-2 flex justify-end gap-4 px-4">
         <NotificationsFilters
-          readOptions={readOptions}
           activeReadOption={readOption}
-          sortOptions={sortOptions}
           activeSortOption={sortOption}
           onChangeReadOption={handleChangeReadOption}
           onChangeSortOption={handleChangeSortOption}
         />
       </div>
-      <Tabs tabs={tabs} activeValue={entityType} onClickTab={handleClickTab} />
+      <NotificationTypeTabs activeValue={entityType} onClickTab={handleClickTab} />
       <div
         className={cn('scrollbar-custom h-[calc(100vh-88px-40px-54px)] overflow-auto', {
           'h-[calc(100vh-88px-40px-54px-72px)]': notifications?.totalPages !== 1,

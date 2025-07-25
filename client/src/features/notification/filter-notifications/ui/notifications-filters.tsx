@@ -1,18 +1,29 @@
 import { Option, Selector, Typograpghy } from '@/shared';
 
+const defaultReadOptions: Option[] = [
+  { value: '-1', label: 'All' },
+  { value: '0', label: 'Unread' },
+  { value: '1', label: 'Read' },
+];
+const defaultSortOptions: Option[] = [
+  { value: 'asc', label: 'Oldest' },
+  { value: 'desc', label: 'Newest' },
+];
+
 type NotificationsFiltersProps = {
-  readOptions: Option[];
   activeReadOption: string;
-  sortOptions: Option[];
   activeSortOption: string;
+  readOptions?: Option[];
+  sortOptions?: Option[];
   onChangeReadOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onChangeSortOption: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
+
 export const NotificationsFilters = ({
-  readOptions,
   activeReadOption,
-  sortOptions,
   activeSortOption,
+  readOptions = defaultReadOptions,
+  sortOptions = defaultSortOptions,
   onChangeReadOption,
   onChangeSortOption,
 }: Readonly<NotificationsFiltersProps>) => {

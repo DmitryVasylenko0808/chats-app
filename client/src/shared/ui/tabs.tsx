@@ -3,11 +3,12 @@ import { cn } from '@/shared/lib/utils/cn';
 import { ComponentProps } from 'react';
 
 export type TabItem<T> = { value: T; title: string | number };
-type TabsProps<T> = ComponentProps<'div'> & {
-  tabs: TabItem<T>[];
+export type TabsProps<T> = ComponentProps<'div'> & {
+  tabs?: TabItem<T>[];
   activeValue: T;
   onClickTab: (tab: T) => void;
 };
+
 export const Tabs = <T,>({
   tabs,
   activeValue,
@@ -16,7 +17,7 @@ export const Tabs = <T,>({
 }: Readonly<TabsProps<T>>) => {
   return (
     <div className="flex" {...divProps}>
-      {tabs.map((t, index) => (
+      {tabs?.map((t, index) => (
         <Tab active={t.value === activeValue} key={index} onClick={() => onClickTab(t.value)}>
           {t.title}
         </Tab>
