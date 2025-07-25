@@ -1,5 +1,4 @@
 import { Notification, useGetNotifications } from '@/entities/notification';
-import { useDeleteNotificationById } from '@/features/notification/delete-notification';
 import {
   NotificationsFilters,
   NotificationTabValue,
