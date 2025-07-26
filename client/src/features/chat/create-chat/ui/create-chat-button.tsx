@@ -20,7 +20,7 @@ export const CreateChatButton = ({ user }: Readonly<CreateChatButtonProps>) => {
   return (
     <div className="mt-3 w-full">
       <Button variant="primary" onClick={handleClick} fullWidth>
-        {isPending ? <Loader variant="secondary" size="sm" /> : 'Create Chat'}
+        {isPending ? <Loader variant="secondary" size="sm" /> : 'Send message'}
       </Button>
     </div>
   );

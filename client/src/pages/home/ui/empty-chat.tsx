@@ -13,7 +13,7 @@ export const EmptyChat = () => {
         Choose a chat from the list or start a new conversation
       </Typograpghy>
       <Button variant="primary" onClick={modal.handleClickOpen}>
-        New Chat
+        Start Chat
       </Button>
       <SearchUsersModal open={modal.open} onClose={modal.handleClickClose} />
     </div>
