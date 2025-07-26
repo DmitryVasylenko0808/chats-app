@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 
-import { ChatMenu } from './chat-menu';
+import { ChatActionsMenu } from './chat-actions-menu';
 
 type ChatHeaderProps = { chatId?: number };
 
@@ -46,7 +46,7 @@ export const ChatHeader = ({ chatId }: Readonly<ChatHeaderProps>) => {
             </div>
           )}
         </div>
-        <ChatMenu chatId={Number(chatId)} />
+        <ChatActionsMenu chatId={Number(chatId)} />
       </div>
     </div>
   );

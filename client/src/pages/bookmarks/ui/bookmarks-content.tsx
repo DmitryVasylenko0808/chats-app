@@ -1,34 +1,20 @@
-import { Bookmark, useGetBookmarks } from '@/entities/bookmark';
-import { useDeleteBookmark } from '@/features/bookmark/delete-bookmark';
-import { useAlerts, useCopy } from '@/shared';
+import { useGetBookmarks } from '@/entities/bookmark';
+import { isParticipant, MessageItem } from '@/entities/message';
+import { useAuth } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
+import { BookmarkActionsMenu } from './bookmark-actions-menu';
 import { BookmarksEmpty } from './bookmarks-empty';
-import { BookmarksList } from './bookmarks-list';
 
 export const BookmarksContent = () => {
   const { data } = useGetBookmarks();
-  const { mutateAsync: deleteBookmarkMutate } = useDeleteBookmark();
-  const { handleCopy } = useCopy();
-  const { notify } = useAlerts();
+  const { currentUser } = useAuth();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [data]);
-
-  const handleClickDelete = (bookmark: Bookmark) => {
-    deleteBookmarkMutate({ id: bookmark.id }).catch((err) =>
-      notify({ variant: 'error', title: 'Error', text: err.message })
-    );
-  };
-
-  const handleClickCopy = (bookmark: Bookmark) => {
-    handleCopy(bookmark.message.text).then(() =>
-      notify({ variant: 'success', title: 'Success', text: 'Copied!' })
-    );
-  };
 
   return (
     <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto">
@@ -36,11 +22,22 @@ export const BookmarksContent = () => {
         <BookmarksEmpty />
       ) : (
         <div className="p-6">
-          <BookmarksList
-            bookmarks={data}
-            onCopyItem={handleClickCopy}
-            onDeleteItem={handleClickDelete}
-          />
+          <ul className="space-y-4">
+            {data.map((b) => (
+              <li key={b.id}>
+                <MessageItem
+                  message={b.message}
+                  isParticipantMessage={isParticipant(currentUser?.id, b.message.senderId)}
+                  actions={
+                    <BookmarkActionsMenu
+                      bookmark={b}
+                      isParticipant={isParticipant(currentUser?.id, b.message.senderId)}
+                    />
+                  }
+                />
+              </li>
+            ))}
+          </ul>
           <div ref={bottomRef} />
         </div>
       )}

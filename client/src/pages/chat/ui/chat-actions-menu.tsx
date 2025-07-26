@@ -3,9 +3,9 @@ import { Button, Menu, useModal, useToogleMenu } from '@/shared';
 
 import { AiOutlineDelete, AiOutlineMore } from 'react-icons/ai';
 
-type ChatMenuProps = { chatId: number };
+type ChatActionsMenuProps = { chatId: number };
 
-export const ChatMenu = ({ chatId }: Readonly<ChatMenuProps>) => {
+export const ChatActionsMenu = ({ chatId }: Readonly<ChatActionsMenuProps>) => {
   const { handleToggle, open, ref } = useToogleMenu();
   const deleteChatModal = useModal();
 

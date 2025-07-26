@@ -1,4 +1,5 @@
-import { Notification, useGetNotifications } from '@/entities/notification';
+import { Notification, NotificationBlock, useGetNotifications } from '@/entities/notification';
+import { DeleteNotificationButton } from '@/features/notification/delete-notification';
 import {
   NotificationsFilters,
   NotificationTabValue,
@@ -6,11 +7,13 @@ import {
   useNotificationsFilter,
 } from '@/features/notification/filter-notifications';
 import { useMarkNotification } from '@/features/notification/mark-notification';
-import { cn, Loader, Pagination, Typograpghy, usePagination } from '@/shared';
+import { cn, Pagination, usePagination } from '@/shared';
 
 import { useNavigate } from 'react-router';
 
-import { NotificationsList } from './notifications-list';
+import { NotificationsEmpty } from './notifications-empty';
+import { NotificationsError } from './notifications-error';
+import { NotificationsLoading } from './notifications-loading';
 
 const initialPage = 1;
 const initialLimit = 9;
@@ -69,22 +72,24 @@ export const Notifications = () => {
         })}
       >
         {isPending ? (
-          <div className="flex h-full items-center justify-center">
-            <Loader size="lg" variant="primary" />
-          </div>
+          <NotificationsLoading />
         ) : error ? (
-          <div className="flex h-full items-center justify-center">
-            <Typograpghy>Error</Typograpghy>
-          </div>
+          <NotificationsError errorMessage={error.message} />
         ) : !notifications?.data?.length ? (
-          <div className="flex h-full items-center justify-center">
-            <Typograpghy>No notifications</Typograpghy>
-          </div>
+          <NotificationsEmpty />
         ) : (
-          <NotificationsList
-            notifications={notifications?.data}
-            onClickItem={handleClickNotification}
-          />
+          <ul>
+            {notifications.data.map((n) => (
+              <li key={n.id}>
+                <NotificationBlock
+                  notification={n}
+                  key={n.id}
+                  onClick={handleClickNotification}
+                  actionsSlot={<DeleteNotificationButton notification={n} />}
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </div>
       <Pagination
