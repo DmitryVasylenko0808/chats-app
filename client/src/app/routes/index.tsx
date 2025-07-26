@@ -8,12 +8,13 @@ import SettingsModal from '@/pages/settings-modal';
 import SignInPage from '@/pages/sign-in';
 import ProfilePage from '@/pages/user-profile';
 import UserProfileModalPage from '@/pages/user-profile-modal';
-import { RequireAuth } from '@/shared';
 
 import { Route, Routes, useLocation } from 'react-router';
 
 import AuthLayout from '../layouts/auth-layout';
 import BaseLayout from '../layouts/base-layout';
+import { AuthGuard } from './auth-guard';
+import { GuestGuard } from './guest-guard';
 
 export const AppRoutes = () => {
   const location = useLocation();
@@ -23,7 +24,7 @@ export const AppRoutes = () => {
   return (
     <>
       <Routes location={state?.backgroundLocation || location}>
-        <Route element={<RequireAuth />}>
+        <Route element={<AuthGuard />}>
           <Route path="/" element={<BaseLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/chats/:id" element={<ChatPage />} />
@@ -33,9 +34,11 @@ export const AppRoutes = () => {
             <Route path="/notifications" element={<NotificationsPage />} />
           </Route>
         </Route>
-        <Route path="auth" element={<AuthLayout />}>
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="sign-in" element={<SignInPage />} />
+        <Route element={<GuestGuard />}>
+          <Route path="auth" element={<AuthLayout />}>
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="sign-in" element={<SignInPage />} />
+          </Route>
         </Route>
       </Routes>
       {state?.backgroundLocation && (
