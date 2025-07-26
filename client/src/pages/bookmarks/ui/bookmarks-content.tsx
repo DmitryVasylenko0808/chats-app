@@ -1,13 +1,14 @@
 import { Bookmark, useGetBookmarks } from '@/entities/bookmark';
 import { useDeleteBookmark } from '@/features/bookmark/delete-bookmark';
-import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
+import { useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef } from 'react';
 
+import { BookmarksEmpty } from './bookmarks-empty';
 import { BookmarksList } from './bookmarks-list';
 
 export const BookmarksContent = () => {
-  const { data, isLoading, error } = useGetBookmarks();
+  const { data } = useGetBookmarks();
   const { mutateAsync: deleteBookmarkMutate } = useDeleteBookmark();
   const { handleCopy } = useCopy();
   const { notify } = useAlerts();
@@ -31,18 +32,8 @@ export const BookmarksContent = () => {
 
   return (
     <div className="scrollbar-custom h-[calc(100vh-88px)] overflow-auto">
-      {isLoading ? (
-        <div className="flex h-full items-center justify-center">
-          <Loader size="lg" variant="primary" />
-        </div>
-      ) : error ? (
-        <div className="flex h-full items-center justify-center">
-          <Typograpghy>Error</Typograpghy>
-        </div>
-      ) : !data?.length ? (
-        <div className="flex h-full items-center justify-center">
-          <Typograpghy>No bookmarks</Typograpghy>
-        </div>
+      {!data?.length ? (
+        <BookmarksEmpty />
       ) : (
         <div className="p-6">
           <BookmarksList

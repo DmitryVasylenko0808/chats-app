@@ -1,11 +1,11 @@
-import { BookmarksContent } from './bookmarks-content';
+import { Bookmarks } from './bookmarks';
 import { BookmarksHeader } from './bookmarks-header';
 
 const BookmarksPage = () => {
   return (
     <>
       <BookmarksHeader />
-      <BookmarksContent />
+      <Bookmarks />
     </>
   );
 };

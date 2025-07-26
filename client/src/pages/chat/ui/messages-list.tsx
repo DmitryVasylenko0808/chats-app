@@ -1,4 +1,4 @@
-import { Message, MessageItem } from '@/entities/message';
+import { isParticipant, Message, MessageItem } from '@/entities/message';
 import { MessageReactions, ReactionPicker } from '@/features/message/message-reactions';
 import { useAuth } from '@/shared';
 
@@ -27,32 +27,34 @@ export const MessagesList = ({
 }: Readonly<MessagesListProps>) => {
   const { currentUser } = useAuth();
 
-  const isParticipant = (senderId: Message['senderId']) => senderId !== currentUser?.id;
-
   return (
     <ul className="flex flex-col space-y-4">
       {messages.map((m) => (
         <li className="block" key={m.id}>
           <MessageItem
             message={m}
-            isParticipantMessage={isParticipant(m.senderId)}
+            isParticipantMessage={isParticipant(currentUser?.id, m.senderId)}
             extra={
               <MessageReactions
                 message={m}
-                participantMessage={isParticipant(m.senderId)}
+                participantMessage={isParticipant(currentUser?.id, m.senderId)}
                 currentUser={currentUser}
               />
             }
             actions={
               <MessageMenu
                 message={m}
-                participantMessage={isParticipant(m.senderId)}
+                participantMessage={isParticipant(currentUser?.id, m.senderId)}
                 onReply={() => onReplyItem?.(m)}
                 onForward={() => onForwardItem?.(m)}
                 onPin={() => onPinItem?.(m)}
                 onCopy={() => onCopyItem?.(m)}
-                onEdit={!isParticipant(m.senderId) ? () => onEditItem?.(m) : undefined}
-                onDelete={!isParticipant(m.senderId) ? () => onDeleteItem?.(m) : undefined}
+                onEdit={
+                  !isParticipant(currentUser?.id, m.senderId) ? () => onEditItem?.(m) : undefined
+                }
+                onDelete={
+                  !isParticipant(currentUser?.id, m.senderId) ? () => onDeleteItem?.(m) : undefined
+                }
                 onAddBookmark={() => onAddBookmarkItem?.(m)}
                 topSlot={<ReactionPicker message={m} />}
               />

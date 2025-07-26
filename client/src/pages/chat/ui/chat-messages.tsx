@@ -5,18 +5,20 @@ import { EditMessageModal } from '@/features/message/edit-message';
 import { ForwardMessageModal } from '@/features/message/forward-message';
 import { PinnedMessage, usePinMessage } from '@/features/message/pin-message';
 import { ReplyMessageModal } from '@/features/message/reply-message';
-import { Loader, Typograpghy, useAlerts, useCopy } from '@/shared';
+import { useAlerts, useCopy } from '@/shared';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { ChatMessagesEmpty } from './chat-messages-empty';
+import { ChatMessagesError } from './chat-messages-error';
+import { ChatMessagesLoading } from './chat-messages-loading';
 import { MessagesList } from './messages-list';
 
-// Widget "ChatMessages"
-type MessagesProps = {
+type ChatMessagesProps = {
   chatId: number;
 };
 
-export const Messages = ({ chatId }: MessagesProps) => {
+export const ChatMessages = ({ chatId }: ChatMessagesProps) => {
   const { data, isLoading, error } = useGetMessages(chatId);
   const { mutateAsync: pinMessage } = usePinMessage();
   const { mutateAsync: deleteMessage } = useDeleteMessage();
@@ -65,33 +67,13 @@ export const Messages = ({ chatId }: MessagesProps) => {
       .catch(() => notify({ variant: 'error', title: 'Error', text: 'Cannot copy text message' }));
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Loader variant="primary" size="lg" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Typograpghy>{error.message}</Typograpghy>
-      </div>
-    );
-  }
-
-  if (!data?.length) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <Typograpghy>No messages</Typograpghy>
-      </div>
-    );
-  }
+  if (isLoading) return <ChatMessagesLoading />;
+  if (error) return <ChatMessagesError errorMessage={error.message} />;
+  if (!data?.length) return <ChatMessagesEmpty />;
 
   return (
     <div className="scrollbar-custom h-[calc(100vh-88px-96px)] overflow-y-auto">
-      <PinnedMessage pinnedMessage={data?.find((m) => m.isPinned)} />
+      <PinnedMessage pinnedMessage={data.find((m) => m.isPinned)} />
       <div className="p-6">
         <MessagesList
           messages={data}
