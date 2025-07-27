@@ -29,7 +29,7 @@ export const ReactionPicker = ({
   return (
     <div
       className={cn(
-        'border-secondary-300 bg-secondary-100 dark:bg-dark-300 dark:border-dark-100 rounded-full border px-2 py-1',
+        'border-secondary-300 bg-secondary-100 dark:bg-dark-300 dark:border-dark-100 my-1 rounded-full border px-2 py-1',
         className
       )}
       {...divProps}
